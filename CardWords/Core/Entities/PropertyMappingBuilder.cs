@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Reminder.Core.Entities
+namespace CardWords.Core.Entities
 {
     public sealed class PropertyMappingBuilder<TEntity, TProperty>
         where TEntity : Entity

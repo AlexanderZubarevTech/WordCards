@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Reminder.Core.Helpers
+namespace CardWords.Core.Helpers
 {
     public static class DictionaryHelper
     {

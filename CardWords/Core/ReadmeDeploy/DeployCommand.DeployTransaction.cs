@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Reminder.Core.ReadmeDeploy
+namespace CardWords.Core.ReadmeDeploy
 {
     public sealed partial class DeployCommand
     {

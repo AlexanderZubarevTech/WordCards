@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reminder.Core.Commands
+namespace CardWords.Core.Commands
 {
     public class EntityCommand : IEntityCommand
     {

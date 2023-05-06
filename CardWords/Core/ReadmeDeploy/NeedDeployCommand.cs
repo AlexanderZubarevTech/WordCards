@@ -1,7 +1,7 @@
-﻿using Reminder.Core.Commands;
-using Reminder.Core.Contexts;
+﻿using CardWords.Core.Commands;
+using CardWords.Core.Contexts;
 
-namespace Reminder.Core.ReadmeDeploy
+namespace CardWords.Core.ReadmeDeploy
 {
     public class NeedDeployCommand : EntityCommand, INeedDeployCommand
     {

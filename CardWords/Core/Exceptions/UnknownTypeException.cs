@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reminder.Core.Exceptions
+namespace CardWords.Core.Exceptions
 {
     [Serializable]
     public class UnknownTypeException : Exception

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Reminder.Core.Entities
+namespace CardWords.Core.Entities
 {
     public interface IEntityMapping<TEntity>
         where TEntity : Entity

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Reminder.Core.Commands
+namespace CardWords.Core.Commands
 {
     public interface IEntityCommand : ICommand
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reminder.Core.Entities
+namespace CardWords.Core.Entities
 {
     public abstract class Entity : IEntity
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Reminder.Core.Entities;
+using CardWords.Core.Entities;
 using System.Configuration;
 
-namespace Reminder.Core.Contexts
+namespace CardWords.Core.Contexts
 {
     public class BaseContext : DbContext
     {

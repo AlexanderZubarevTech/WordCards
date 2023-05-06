@@ -1,4 +1,4 @@
-﻿namespace Reminder.Extensions
+﻿namespace CardWords.Extensions
 {
     public static class StringExtensions
     {

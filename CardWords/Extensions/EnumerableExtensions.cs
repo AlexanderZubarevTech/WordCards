@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reminder.Extensions
+namespace CardWords.Extensions
 {
     public static class EnumerableExtensions
     {

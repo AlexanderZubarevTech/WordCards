@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Reminder.Extensions
+namespace CardWords.Extensions
 {
     public static class DictionaryExtensions
     {

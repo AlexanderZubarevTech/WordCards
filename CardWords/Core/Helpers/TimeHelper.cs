@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reminder.Core.Helpers
+namespace CardWords.Core.Helpers
 {
     public static class TimeHelper
     {

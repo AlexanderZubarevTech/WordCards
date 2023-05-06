@@ -1,4 +1,4 @@
-﻿namespace Reminder.Core.ReadmeDeploy
+﻿namespace CardWords.Core.ReadmeDeploy
 {
     public sealed partial class DeployCommand
     {

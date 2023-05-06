@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reminder.Core.Entities
+namespace CardWords.Core.Entities
 {
     public interface IEntity
     {

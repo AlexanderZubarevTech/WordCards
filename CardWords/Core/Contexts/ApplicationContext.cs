@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Reminder.Business.NotificationTypes.CountdownTypes;
-using Reminder.Business.NotificationTypes.Usual;
+//using CardWords.Business.NotificationTypes.CountdownTypes;
+//using CardWords.Business.NotificationTypes.Usual;
 
-namespace Reminder.Core.Contexts
+namespace CardWords.Core.Contexts
 {
     public sealed class ApplicationContext : EntityContext
     {
@@ -12,15 +12,15 @@ namespace Reminder.Core.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            EntityConfiguration<NotificationType>(modelBuilder);
-            EntityConfiguration<NotificationTypeActiveDay>(modelBuilder);
-            EntityConfiguration<CountdownNotificationType>(modelBuilder);
+            //EntityConfiguration<NotificationType>(modelBuilder);
+            //EntityConfiguration<NotificationTypeActiveDay>(modelBuilder);
+            //EntityConfiguration<CountdownNotificationType>(modelBuilder);
         }
 
-        public DbSet<NotificationType> NotificationTypes { get; set; } = null!;
+        //public DbSet<NotificationType> NotificationTypes { get; set; } = null!;
 
-        public DbSet<NotificationTypeActiveDay> NotificationTypeActiveDays { get; set; } = null!;
+        //public DbSet<NotificationTypeActiveDay> NotificationTypeActiveDays { get; set; } = null!;
 
-        public DbSet<CountdownNotificationType> CountdownNotificationTypes { get; set; } = null!;
+        //public DbSet<CountdownNotificationType> CountdownNotificationTypes { get; set; } = null!;
     }
 }

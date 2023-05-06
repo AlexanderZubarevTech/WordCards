@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Reminder.Core.Entities;
+using CardWords.Core.Entities;
 using System;
 
-namespace Reminder.Core.ReadmeDeploy
+namespace CardWords.Core.ReadmeDeploy
 {
     public sealed class ReadmeDeploy : Entity, IEntityMapping<ReadmeDeploy>
     {

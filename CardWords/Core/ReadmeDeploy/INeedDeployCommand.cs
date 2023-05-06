@@ -1,6 +1,6 @@
-﻿using Reminder.Core.Commands;
+﻿using CardWords.Core.Commands;
 
-namespace Reminder.Core.ReadmeDeploy
+namespace CardWords.Core.ReadmeDeploy
 {
     internal interface INeedDeployCommand : IEntityCommand
     {

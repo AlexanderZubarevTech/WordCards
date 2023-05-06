@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Reminder.Extensions;
+using CardWords.Extensions;
 
-namespace Reminder.Core
+namespace CardWords.Core
 {
     public readonly partial struct Id
     {

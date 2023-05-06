@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Reminder.Extensions;
+using CardWords.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Reminder.Core.Entities
+namespace CardWords.Core.Entities
 {
     public sealed class EntityMappingBuilder<TEntity>
         where TEntity : Entity

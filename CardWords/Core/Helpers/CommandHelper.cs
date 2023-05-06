@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Reminder.Core.Commands;
+using CardWords.Core.Commands;
 
-namespace Reminder.Core.Helpers
+namespace CardWords.Core.Helpers
 {
     public sealed class CommandHelper
     {

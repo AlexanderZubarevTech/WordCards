@@ -1,10 +1,10 @@
-﻿using Reminder.Core.Exceptions;
-using Reminder.Extensions;
+﻿using CardWords.Core.Exceptions;
+using CardWords.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reminder.Core
+namespace CardWords.Core
 {
     public readonly partial struct Id : IComparer<Id>, IComparable<Id>, IEquatable<Id>
     {

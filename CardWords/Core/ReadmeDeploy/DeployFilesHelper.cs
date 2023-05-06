@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Reminder.Core.Helpers;
+using CardWords.Core.Helpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
 
-namespace Reminder.Core.ReadmeDeploy
+namespace CardWords.Core.ReadmeDeploy
 {
     public static class DeployFilesHelper
     {

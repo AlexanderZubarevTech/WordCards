@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Reminder.Core.Contexts
+namespace CardWords.Core.Contexts
 {
     public class EntityContext : BaseContext
     {

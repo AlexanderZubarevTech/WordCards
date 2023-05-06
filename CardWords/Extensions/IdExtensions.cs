@@ -1,8 +1,8 @@
-﻿using Reminder.Core;
-using Reminder.Core.Exceptions;
+﻿using CardWords.Core;
+using CardWords.Core.Exceptions;
 using System;
 
-namespace Reminder.Extensions
+namespace CardWords.Extensions
 {
     public static class IdExtensions
     {
