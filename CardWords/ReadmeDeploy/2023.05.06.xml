@@ -2,41 +2,44 @@
 <main id="DE784F93-2391-433F-B647-347E4E501079">
 	<sql>
 		<check>
-			SELECT NOT EXISTS (SELECT * FROM sqlite_master WHERE name='notification_types' and type='table')
+			SELECT NOT EXISTS (SELECT * FROM sqlite_master WHERE name='configurations' and type='table')
 		</check>
 		<text>
-			CREATE TABLE "notification_types" (
-			"Id" INTEGER NOT NULL CONSTRAINT "PK_notification_types" PRIMARY KEY,
+			CREATE TABLE "configurations" (
+			"Id" INTEGER NOT NULL CONSTRAINT "PK_configurations" PRIMARY KEY,
+			"Value" TEXT NOT NULL
+			)
+		</text>
+	</sql>
+	<sql>
+		<check>
+			SELECT NOT EXISTS (SELECT * FROM sqlite_master WHERE name='languages' and type='table')
+		</check>
+		<text>
+			CREATE TABLE "languages" (
+			"Id" INTEGER NOT NULL CONSTRAINT "PK_languages" PRIMARY KEY,
 			"Timestamp" TEXT NOT NULL,
-			"CreateDate" TEXT NOT NULL,
-			"ChangedDate" TEXT NULL,
-			"Name" TEXT NOT NULL,
-			"IsDaily" INTEGER NOT NULL,
-			"TargetTime" TEXT NOT NULL,
-			"NotificationBefore" INTEGER NOT NULL,
-			"BeforeInMinutes" INTEGER NOT NULL,
-			"IsRepeat" INTEGER NOT NULL,
-			"IsDeleted" INTEGER NOT NULL,
-			"IsActive" INTEGER NOT NULL
+			"Name" TEXT NOT NULL
+			)
+		</text>
+	</sql>
+
+	<sql>
+		<check>
+			SELECT NOT EXISTS (SELECT * FROM sqlite_master WHERE name='language_words' and type='table')
+		</check>
+		<text>
+			CREATE TABLE "language_words" (
+			"Id" INTEGER NOT NULL CONSTRAINT "PK_language_words" PRIMARY KEY,
+			"Timestamp" TEXT NOT NULL,
+			"LanguageId" INTEGER NOT NULL,
+			"LanguageWordName" TEXT NOT NULL,
+			"Transcription" TEXT NOT NULL,
+			"Translation" TEXT NOT NULL
 			)
 		</text>
 	</sql>
 	
-	<sql>
-		<check>
-			SELECT NOT EXISTS (SELECT * FROM sqlite_master WHERE name='notification_type_active_days' and type='table')
-		</check>
-		<check>
-			SELECT EXISTS (SELECT * FROM sqlite_master WHERE name='notification_types' and type='table')
-		</check>
-		<text>
-			CREATE TABLE "notification_type_active_days" (
-			"ActiveDay" INTEGER NOT NULL,
-			"TypeId" INTEGER NOT NULL,
-			CONSTRAINT "PK_notification_type_active_days" PRIMARY KEY ("ActiveDay", "TypeId"),
-			CONSTRAINT "FK_notification_type_active_days_notification_types_TypeId" FOREIGN KEY ("TypeId") REFERENCES "notification_types" ("Id") ON DELETE CASCADE
-			)
-		</text>
-	</sql>	
+	
 	<!--SELECT instr(sql, '"Notification"') FROM sqlite_master WHERE name='notification_types' and type='table' проверка наличия столбца в таблице-->
 </main> 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CardWords.Configurations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace CardWords
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static readonly AppConfiguration AppConfiguration = AppConfiguration.GetInstance();
+
         public MainWindow()
         {
             InitializeComponent();

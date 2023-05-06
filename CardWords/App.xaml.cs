@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CardWords.Core.Helpers;
+using CardWords.Core.ReadmeDeploy;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,14 @@ namespace CardWords
     /// </summary>
     public partial class App : Application
     {
+        private void App_Startup(object sender, StartupEventArgs e)
+        {
+            var needDeploy = CommandHelper.GetCommand<INeedDeployCommand>().Execute();
+
+            if (needDeploy)
+            {
+                CommandHelper.GetCommand<IDeployCommand>().Execute();
+            }
+        }
     }
 }
