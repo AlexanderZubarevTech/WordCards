@@ -26,6 +26,28 @@ namespace CardWords
         public MainWindow()
         {
             InitializeComponent();
+
+            mainGrid.Visibility = Visibility.Visible;
+            Btn_Start.Visibility = Visibility.Visible;
+            startGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private void Btn_Start_Click(object sender, RoutedEventArgs e)
+        {
+            startGrid.Visibility = Visibility.Visible;
+            Btn_Start.Visibility = Visibility.Collapsed;
+        }
+
+        private void Btn_Start_Count_Click(object sender, RoutedEventArgs e)
+        {
+            startGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private void Btn_Main_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            mainGrid.Visibility = Visibility.Visible;
+            Btn_Start.Visibility = Visibility.Visible;
+            startGrid.Visibility = Visibility.Collapsed;
         }
     }
 }

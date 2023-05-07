@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<main id="E1AB9890-4916-40F3-972B-9C82FA109B9B">
+	<sql>
+		INSERT INTO [languages]
+		([Timestamp], [Name])
+		VALUES
+		(DATETIME(), 'Английский')
+	</sql>
+	<sql>
+		INSERT INTO [configurations]
+		([Id], [Value])
+		SELECT
+		'current_language' as [Id],
+		'1' as [Value]
+	</sql>
+	<sql>
+		INSERT INTO [language_words]
+		([Timestamp], [LanguageId], [LanguageWordName], [Transcription], [Translation])
+		VALUES
+		(DATETIME(), 1, 'one', '', 'один'),
+		(DATETIME(), 1, 'two', '', 'два'),
+		(DATETIME(), 1, 'three', '', 'три'),
+		(DATETIME(), 1, 'four', '', 'четыре'),
+		(DATETIME(), 1, 'five', '', 'пять'),
+		(DATETIME(), 1, 'six', '', 'шесть'),
+		(DATETIME(), 1, 'seven', '', 'семь'),
+		(DATETIME(), 1, 'eight', '', 'восемь'),
+		(DATETIME(), 1, 'nine', '', 'девять'),
+		(DATETIME(), 1, 'ten', '', 'делять'),
+		(DATETIME(), 1, 'eleven', '', 'одиннадцать'),
+		(DATETIME(), 1, 'twelve', '', 'двенадцать'),
+		(DATETIME(), 1, 'thirteen', '', 'тринадцать'),
+		(DATETIME(), 1, 'fourteen', '', 'четырнадцать'),
+		(DATETIME(), 1, 'fifteen', '', 'пятнадцать'),
+		(DATETIME(), 1, 'sixteen', '', 'шестнадцать'),
+		(DATETIME(), 1, 'seventeen', '', 'семнадцать'),
+		(DATETIME(), 1, 'eighteen', '', 'восемнадцать'),
+		(DATETIME(), 1, 'nineteen', '', 'девятнадцать'),
+		(DATETIME(), 1, 'twenty', '', 'двадцать')
+	</sql>
+</main> 

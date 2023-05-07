@@ -5,8 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CardWords"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Слова - карточки" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <Button x:Name="Btn_Main_Menu" Height="75" FontSize="26" Cursor="Hand" Click="Btn_Main_Menu_Click">Главная</Button>
+            <Button Height="75" FontSize="26" Cursor="Hand">Библиотека</Button>
+        </StackPanel>
+
+        <Grid x:Name="mainGrid" Grid.Column="1">
+            <Button x:Name="Btn_Start" FontSize="50" Width="300" Height="100" Cursor="Hand" Click="Btn_Start_Click">Старт</Button>
+
+            <Grid x:Name="startGrid" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Row="0" Grid.Column="0" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">10</Button>
+                <Button Grid.Row="0" Grid.Column="1" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">20</Button>
+                <Button Grid.Row="1" Grid.Column="0" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">25</Button>
+                <Button Grid.Row="1" Grid.Column="1" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">50</Button>
+                <Button Grid.Row="2" Grid.Column="0" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">75</Button>
+                <Button Grid.Row="2" Grid.Column="1" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">100</Button>
+            </Grid>
+        </Grid>
+        
+        
+
 
     </Grid>
 </Window>
