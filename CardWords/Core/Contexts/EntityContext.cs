@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CardWords.Core.Ids;
+using Microsoft.EntityFrameworkCore;
 
 namespace CardWords.Core.Contexts
 {

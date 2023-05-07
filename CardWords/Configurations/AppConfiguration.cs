@@ -1,7 +1,8 @@
-﻿using CardWords.Core;
-using CardWords.Core.Helpers;
+﻿using CardWords.Core.Helpers;
+using CardWords.Core.Ids;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace CardWords.Configurations
 {
@@ -46,16 +47,18 @@ namespace CardWords.Configurations
         }
 
         [IdConfiguration("current_language")]
-        public Id CurrentLanguage { get; private set; }
+        public Id CurrentLanguage { get; private set; }        
 
         private void SetProperties(IReadOnlyDictionary<Id, Configuration> data)
         {
             if (data == null || data.Count == 0)
             {
                 return;
-            }            
+            }
 
-            var properties = typeof(AppConfiguration).GetProperties(System.Reflection.BindingFlags.Public);
+            var type = typeof(AppConfiguration);
+
+            var properties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
 
             foreach ( var property in properties)
             {
@@ -72,7 +75,8 @@ namespace CardWords.Configurations
                             throw new Exception("Not found configuration");
                         }
 
-                        var value = Convert.ChangeType(configuration.Value, property.PropertyType);
+                        var value = TypeDescriptor.GetConverter(property.PropertyType)
+                            .ConvertFrom(configuration.Value);                        
 
                         property.SetValue(this, value);
                     }

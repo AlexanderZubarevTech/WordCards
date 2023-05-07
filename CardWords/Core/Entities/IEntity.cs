@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CardWords.Core.Ids;
+using System;
 
 namespace CardWords.Core.Entities
 {

@@ -1,7 +1,7 @@
 ﻿using CardWords.Core.Entities;
-using CardWords.Core;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using CardWords.Core.Ids;
 
 namespace CardWords.Business.WordActivities
 {

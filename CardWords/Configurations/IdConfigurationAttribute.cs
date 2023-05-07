@@ -1,4 +1,4 @@
-﻿using CardWords.Core;
+﻿using CardWords.Core.Ids;
 using System;
 
 namespace CardWords.Configurations

@@ -14,8 +14,9 @@ namespace CardWords.Business.WordAction
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             EntityConfiguration<LanguageWord>(modelBuilder);            
-            EntityConfiguration<WordActivity>(modelBuilder);            
+            EntityConfiguration<WordActivity>(modelBuilder);
         }
+
 
         public DbSet<LanguageWord> LanguageWords { get; set; } = null!;
 

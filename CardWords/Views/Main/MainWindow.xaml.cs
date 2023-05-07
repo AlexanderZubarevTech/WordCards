@@ -1,4 +1,5 @@
 ﻿using CardWords.Configurations;
+using CardWords.Views.Cards;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,16 @@ namespace CardWords
         private void Btn_Start_Count_Click(object sender, RoutedEventArgs e)
         {
             startGrid.Visibility = Visibility.Collapsed;
+
+            var wordCount = Convert.ToInt32((sender as Button).Content.ToString());
+
+            var cardsWindow = new CardsWindow(wordCount);
+
+            cardsWindow.Owner = this;
+
+            cardsWindow.Show();
+
+            Hide();
         }
 
         private void Btn_Main_Menu_Click(object sender, RoutedEventArgs e)

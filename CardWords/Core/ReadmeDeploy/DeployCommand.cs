@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using CardWords.Core.Ids;
 
 namespace CardWords.Core.ReadmeDeploy
 {

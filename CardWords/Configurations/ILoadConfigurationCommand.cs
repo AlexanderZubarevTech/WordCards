@@ -1,5 +1,5 @@
-﻿using CardWords.Core;
-using CardWords.Core.Commands;
+﻿using CardWords.Core.Commands;
+using CardWords.Core.Ids;
 using System.Collections.Generic;
 
 namespace CardWords.Configurations

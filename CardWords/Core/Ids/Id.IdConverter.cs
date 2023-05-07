@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using CardWords.Extensions;
 
-namespace CardWords.Core
+namespace CardWords.Core.Ids
 {
     public readonly partial struct Id
     {
@@ -15,6 +15,4 @@ namespace CardWords.Core
             }
         }
     }
-
-        
 }

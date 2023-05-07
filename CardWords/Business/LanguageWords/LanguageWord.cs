@@ -1,5 +1,5 @@
-﻿using CardWords.Core;
-using CardWords.Core.Entities;
+﻿using CardWords.Core.Entities;
+using CardWords.Core.Ids;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CardWords.Business.LanguageWords

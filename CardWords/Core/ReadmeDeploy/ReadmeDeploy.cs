@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using CardWords.Core.Entities;
 using System;
+using CardWords.Core.Ids;
 
 namespace CardWords.Core.ReadmeDeploy
 {

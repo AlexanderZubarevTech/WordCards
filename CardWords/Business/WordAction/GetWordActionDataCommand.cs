@@ -1,7 +1,7 @@
 ﻿using CardWords.Business.LanguageWords;
 using CardWords.Configurations;
-using CardWords.Core;
 using CardWords.Core.Commands;
+using CardWords.Core.Ids;
 using CardWords.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -212,7 +212,7 @@ namespace CardWords.Business.WordAction
                 $"WHERE [lw].LanguageId = {configuration.CurrentLanguage} " +
                 $"LIMIT {count} OFFSET {offset}";
 
-            return db.Database.SqlQueryRaw<Id>(sql).ToArray();
+            return db.Database.SqlQueryRaw<int>(sql).Cast<Id>().ToArray();
         }
 
         private List<Id> SelectNewWordIds(Id[] ids, int count)
@@ -223,7 +223,14 @@ namespace CardWords.Business.WordAction
             {
                 var index = GetRandom(0, ids.Length - 1);
 
-                result.Add(ids[index]);
+                var value = ids[index];
+
+                if (result.Contains(value))
+                {
+                    continue;
+                }
+
+                result.Add(value);
 
                 if(result.Count == count)
                 {
@@ -236,7 +243,7 @@ namespace CardWords.Business.WordAction
 
         private int GetRandom(int min, int max)
         {
-            return random.Next(min, max);
+            return random.Next(min, max + 1);
         }
     }
 }

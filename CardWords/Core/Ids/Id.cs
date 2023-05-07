@@ -2,13 +2,49 @@
 using CardWords.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 
-namespace CardWords.Core
+namespace CardWords.Core.Ids
 {
+    public sealed class IdTypeConverter : TypeConverter
+    {
+        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
+        {
+            if (Id.Types.ContainsKey(sourceType))
+            {
+                return true;
+            }
+
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
+        {
+            if (Id.TryParse(value, out Id newId))
+            {
+                return newId;
+            }
+
+            return base.ConvertFrom(context, culture, value);
+        }        
+
+        public override bool IsValid(ITypeDescriptorContext? context, object? value)
+        {
+            if(value != null && Id.Types.ContainsKey(value.GetType()))
+            {
+                return true;
+            }
+
+            return base.IsValid(context, value);
+        }        
+    }
+
+    [TypeConverter(typeof(IdTypeConverter))]
     public readonly partial struct Id : IComparer<Id>, IComparable<Id>, IEquatable<Id>
     {
-        private enum EnumTypes
+        public enum EnumTypes
         {
             Int, Long, String
         }
@@ -20,7 +56,7 @@ namespace CardWords.Core
             { EnumTypes.String, typeof(string) },
         };
 
-        private static readonly IReadOnlyDictionary<Type, EnumTypes> types = typesByEnum.ToDictionary(x => x.Value, x => x.Key);
+        public static readonly IReadOnlyDictionary<Type, EnumTypes> Types = typesByEnum.ToDictionary(x => x.Value, x => x.Key);
 
         public static readonly Id Empty = default;
         public static readonly Id Zero = new Id(0);
@@ -28,7 +64,7 @@ namespace CardWords.Core
 
         public static Id Create(int id)
         {
-            if(id < 0)
+            if (id < 0)
             {
                 throw new Exception();
             }
@@ -48,14 +84,14 @@ namespace CardWords.Core
 
         public static Id Create(string id)
         {
-            if (id == null || id.IsNullOrEmptyOrWhiteSpace())                 
+            if (id == null || id.IsNullOrEmptyOrWhiteSpace())
             {
                 return Empty;
             }
 
             var isNumber = long.TryParse(id, null, out long idNumber);
 
-            if(isNumber)
+            if (isNumber)
             {
                 if (idNumber < 0)
                 {
@@ -116,7 +152,7 @@ namespace CardWords.Core
 
         public int Compare(Id x, Id y)
         {
-            if(x > y)
+            if (x > y)
             {
                 return 1;
             }
@@ -127,7 +163,7 @@ namespace CardWords.Core
         public int CompareTo(Id other)
         {
             return Compare(this, other);
-        }        
+        }
 
         public bool Equals(Id other)
         {
@@ -155,25 +191,25 @@ namespace CardWords.Core
         }
 
         #region Operators
-        
+
         public static bool operator >(Id id1, Id id2)
         {
-            if(id1 == Empty)
+            if (id1 == Empty)
             {
                 return false;
             }
 
-            if(id2 == Empty)
+            if (id2 == Empty)
             {
                 return true;
             }
 
-            if(id1.IsNotNumber || id2.IsNotNumber)
+            if (id1.IsNotNumber || id2.IsNotNumber)
             {
                 return CompareStringIds(id1, id2) > 0;
             }
 
-            return id1.As<long>() > id2.As<long>();            
+            return id1.As<long>() > id2.As<long>();
         }
 
         private static int CompareStringIds(Id id1, Id id2)
@@ -223,7 +259,7 @@ namespace CardWords.Core
 
         public static bool operator >=(Id id1, Id id2)
         {
-            if(id1 == id2)
+            if (id1 == id2)
             {
                 return true;
             }
@@ -304,18 +340,34 @@ namespace CardWords.Core
             return true;
         }
 
+        public static bool TryParse(object? value, out Id newId)
+        {
+            newId = Empty;
+
+            try
+            {
+                newId = Parse(value);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static Id Parse<T>(T value)
         {
             var valueType = typeof(T);
 
-            if(value == null || !types.ContainsKey(valueType))
+            if (value == null || !Types.ContainsKey(valueType))
             {
                 throw new UnknownTypeException(valueType);
             }
 
-            var type = types[valueType];
+            var type = Types[valueType];
 
-            switch(type)
+            switch (type)
             {
                 case EnumTypes.Int:
                     {
@@ -329,38 +381,38 @@ namespace CardWords.Core
                     {
                         return Create(value.ToString());
                     }
-                default: 
-                    { 
-                        return Empty; 
+                default:
+                    {
+                        return Empty;
                     }
             }
         }
 
-        public static Id Parse(object value)
+        public static Id Parse(object? value)
         {
-            if(value == null)
+            if (value == null)
             {
                 return Empty;
             }
 
-            if(IsId(value))
+            if (IsId(value))
             {
                 return (Id)value;
             }
 
             var valueType = value.GetType();
 
-            if(!types.ContainsKey(valueType))
+            if (!Types.ContainsKey(valueType))
             {
                 throw new UnknownTypeException(valueType);
             }
 
-            var valueEnumType = types[valueType];
+            var valueEnumType = Types[valueType];
 
             switch (valueEnumType)
             {
                 case EnumTypes.Int:
-                    { 
+                    {
                         return Create((int)value);
                     };
                 case EnumTypes.Long:
@@ -380,17 +432,17 @@ namespace CardWords.Core
 
         public static bool IsId(object value)
         {
-            if(value == null)
+            if (value == null)
             {
                 return false;
             }
 
             return value is Id;
-        }        
+        }
 
         public static bool ExistType<T>()
         {
-            return types.ContainsKey(typeof(T));
+            return Types.ContainsKey(typeof(T));
         }
 
         public override bool Equals(object obj)
@@ -400,7 +452,7 @@ namespace CardWords.Core
                 return false;
             }
 
-            if(!IsId(obj))
+            if (!IsId(obj))
             {
                 return false;
             }
@@ -419,5 +471,5 @@ namespace CardWords.Core
         {
             return $"{Value?.ToString() ?? string.Empty}";
         }
-    }        
+    }
 }
