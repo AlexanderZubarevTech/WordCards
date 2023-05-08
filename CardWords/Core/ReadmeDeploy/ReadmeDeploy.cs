@@ -19,9 +19,8 @@ namespace CardWords.Core.ReadmeDeploy
         }
 
         public ReadmeDeploy(Id id, DateTime timestamp)
+            : base(id, timestamp)
         {
-            Id = id;
-            Timestamp = timestamp;
         }
     }
 }

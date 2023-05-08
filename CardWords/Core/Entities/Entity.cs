@@ -1,9 +1,5 @@
 ﻿using CardWords.Core.Ids;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CardWords.Core.Entities
 {
@@ -11,6 +7,17 @@ namespace CardWords.Core.Entities
     {
         public Entity()
         {
+        }
+
+        public Entity(Id id)
+        {
+            Id = id;
+        }
+
+        public Entity(Id id, DateTime timestamp)
+        {
+            Id = id;
+            Timestamp = timestamp;
         }
 
         public Id Id { get; set; }

@@ -23,7 +23,7 @@ namespace CardWords.Extensions
                 throw new InvalidOperationException();
             }
 
-            return (T) id.Value;
+            return (T) Convert.ChangeType(id.Value, typeof(T));
         }
 
         public static string AsString(this Id id) 

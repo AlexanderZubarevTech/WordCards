@@ -39,7 +39,8 @@ namespace CardWords.Business.WordAction
 
         private WordActionData(Id id, string wordName, string transcription, string correctTranslation,
             string wrongWordName, string wrongTranslation, bool isNewWord, Side correctSide)
-        {
+            : base(id)
+        {            
             WordName = wordName;
             Transcription = transcription;
             CorrectTranslation = correctTranslation;
@@ -67,7 +68,7 @@ namespace CardWords.Business.WordAction
 
         public DateTime Date { get; private set; }
 
-        public WordActivityType Check(Side side)
+        public WordActivityType Check(Side side = Side.None)
         {
             Date = DateTime.Now;
 
@@ -88,6 +89,11 @@ namespace CardWords.Business.WordAction
             Result = WordActivityType.FalseAnswer;
 
             return WordActivityType.FalseAnswer;            
+        }
+
+        public string GetTranslationBySide(Side side)
+        {
+            return side == CorrectSide ? CorrectTranslation : WrongTranslation;
         }
     }
 }

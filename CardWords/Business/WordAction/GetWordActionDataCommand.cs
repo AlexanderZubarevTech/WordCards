@@ -1,4 +1,5 @@
-﻿using CardWords.Business.LanguageWords;
+﻿using CardWords.Business.Languages;
+using CardWords.Business.LanguageWords;
 using CardWords.Configurations;
 using CardWords.Core.Commands;
 using CardWords.Core.Ids;
@@ -18,7 +19,7 @@ namespace CardWords.Business.WordAction
         private Random random;
         private readonly AppConfiguration configuration = AppConfiguration.GetInstance();
 
-        public List<WordActionData> Execute(int count)
+        public WordActionData[] Execute(int count)
         {
             var seed = (int)Math.Round(DateTime.Now.TimeOfDay.TotalSeconds);
 
@@ -31,7 +32,7 @@ namespace CardWords.Business.WordAction
                 result = GetData(db, count);
             }
 
-            return result;
+            return result.ToArray();
         }
 
         private List<WordActionData> GetData(WordActionContext db, int count)
@@ -187,7 +188,7 @@ namespace CardWords.Business.WordAction
                 $"ORDER BY t.count " +
                 $"LIMIT {count} OFFSET {offset}";
 
-            return db.Database.SqlQueryRaw<LanguageWord>(sql).ToArray();
+            return db.LanguageWords.FromSqlRaw(sql).ToArray();
         }
 
         private List<LanguageWord> LoadNewWords(WordActionContext db, int count, int allNewWords)
@@ -209,8 +210,13 @@ namespace CardWords.Business.WordAction
             var offset = allNewWords > count ? GetRandom(0, allNewWords - count) : 0;
 
             var sql = $"SELECT Id FROM [language_words] as [lw] " +
-                $"WHERE [lw].LanguageId = {configuration.CurrentLanguage} " +
-                $"LIMIT {count} OFFSET {offset}";
+                $" LEFT JOIN (" +
+                $"      SELECT LanguageWordId, count(*) as count FROM [word_activities] as [wa] " +
+                $"      WHERE wa.LanguageId = {configuration.CurrentLanguage} " +
+                $"      GROUP BY wa.LanguageWordId " +
+                $") as t ON lw.Id = t.LanguageWordId " +
+                $" WHERE lw.LanguageId = {configuration.CurrentLanguage} AND t.count IS NULL " +                
+                $" LIMIT {count} OFFSET {offset}";
 
             return db.Database.SqlQueryRaw<int>(sql).Cast<Id>().ToArray();
         }
