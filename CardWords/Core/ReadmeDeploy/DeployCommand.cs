@@ -132,7 +132,7 @@ namespace CardWords.Core.ReadmeDeploy
                 
         private static void ExecuteDeployFile(StartContext db, string id, List<DeployTransaction> transactions)
         {
-            var deploy = new ReadmeDeploy(id, DateTime.Now);
+            var deploy = new ReadmeDeploy(id, TimeHelper.GetCurrentDate());
 
             if(transactions.Count == 0)
             {
@@ -160,7 +160,7 @@ namespace CardWords.Core.ReadmeDeploy
                         }
                     }                    
 
-                    deploy.Timestamp = DateTime.Now;
+                    deploy.Timestamp = TimeHelper.GetCurrentDate();
 
                     db.Add(deploy);
                     db.SaveChanges();

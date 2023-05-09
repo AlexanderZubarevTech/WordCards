@@ -89,8 +89,8 @@ namespace CardWords.Views.Cards
             {
                 var centerPoint = GetCenterPointPolygon(pointPolygon);
 
-                var scale = random.Next(10, 60) / 100d;
-                var color = (byte) random.Next(100, 240);
+                var scale = random.Next(10, 40) / 100d;
+                var color = (byte) random.Next(200, 250);
 
                 var polygon = new Polygon();
 
@@ -167,7 +167,7 @@ namespace CardWords.Views.Cards
 
             info = new WordActionInfo
             {
-                StartDate = DateTime.Now,
+                StartDate = TimeHelper.GetCurrentDate(),
                 WordsCount = data.Length,
                 SelectedCardWordsCount = wordCount
             };
@@ -384,7 +384,7 @@ namespace CardWords.Views.Cards
 
             if(nextWord == null)
             {
-                info.EndDate = DateTime.Now;
+                info.EndDate = TimeHelper.GetCurrentDate();
             }
 
             if (wait)
@@ -489,7 +489,7 @@ namespace CardWords.Views.Cards
             {
                 var starPolygon = ResultStars.GetPolygon(item, random);
 
-                G_Result.Children.Add(starPolygon);
+                G_Stars.Children.Add(starPolygon);
             }
 
             G_Result.Visibility = Visibility.Visible;

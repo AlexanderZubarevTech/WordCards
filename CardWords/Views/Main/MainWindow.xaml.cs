@@ -42,6 +42,7 @@ namespace CardWords
 
         private void Btn_Start_Count_Click(object sender, RoutedEventArgs e)
         {
+            Btn_Start.Visibility = Visibility.Visible;
             startGrid.Visibility = Visibility.Collapsed;
 
             var wordCount = Convert.ToInt32((sender as Button).Content.ToString());

@@ -127,6 +127,8 @@ namespace CardWords.Business.WordAction
                 WordActionData.Create(knownWords[i], knownWords[wrongWordIndex], side)
                     .AddTo(result);
 
+                addedIds.Add(knownWords[i].Id);
+
                 addedCount++;
             }
         }
@@ -183,6 +185,11 @@ namespace CardWords.Business.WordAction
 
         private int CalculateNewWordsCount(int count, int allNewWords, int allKnownWords)
         {
+            if(allNewWords == 0)
+            {
+                return 0;
+            }
+
             if(allKnownWords == 0)
             {
                 return allNewWords < count ? allNewWords : count;
@@ -198,6 +205,14 @@ namespace CardWords.Business.WordAction
                 return count - allKnownWords;
             }
 
+            if(allNewWords < count)
+            {
+                if(allNewWords < count * 0.1)
+                {
+                    return allNewWords;
+                }
+            }
+
             // 30% вероятность отклонения запроса новых слов
             if(GetRandom(0, 10) < 4)
             {
@@ -206,7 +221,9 @@ namespace CardWords.Business.WordAction
 
             if(count < 21)
             {
-                return (int)Math.Round(count * 0.25);
+                var result = (int)Math.Round(count * 0.25);
+
+                return result <= allNewWords ? result : allNewWords;
             }
 
             if(count > 99)
@@ -282,6 +299,11 @@ namespace CardWords.Business.WordAction
         private List<int> SelectNewWordIds(int[] ids, int count)
         {
             var result = new List<int>();
+
+            if(ids.Length == 0)
+            {
+                return result;
+            }
 
             while (true)
             {

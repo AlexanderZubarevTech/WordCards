@@ -160,6 +160,17 @@
                 <Polygon Fill="#CCC" Points="29,29, 31,31"></Polygon>
                 <Polygon Fill="#CCC" Points="129,129, 131,131"></Polygon>
                 <Polygon Fill="#CCC" Points="190,105, 191,106"></Polygon>
+                <Polygon Fill="#CCC" Points="180,205, 181,206"></Polygon>
+                <Polygon Fill="#CCC" Points="150,255, 151,256"></Polygon>
+                <Polygon Fill="#CCC" Points="250,335, 251,336"></Polygon>
+                <Polygon Fill="#CCC" Points="100,435, 101,436"></Polygon>
+                <Polygon Fill="#CCC" Points="340,415, 341,416"></Polygon>
+                <Polygon Fill="#CCC" Points="540,215, 541,216"></Polygon>                
+                <Polygon Fill="#CCC" Points="640,115, 641,116"></Polygon>
+                <Polygon Fill="#CCC" Points="670,255, 671,256"></Polygon>
+                <Polygon Fill="#CCC" Points="440,315, 441,316"></Polygon>
+                <Polygon Fill="#CCC" Points="840,215, 841,216"></Polygon>
+                <Polygon Fill="#CCC" Points="800,315, 801,316"></Polygon>
             </Grid>
         </Grid>
 

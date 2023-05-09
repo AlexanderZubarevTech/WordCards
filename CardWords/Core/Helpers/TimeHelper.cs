@@ -8,6 +8,13 @@ namespace CardWords.Core.Helpers
         private const string minutes = "мин";
         private const string seconds = "c";
 
+        public static DateTime GetCurrentDate()
+        {
+            var now = DateTime.Now;
+
+            return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+        }
+
         public static string GetTime(TimeSpan timeLeft)
         {
             var absTime = GetAbsTime(timeLeft);

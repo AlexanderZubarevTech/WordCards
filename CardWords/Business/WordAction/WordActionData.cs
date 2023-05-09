@@ -1,6 +1,7 @@
 ﻿using CardWords.Business.LanguageWords;
 using CardWords.Business.WordActivities;
 using CardWords.Core.Entities;
+using CardWords.Core.Helpers;
 using System;
 
 namespace CardWords.Business.WordAction
@@ -69,7 +70,7 @@ namespace CardWords.Business.WordAction
 
         public WordActivityType Check(Side side = Side.None)
         {
-            Date = DateTime.Now;
+            Date = TimeHelper.GetCurrentDate();
 
             if(IsNewWord)
             {
