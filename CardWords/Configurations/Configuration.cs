@@ -18,6 +18,18 @@ namespace CardWords.Configurations
         {
         }
 
+        public new string Id
+        {
+            get
+            {
+                return IdAsString;
+            }
+            set
+            {
+                IdAsString = value;
+            }
+        }
+
         public string Value { get; set; }
     }
 }

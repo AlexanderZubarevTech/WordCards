@@ -1,7 +1,6 @@
 ﻿using CardWords.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
-using CardWords.Core.Ids;
 
 namespace CardWords.Business.WordActivities
 {
@@ -19,6 +18,8 @@ namespace CardWords.Business.WordActivities
                     .End()
                     .Column(x => x.ActivityType)
                     .End()
+                    .Column(x => x.InfoId)
+                    .End()
                 .End();
         }
 
@@ -26,20 +27,23 @@ namespace CardWords.Business.WordActivities
         {
         }
 
-        public WordActivity(DateTime date, Id languageWordId, Id languageId, WordActivityType activityType)
+        public WordActivity(DateTime date, int languageWordId, int languageId, WordActivityType activityType, int infoId)
         {
             Date = date;
             LanguageWordId = languageWordId;
             LanguageId = languageId;
             ActivityType = activityType;
+            InfoId = infoId;
         }
 
         public DateTime Date { get; set; }
 
-        public Id LanguageWordId { get; set; }
+        public int LanguageWordId { get; set; }
 
-        public Id LanguageId { get; set; }
+        public int LanguageId { get; set; }
 
         public WordActivityType ActivityType { get; set; }
+
+        public int InfoId { get; set; }
     }
 }

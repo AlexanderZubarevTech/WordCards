@@ -1,8 +1,6 @@
-﻿using CardWords.Business.Languages;
-using CardWords.Business.LanguageWords;
+﻿using CardWords.Business.LanguageWords;
 using CardWords.Configurations;
 using CardWords.Core.Commands;
-using CardWords.Core.Ids;
 using CardWords.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,8 +11,8 @@ namespace CardWords.Business.WordAction
 {
     public sealed class GetWordActionDataCommand : EntityCommand, IGetWordActionDataCommand
     {
-        private static readonly Dictionary<Id, string> getCountNewWordsSqlDictionary = new Dictionary<Id, string>();
-        private static readonly Dictionary<Id, string> getCountKnownWordsSqlDictionary = new Dictionary<Id, string>();        
+        private static readonly Dictionary<int, string> getCountNewWordsSqlDictionary = new Dictionary<int, string>();
+        private static readonly Dictionary<int, string> getCountKnownWordsSqlDictionary = new Dictionary<int, string>();        
 
         private Random random;
         private readonly AppConfiguration configuration = AppConfiguration.GetInstance();
@@ -48,17 +46,77 @@ namespace CardWords.Business.WordAction
 
             var result = new List<WordActionData>();
 
-            newWords.ForEach(x => WordActionData.Create(x).AddTo(result));
+            AddData(newWords, knownWords, count, result);
+
+            return result;
+        }
+
+        private void AddData(List<LanguageWord> newWords, LanguageWord[] knownWords, int count, List<WordActionData> result)
+        {
+            var decades = Math.Round(count / 10d, 0, MidpointRounding.ToPositiveInfinity);
+
+            var newWordsCountOnDecade = (int) Math.Round(newWords.Count / decades, 0, MidpointRounding.ToPositiveInfinity);
+
+            var addedNewWordIds = new List<int>();
+            var addedKnownWordIds = new List<int>();
+
+            for (int i = 0; i < decades; i++)
+            {                
+                var addNewWordsCount = GetCountNewWordsToAdd(newWords.Count, addedNewWordIds.Count, newWordsCountOnDecade);                
+                var addKnownWordsCount = GetCountKnownWordsToAdd(knownWords.Length, addedKnownWordIds.Count, addNewWordsCount);
+
+                var addNewWords = newWords.Where(x => !addedNewWordIds.Contains(x.Id)).Take(addNewWordsCount).ToList();
+
+                foreach (var word in addNewWords)
+                {
+                    WordActionData.Create(word)
+                        .AddTo(result);
+
+                    addedNewWordIds.Add(word.Id);
+                }
+
+                AddKnownWords(knownWords, addedKnownWordIds, addKnownWordsCount, result);
+            }
+        }
+
+        private static int GetCountNewWordsToAdd(int newWordsCount, int addedNewWordsCount, int newWordsCountOnDecade)
+        {
+            var remainNewWordsCount = newWordsCount - addedNewWordsCount;
+
+            return remainNewWordsCount > newWordsCountOnDecade ? newWordsCountOnDecade : remainNewWordsCount;
+        }
+
+        private static int GetCountKnownWordsToAdd(int knownWordsCount, int addedKnownWordsCount, int addNewWordsCount)
+        {
+            var knownWordsOnDecade = 10 - addNewWordsCount;
+            var remainKnownWordsCount = knownWordsCount - addedKnownWordsCount;
+
+            return remainKnownWordsCount > knownWordsOnDecade ? knownWordsOnDecade : remainKnownWordsCount;
+        }
+
+        private void AddKnownWords(LanguageWord[] knownWords, List<int> addedIds, int needCount, List<WordActionData> result)
+        {
+            var addedCount = 0;
 
             for (int i = 0; i < knownWords.Length; i++)
             {
+                if(addedCount == needCount)
+                {
+                    break;
+                }
+
+                if (addedIds.Contains(knownWords[i].Id))
+                {
+                    continue;
+                }
+
                 int wrongWordIndex;
 
                 while (true)
                 {
-                    wrongWordIndex  = GetRandom(0, knownWords.Length - 1);
+                    wrongWordIndex = GetRandom(0, knownWords.Length - 1);
 
-                    if(wrongWordIndex != i || knownWords.Length == 1)
+                    if (wrongWordIndex != i || knownWords.Length == 1)
                     {
                         break;
                     }
@@ -68,12 +126,12 @@ namespace CardWords.Business.WordAction
 
                 WordActionData.Create(knownWords[i], knownWords[wrongWordIndex], side)
                     .AddTo(result);
-            }
 
-            return result;
+                addedCount++;
+            }
         }
 
-        private static string GetSqlCountNewWords(Id languageId)
+        private static string GetSqlCountNewWords(int languageId)
         {
             if(getCountNewWordsSqlDictionary.ContainsKey(languageId))
             {
@@ -93,7 +151,7 @@ namespace CardWords.Business.WordAction
             return sql;
         }
 
-        private static string GetSqlCountKnownWords(Id languageId)
+        private static string GetSqlCountKnownWords(int languageId)
         {
             if (getCountKnownWordsSqlDictionary.ContainsKey(languageId))
             {
@@ -200,11 +258,11 @@ namespace CardWords.Business.WordAction
             return db.LanguageWords.Where(x => ids.Contains(x.Id)).ToList();
         }
 
-        private Id[] LoadNewWordIds(WordActionContext db, int count, int allNewWords)
+        private int[] LoadNewWordIds(WordActionContext db, int count, int allNewWords)
         {
             if(count == 0)
             {
-                return Array.Empty<Id>();
+                return Array.Empty<int>();
             }
 
             var offset = allNewWords > count ? GetRandom(0, allNewWords - count) : 0;
@@ -218,12 +276,12 @@ namespace CardWords.Business.WordAction
                 $" WHERE lw.LanguageId = {configuration.CurrentLanguage} AND t.count IS NULL " +                
                 $" LIMIT {count} OFFSET {offset}";
 
-            return db.Database.SqlQueryRaw<int>(sql).Cast<Id>().ToArray();
+            return db.Database.SqlQueryRaw<int>(sql).ToArray();
         }
 
-        private List<Id> SelectNewWordIds(Id[] ids, int count)
+        private List<int> SelectNewWordIds(int[] ids, int count)
         {
-            var result = new List<Id>();
+            var result = new List<int>();
 
             while (true)
             {

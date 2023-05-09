@@ -1,7 +1,6 @@
 ﻿using CardWords.Business.WordActivities;
 using CardWords.Configurations;
 using CardWords.Core.Commands;
-using System.Collections.Generic;
 
 namespace CardWords.Business.WordAction
 {
@@ -9,16 +8,20 @@ namespace CardWords.Business.WordAction
     {
         private readonly AppConfiguration configuration = AppConfiguration.GetInstance();
 
-        public bool Execute(List<WordActionData> data)
+        public bool Execute(WordActionData[] data, WordActionInfo info)
         {
             using (var db = new WordActionContext())
             {
+                db.WordActionInfos.Add(info);
+
+                db.SaveChanges();
+
                 foreach (var item in data)
                 {
-                    var activity = GetActivity(item);
+                    var activity = GetActivity(item, info.Id);
 
                     db.WordActivities.Add(activity);
-                }
+                }                
 
                 db.SaveChanges();
             }
@@ -26,9 +29,9 @@ namespace CardWords.Business.WordAction
             return true;
         }
 
-        private WordActivity GetActivity(WordActionData item)
+        private WordActivity GetActivity(WordActionData item, int infoId)
         {
-            return new WordActivity(item.Date, item.Id, configuration.CurrentLanguage, item.Result);
+            return new WordActivity(item.Date, item.Id, configuration.CurrentLanguage, item.Result, infoId);
         }
     }
 }

@@ -7,6 +7,8 @@ namespace CardWords.Core.Ids
     {
         public class IdConverter : ValueConverter<Id, int>
         {
+            public static readonly IdConverter Instance = new IdConverter();
+
             public IdConverter()
                 : base(
                     v => v.As<int>(),

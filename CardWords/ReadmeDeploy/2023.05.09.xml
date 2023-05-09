@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<main id="7F8BCB7A-22EE-4FF1-86B3-93F4ADBBF28B">
+	<sql>
+		<check>
+			SELECT NOT EXISTS (SELECT * FROM sqlite_master WHERE name='word_actions' and type='table')
+		</check>
+		<text>
+			CREATE TABLE "word_actions" (
+			"Id" INTEGER CONSTRAINT "PK_word_actions" PRIMARY KEY,
+			"StartDate" TEXT NOT NULL,
+			"EndDate" TEXT NOT NULL,
+			"MaxSequence" INTEGER NOT NULL,
+			"WordsCount" INTEGER NOT NULL,
+			"NewWordsCount" INTEGER NOT NULL,
+			"CorrectAnswersCount" INTEGER NOT NULL,
+			"WrongAnswersCount" INTEGER NOT NULL,
+			"SelectedCardWordsCount" INTEGER NOT NULL
+			)
+		</text>
+	</sql>
+</main> 

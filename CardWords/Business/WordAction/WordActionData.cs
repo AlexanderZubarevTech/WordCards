@@ -1,7 +1,6 @@
 ﻿using CardWords.Business.LanguageWords;
 using CardWords.Business.WordActivities;
 using CardWords.Core.Entities;
-using CardWords.Core.Ids;
 using System;
 
 namespace CardWords.Business.WordAction
@@ -26,18 +25,18 @@ namespace CardWords.Business.WordAction
                 wrongWord.LanguageWordName, wrongWord.Translation, correctSide);
         }
 
-        private WordActionData(Id id, string wordName, string transcription, string correctTranslation) 
+        private WordActionData(int id, string wordName, string transcription, string correctTranslation) 
             : this(id, wordName, transcription, correctTranslation, string.Empty, string.Empty, true, Side.None)
         {
         }
 
-        private WordActionData(Id id, string wordName, string transcription, string correctTranslation,
+        private WordActionData(int id, string wordName, string transcription, string correctTranslation,
             string wrongWordName, string wrongTranslation, Side correctSide)
             : this(id, wordName, transcription, correctTranslation, wrongWordName, wrongTranslation, false, correctSide)
         {
         }
 
-        private WordActionData(Id id, string wordName, string transcription, string correctTranslation,
+        private WordActionData(int id, string wordName, string transcription, string correctTranslation,
             string wrongWordName, string wrongTranslation, bool isNewWord, Side correctSide)
             : base(id)
         {            
@@ -81,14 +80,14 @@ namespace CardWords.Business.WordAction
 
             if(side == CorrectSide)
             {
-                Result = WordActivityType.TrueAnswer;
+                Result = WordActivityType.CorrectAnswer;
 
-                return WordActivityType.TrueAnswer;
+                return WordActivityType.CorrectAnswer;
             }
 
-            Result = WordActivityType.FalseAnswer;
+            Result = WordActivityType.WrongAnswer;
 
-            return WordActivityType.FalseAnswer;            
+            return WordActivityType.WrongAnswer;            
         }
 
         public string GetTranslationBySide(Side side)

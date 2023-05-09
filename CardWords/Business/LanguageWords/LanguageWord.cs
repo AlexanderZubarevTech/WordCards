@@ -21,7 +21,7 @@ namespace CardWords.Business.LanguageWords
                 .End();
         }
 
-        public Id LanguageId { get; set; }
+        public int LanguageId { get; set; }
 
         public string LanguageWordName { get; set; }
 

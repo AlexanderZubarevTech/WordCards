@@ -1,6 +1,5 @@
 ﻿using CardWords.Configurations.Contexts;
 using CardWords.Core.Commands;
-using CardWords.Core.Ids;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,9 +7,9 @@ namespace CardWords.Configurations
 {
     public class LoadConfigurationCommand : EntityCommand, ILoadConfigurationCommand
     {
-        public IReadOnlyDictionary<Id, Configuration> Execute()
+        public IReadOnlyDictionary<string, Configuration> Execute()
         {
-            Dictionary<Id, Configuration> result;            
+            Dictionary<string, Configuration> result;            
 
             using(var db = new ConfigurationContext())
             {

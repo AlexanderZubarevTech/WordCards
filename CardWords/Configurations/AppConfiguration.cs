@@ -1,5 +1,4 @@
 ﻿using CardWords.Core.Helpers;
-using CardWords.Core.Ids;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +9,7 @@ namespace CardWords.Configurations
     {
         private static AppConfiguration? instance;
 
-        private AppConfiguration(IReadOnlyDictionary<Id, Configuration> data) 
+        private AppConfiguration(IReadOnlyDictionary<string, Configuration> data) 
         {
             SetProperties(data);
         }
@@ -47,9 +46,9 @@ namespace CardWords.Configurations
         }
 
         [IdConfiguration("current_language")]
-        public Id CurrentLanguage { get; private set; }        
+        public int CurrentLanguage { get; private set; }        
 
-        private void SetProperties(IReadOnlyDictionary<Id, Configuration> data)
+        private void SetProperties(IReadOnlyDictionary<string, Configuration> data)
         {
             if (data == null || data.Count == 0)
             {

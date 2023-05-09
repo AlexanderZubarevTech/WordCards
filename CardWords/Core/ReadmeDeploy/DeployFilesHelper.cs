@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CardWords.Core.Helpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using CardWords.Core.Ids;
 
 namespace CardWords.Core.ReadmeDeploy
 {
@@ -12,7 +10,7 @@ namespace CardWords.Core.ReadmeDeploy
     {
         private static readonly string directoryPath = Path.Combine($"{Directory.GetCurrentDirectory()}", "ReadmeDeploy");
 
-        public static IReadOnlyDictionary<Id, string> GetNewFiles(DbSet<ReadmeDeploy> deploys)
+        public static IReadOnlyDictionary<string, string> GetNewFiles(DbSet<ReadmeDeploy> deploys)
         {
             var deploysByIds = deploys.ToDictionary(x => x.Id);
 
@@ -25,7 +23,7 @@ namespace CardWords.Core.ReadmeDeploy
                 .ToDictionary(x => x.Key, x => x.Value);
         }
 
-        private static Dictionary<Id, string> GetFiles()
+        private static Dictionary<string, string> GetFiles()
         {
             var directoryInfo = new DirectoryInfo(directoryPath);
 
@@ -33,7 +31,7 @@ namespace CardWords.Core.ReadmeDeploy
                 .OrderBy(x => x.FullName)
                 .ToArray();
 
-            var result = new Dictionary<Id, string>(files.Length);
+            var result = new Dictionary<string, string>(files.Length);
 
             foreach (var file in files)
             {
@@ -46,7 +44,7 @@ namespace CardWords.Core.ReadmeDeploy
                 {
                     var id = root.Attributes.GetNamedItem("id")?.Value;
 
-                    result.Add(Id.Parse(id), file.FullName);
+                    result.Add(id, file.FullName);
                 }
             }
 

@@ -1,11 +1,12 @@
-﻿using CardWords.Core.Ids;
-using System;
+﻿using System;
 
 namespace CardWords.Core.Entities
 {
     public interface IEntity
     {
-        Id Id { get; set; }
+        int Id { get; set; }
+
+        public string IdAsString { get; set; }
 
         public DateTime Timestamp { get; set; }
     }

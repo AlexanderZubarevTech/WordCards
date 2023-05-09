@@ -1,4 +1,5 @@
-﻿using CardWords.Configurations;
+﻿using CardWords.Business.Languages;
+using CardWords.Configurations;
 using CardWords.Views.Cards;
 using System;
 using System.Collections.Generic;

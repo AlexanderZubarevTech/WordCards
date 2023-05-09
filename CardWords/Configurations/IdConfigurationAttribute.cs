@@ -1,5 +1,4 @@
-﻿using CardWords.Core.Ids;
-using System;
+﻿using System;
 
 namespace CardWords.Configurations
 {
@@ -13,6 +12,6 @@ namespace CardWords.Configurations
             Id = id;
         }
 
-        public Id Id { get; }
+        public string Id { get; }
     }
 }

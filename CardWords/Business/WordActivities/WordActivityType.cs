@@ -4,7 +4,7 @@
     {
         None = 0,
         NewWord = 1,
-        TrueAnswer = 2,
-        FalseAnswer = 3
+        CorrectAnswer = 2,
+        WrongAnswer = 3
     }
 }

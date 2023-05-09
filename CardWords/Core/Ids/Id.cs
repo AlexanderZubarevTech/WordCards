@@ -66,11 +66,17 @@ namespace CardWords.Core.Ids
         {
             if (id < 0)
             {
-                throw new Exception();
+                return new Id(id);
+                //throw new Exception();
             }
 
             return id == 0 ? Empty : new Id(id);
         }
+
+        //public static Id Create(int id)
+        //{
+        //    return id <= 0 ? Empty : new Id(id);
+        //}
 
         public static Id Create(long id)
         {
@@ -464,7 +470,10 @@ namespace CardWords.Core.Ids
 
         public override int GetHashCode()
         {
-            return Value.GetHashCode() ^ Type.GetHashCode() ^ IsNumber.GetHashCode() ^ enumType.GetHashCode();
+            var valueCode = Value != null ? Value.GetHashCode() : 0;
+            var typeCode = Type != null ? Type.GetHashCode() : 0;
+
+            return valueCode ^ typeCode ^ IsNumber.GetHashCode() ^ enumType.GetHashCode();
         }
 
         public override string ToString()

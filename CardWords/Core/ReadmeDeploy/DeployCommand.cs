@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using CardWords.Core.Ids;
 
 namespace CardWords.Core.ReadmeDeploy
 {
@@ -31,13 +30,13 @@ namespace CardWords.Core.ReadmeDeploy
             }
         }
 
-        private static IReadOnlyDictionary<Id, List<DeployTransaction>> GetFileTransactions(DbSet<ReadmeDeploy> deploys)
+        private static IReadOnlyDictionary<string, List<DeployTransaction>> GetFileTransactions(DbSet<ReadmeDeploy> deploys)
         {
             var newFiles = DeployFilesHelper.GetNewFiles(deploys);
 
             if(newFiles.Count == 0)
             {
-                return DictionaryHelper.Empty<Id, List<DeployTransaction>>();
+                return DictionaryHelper.Empty<string, List<DeployTransaction>>();
             }
 
             var xmlFiles = GetXmlFiles(newFiles);
@@ -45,7 +44,7 @@ namespace CardWords.Core.ReadmeDeploy
             return xmlFiles.ToDictionary(x => x.Key, x => GetSql(x.Key, x.Value));
         }
 
-        private static Dictionary<Id, FileInfo> GetXmlFiles(IReadOnlyDictionary<Id, string> newFiles)
+        private static Dictionary<string, FileInfo> GetXmlFiles(IReadOnlyDictionary<string, string> newFiles)
         {
             return newFiles.Select(x => new
                 {
@@ -55,7 +54,7 @@ namespace CardWords.Core.ReadmeDeploy
                 .ToDictionary(x => x.Key, x => x.File);
         }        
 
-        private static List<DeployTransaction> GetSql(Id fileId, FileInfo file)
+        private static List<DeployTransaction> GetSql(string fileId, FileInfo file)
         {
             var doc = new XmlDocument();
             doc.Load(file.OpenText());
@@ -131,7 +130,7 @@ namespace CardWords.Core.ReadmeDeploy
             return new DeployTransaction(textNode.InnerText, checkList);
         }
                 
-        private static void ExecuteDeployFile(StartContext db, Id id, List<DeployTransaction> transactions)
+        private static void ExecuteDeployFile(StartContext db, string id, List<DeployTransaction> transactions)
         {
             var deploy = new ReadmeDeploy(id, DateTime.Now);
 

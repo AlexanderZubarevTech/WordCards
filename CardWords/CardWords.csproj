@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ReadmeDeploy\2023.05.09.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ReadmeDeploy\2023.05.07.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -48,7 +48,8 @@
 			"Date" INTEGER NOT NULL,
 			"LanguageWordId" TEXT NOT NULL,
 			"LanguageId" TEXT NOT NULL,
-			"ActivityType" INTEGER NOT NULL
+			"ActivityType" INTEGER NOT NULL,
+			"InfoId" INTEGER NOT NULL
 			)
 		</text>
 	</sql>

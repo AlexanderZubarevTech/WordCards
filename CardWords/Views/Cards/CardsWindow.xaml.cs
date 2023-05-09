@@ -1,22 +1,13 @@
 ﻿using CardWords.Business.WordAction;
+using CardWords.Business.WordActivities;
 using CardWords.Core.Helpers;
-using CardWords.Core.Ids;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace CardWords.Views.Cards
 {
@@ -35,23 +26,14 @@ namespace CardWords.Views.Cards
                 NewWord = 4
             }
 
-            private static Color defaultColor = Color.FromRgb(93, 167, 168);
-            private static Color defaultLineColor = Color.FromRgb(108, 195, 196);
-            private static Color correctColor = Color.FromRgb(3, 132, 36);
-            private static Color correctLineColor = Color.FromRgb(53, 162, 81);
-            private static Color wrongColor = Color.FromRgb(108, 36, 33);
-            private static Color wrongLineColor = Color.FromRgb(134, 58, 55);
+            private static Color defaultColor = Color.FromRgb(93, 167, 168); // #5da7a8
+            private static Color defaultLineColor = Color.FromRgb(108, 195, 196); // #6cc3c4
+            private static Color correctColor = Color.FromRgb(3, 132, 36); // #038424
+            private static Color correctLineColor = Color.FromRgb(53, 162, 81); //#35a251
+            private static Color wrongColor = Color.FromRgb(108, 36, 33); // #6c2421
+            private static Color wrongLineColor = Color.FromRgb(134, 58, 55); // #863a37
             private static Color newWordColor = Color.FromRgb(77, 39, 139);
             private static Color newWordLineColor = Color.FromRgb(98, 44, 185);
-            
-            //private const string defaultColor_c = "#5da7a8";
-            //private const string defaultLineColor_c = "#6cc3c4";
-            //private const string correctColor_c = "#038424";
-            //private const string correctLineColor_c = "#35a251";
-            //private const string wrongColor_c = "#6c2421";
-            //private const string wrongLineColor_c = "#863a37";
-
-
 
             public static void SetColor(Rectangle rectangle, ColorType type)
             {
@@ -98,9 +80,70 @@ namespace CardWords.Views.Cards
             }
         }
 
+        private static class ResultStars
+        {            
+            private static readonly Point defaultPolygonCenterPoint = new(50, 50);
+            private static readonly byte defaultColor = 204; //#CCC
+
+            public static Polygon GetPolygon(Polygon pointPolygon, Random random)
+            {
+                var centerPoint = GetCenterPointPolygon(pointPolygon);
+
+                var scale = random.Next(10, 60) / 100d;
+                var color = (byte) random.Next(100, 240);
+
+                var polygon = new Polygon();
+
+                DrawByCenter(polygon, centerPoint, scale);
+
+                polygon.Fill = GetBrush(color);
+
+                return polygon;
+            }            
+
+            private static void DrawByCenter(Polygon polygon, Point center, double scale)
+            {
+                var p_1 = new Point(center.X, center.Y - 50 * scale);
+                var p_2 = new Point(center.X - 10 * scale, center.Y - 10 * scale);
+                var p_3 = new Point(center.X - 50 * scale, center.Y);
+                var p_4 = new Point(center.X - 10 * scale, center.Y + 10 * scale);
+                var p_5 = new Point(center.X, center.Y + 50 * scale);
+                var p_6 = new Point(center.X + 10 * scale, center.Y + 10 * scale);
+                var p_7 = new Point(center.X + 50 * scale, center.Y);
+                var p_8 = new Point(center.X + 10 * scale, center.Y - 10 * scale);
+
+                polygon.Points.Add(p_1);
+                polygon.Points.Add(p_2);
+                polygon.Points.Add(p_3);
+                polygon.Points.Add(p_4);
+                polygon.Points.Add(p_5);
+                polygon.Points.Add(p_6);
+                polygon.Points.Add(p_7);
+                polygon.Points.Add(p_8);
+            }
+
+            private static Brush GetBrush(byte value)
+            {
+                var color = Color.FromRgb(value, value, value);
+
+                return new SolidColorBrush(color);
+            }
+
+            private static Point GetCenterPointPolygon(Polygon polygon)
+            {
+                var point = polygon.Points.First();
+
+                return new Point(point.X + 1, point.Y + 1);
+            }            
+        }
+
         private WordActionData[] data;
 
         private bool wordIsShowed;
+
+        private bool isResult;
+
+        private WordActionInfo info;
 
         public CardsWindow(int wordCount)
         {
@@ -117,7 +160,41 @@ namespace CardWords.Views.Cards
             ShowWord(word.IsNewWord);
 
             wordIsShowed = true;
+
+            maxCorrectAnswerSequence = 0;
+            CorrectAnswerSequence = 0;
+            isResult = false;
+
+            info = new WordActionInfo
+            {
+                StartDate = DateTime.Now,
+                WordsCount = data.Length,
+                SelectedCardWordsCount = wordCount
+            };
+
+            G_Result.Visibility = Visibility.Collapsed;
+            G_WordCard.Visibility = Visibility.Visible;
         }
+
+        private int maxCorrectAnswerSequence;
+
+        private int _correctAnswerSequence;
+        private int CorrectAnswerSequence
+        { 
+            get
+            {
+                return _correctAnswerSequence;
+            }
+            set 
+            {
+                _correctAnswerSequence = value;
+
+                if(value > maxCorrectAnswerSequence)
+                {
+                    maxCorrectAnswerSequence = value;
+                }
+            } 
+        }        
 
         private void SetDataItem(WordActionData item)
         {
@@ -150,6 +227,18 @@ namespace CardWords.Views.Cards
             PB_progress.Minimum = 0;
             PB_progress.Maximum = count;
             PB_progress.Value = 0;
+        }
+
+        private void SetCorrectAnswerSequence(WordActivityType type)
+        {
+            if(type == WordActivityType.CorrectAnswer)
+            {
+                CorrectAnswerSequence++;
+            }
+            else
+            {
+                CorrectAnswerSequence = 0;
+            }
         }
 
         private void SetDelaultColor()
@@ -213,7 +302,24 @@ namespace CardWords.Views.Cards
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)
         {
-            ActionFromKeyDown(e.Key);
+            if(isResult)
+            {
+                ResultFromKeyDown(e.Key);
+            }
+            else
+            {
+                ActionFromKeyDown(e.Key);
+            }            
+        }
+
+        private void ResultFromKeyDown(Key key)
+        {
+            if(key != Key.Escape && key != Key.Enter && key != Key.Space)
+            {
+                return;
+            }
+
+            Close();
         }
 
         private void ActionFromKeyDown(Key key)
@@ -254,7 +360,7 @@ namespace CardWords.Views.Cards
 
             var result = currentWord.Check(side);
 
-            if (result == Business.WordActivities.WordActivityType.TrueAnswer)
+            if (result == WordActivityType.CorrectAnswer)
             {
                 SetCorrectColor(side);
             }
@@ -262,6 +368,8 @@ namespace CardWords.Views.Cards
             {
                 SetWrongColor(side, currentWord.CorrectSide);
             }
+
+            SetCorrectAnswerSequence(result);
 
             Next(true);
         }
@@ -271,6 +379,13 @@ namespace CardWords.Views.Cards
             wordIsShowed = false;
 
             PB_progress.Value++;
+
+            var nextWord = GetNextWord();
+
+            if(nextWord == null)
+            {
+                info.EndDate = DateTime.Now;
+            }
 
             if (wait)
             {
@@ -312,7 +427,7 @@ namespace CardWords.Views.Cards
 
             if(nextWord == null)
             {
-                PB_progress.Value++;
+                SaveResult();
 
                 ShowResult();
 
@@ -355,7 +470,54 @@ namespace CardWords.Views.Cards
 
         private void ShowResult()
         {
+            isResult = true;
 
+            TB_ResultWordsCount.Text = info.WordsCount.ToString();
+            TB_ResultSequenceCount.Text = info.MaxSequence.ToString();
+            TB_ResultNewWordsCount.Text = info.NewWordsCount.ToString();
+            TB_ResultCorrectWordsCount.Text = info.CorrectAnswersCount.ToString();
+            TB_ResultWrongWordsCount.Text = info.WrongAnswersCount.ToString();
+            TB_ResultTime.Text = TimeHelper.GetTime(info.Duration);
+
+            // draw stars
+
+            var starsPointPolygons = G_Stars.Children.Cast<Polygon>().ToList();
+
+            var random = new Random((int)info.Duration.TotalSeconds);            
+
+            foreach (var item in starsPointPolygons)
+            {
+                var starPolygon = ResultStars.GetPolygon(item, random);
+
+                G_Result.Children.Add(starPolygon);
+            }
+
+            G_Result.Visibility = Visibility.Visible;
+            G_WordCard.Visibility = Visibility.Collapsed;
+        }
+
+        private void SaveResult()
+        {
+            info.MaxSequence = maxCorrectAnswerSequence;            
+
+            foreach (var item in data)
+            {
+                if (item.IsNewWord)
+                {
+                    info.NewWordsCount++;
+                    continue;
+                }
+
+                if (item.Result == WordActivityType.CorrectAnswer)
+                {
+                    info.CorrectAnswersCount++;
+                    continue;
+                }
+
+                info.WrongAnswersCount++;
+            }
+
+            CommandHelper.GetCommand<ISaveWordActionDataCommand>().Execute(data, info);
         }
 
         private void Grid_LeftTranslation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

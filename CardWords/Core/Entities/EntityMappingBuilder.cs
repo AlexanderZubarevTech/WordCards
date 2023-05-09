@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using CardWords.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CardWords.Core.Ids;
 
 namespace CardWords.Core.Entities
 {
@@ -40,7 +38,7 @@ namespace CardWords.Core.Entities
             }           
 
             return this;
-        }
+        }        
 
         private void AddIdColumn(bool hasId, bool isGeneratedId, bool idIsString)
         {
@@ -51,20 +49,28 @@ namespace CardWords.Core.Entities
                 return;
             }
 
+            if (idIsString)
+            {
+                entityBuilder.Ignore(x => x.Id);
+
+                entityBuilder.HasKey(x => x.IdAsString);
+
+                var idStrPropBuilder = Column(x => x.IdAsString, "Id");
+
+                idStrPropBuilder.ValueGeneratedNever();
+
+                idStrPropBuilder.End();
+
+                return;
+            }
+
+            entityBuilder.HasKey(x => x.Id);
+
             var idPropBuilder = Column(x => x.Id);
 
             if (isGeneratedId)
             {
                 idPropBuilder.ValueGeneratedOnAdd();
-            }
-            else
-            {
-                idPropBuilder.ValueGeneratedNever();
-            }
-
-            if (idIsString)
-            {
-                idPropBuilder.HasConversion(Id.IdStringConverter.Instance);
             }
 
             idPropBuilder.End();

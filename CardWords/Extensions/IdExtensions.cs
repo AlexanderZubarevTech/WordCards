@@ -12,6 +12,11 @@ namespace CardWords.Extensions
             {
                 throw new UnknownTypeException(nameof(T)); 
             }
+
+            if(id.Value == null)
+            {
+                return default;
+            }
             
             if(typeof(T) == typeof(string))
             {

@@ -10,11 +10,11 @@ namespace CardWords.Core.Contexts
             Database.CanConnect();
         }
 
-        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-        {
-            configurationBuilder
-                .Properties<Id>()
-                .HaveConversion<Id.IdConverter>();
-        }
+        //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        //{
+        //    configurationBuilder
+        //        .Properties<Id>()
+        //        .HaveConversion<Id.IdConverter>();
+        //}
     }
 }
