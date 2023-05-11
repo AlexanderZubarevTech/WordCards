@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace CardWords.Views.Cards
@@ -16,130 +15,11 @@ namespace CardWords.Views.Cards
     /// </summary>
     public partial class CardsWindow : Window
     {
-        private static class BackgroundColor
-        {
-            public enum ColorType
-            {
-                Default = 1,
-                Correct = 2,
-                Wrong = 3,
-                NewWord = 4
-            }
-
-            private static Color defaultColor = Color.FromRgb(93, 167, 168); // #5da7a8
-            private static Color defaultLineColor = Color.FromRgb(108, 195, 196); // #6cc3c4
-            private static Color correctColor = Color.FromRgb(3, 132, 36); // #038424
-            private static Color correctLineColor = Color.FromRgb(53, 162, 81); //#35a251
-            private static Color wrongColor = Color.FromRgb(108, 36, 33); // #6c2421
-            private static Color wrongLineColor = Color.FromRgb(134, 58, 55); // #863a37
-            private static Color newWordColor = Color.FromRgb(77, 39, 139);
-            private static Color newWordLineColor = Color.FromRgb(98, 44, 185);
-
-            public static void SetColor(Rectangle rectangle, ColorType type)
-            {
-                rectangle.Fill = GetBrush(type);
-            }
-
-            public static void SetLineColor(Polygon polygon, ColorType type)
-            {
-                polygon.Fill = GetBrush(type, true);
-            }
-
-            private static Brush GetBrush(ColorType type, bool isLine = false)
-            {
-                var color = GetColor(type, isLine);
-
-                return new SolidColorBrush(color);
-            }
-
-            private static Color GetColor(ColorType type, bool isLine)
-            {
-                switch (type)
-                {
-                    case ColorType.Default:
-                        {
-                            return isLine ? defaultLineColor : defaultColor;
-                        }
-                    case ColorType.Correct:
-                        {
-                            return isLine ? correctLineColor : correctColor;
-                        }
-                    case ColorType.Wrong:
-                        {
-                            return isLine ? wrongLineColor : wrongColor;
-                        }
-                    case ColorType.NewWord:
-                        {
-                            return isLine ? newWordLineColor : newWordColor;
-                        }
-                    default:
-                        {
-                            return Color.FromRgb(0, 0, 0);
-                        }
-                }
-            }
-        }
-
-        private static class ResultStars
-        {            
-            private static readonly Point defaultPolygonCenterPoint = new(50, 50);
-            private static readonly byte defaultColor = 204; //#CCC
-
-            public static Polygon GetPolygon(Polygon pointPolygon, Random random)
-            {
-                var centerPoint = GetCenterPointPolygon(pointPolygon);
-
-                var scale = random.Next(10, 40) / 100d;
-                var color = (byte) random.Next(200, 250);
-
-                var polygon = new Polygon();
-
-                DrawByCenter(polygon, centerPoint, scale);
-
-                polygon.Fill = GetBrush(color);
-
-                return polygon;
-            }            
-
-            private static void DrawByCenter(Polygon polygon, Point center, double scale)
-            {
-                var p_1 = new Point(center.X, center.Y - 50 * scale);
-                var p_2 = new Point(center.X - 10 * scale, center.Y - 10 * scale);
-                var p_3 = new Point(center.X - 50 * scale, center.Y);
-                var p_4 = new Point(center.X - 10 * scale, center.Y + 10 * scale);
-                var p_5 = new Point(center.X, center.Y + 50 * scale);
-                var p_6 = new Point(center.X + 10 * scale, center.Y + 10 * scale);
-                var p_7 = new Point(center.X + 50 * scale, center.Y);
-                var p_8 = new Point(center.X + 10 * scale, center.Y - 10 * scale);
-
-                polygon.Points.Add(p_1);
-                polygon.Points.Add(p_2);
-                polygon.Points.Add(p_3);
-                polygon.Points.Add(p_4);
-                polygon.Points.Add(p_5);
-                polygon.Points.Add(p_6);
-                polygon.Points.Add(p_7);
-                polygon.Points.Add(p_8);
-            }
-
-            private static Brush GetBrush(byte value)
-            {
-                var color = Color.FromRgb(value, value, value);
-
-                return new SolidColorBrush(color);
-            }
-
-            private static Point GetCenterPointPolygon(Polygon polygon)
-            {
-                var point = polygon.Points.First();
-
-                return new Point(point.X + 1, point.Y + 1);
-            }            
-        }
-
         private WordActionData[] data;
 
         private bool wordIsShowed;
+
+        private bool pressedKey;
 
         private bool isResult;
 
@@ -164,6 +44,7 @@ namespace CardWords.Views.Cards
             maxCorrectAnswerSequence = 0;
             CorrectAnswerSequence = 0;
             isResult = false;
+            pressedKey = false;
 
             info = new WordActionInfo
             {
@@ -284,13 +165,11 @@ namespace CardWords.Views.Cards
         private void SetLeftTranslationBackgroundColor(BackgroundColor.ColorType type)
         {
             BackgroundColor.SetColor(R_LeftTranslationBackbround, type);
-            BackgroundColor.SetLineColor(P_LeftTranslationBackbround_Line, type);            
         }
 
         private void SetRightTranslationBackgroundColor(BackgroundColor.ColorType type)
         {
-            BackgroundColor.SetColor(R_RightTranslationBackbround, type);
-            BackgroundColor.SetLineColor(P_RightTranslationBackbround_Line, type);
+            BackgroundColor.SetColor(R_RightTranslationBackbround, type);            
         }
 
         private void SetUnderstoodBackgroundColor(BackgroundColor.ColorType type)
@@ -300,7 +179,7 @@ namespace CardWords.Views.Cards
             BackgroundColor.SetLineColor(P_UnderstoodBackbround_Line_2, type);
         }
 
-        private void Grid_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if(isResult)
             {
@@ -309,7 +188,12 @@ namespace CardWords.Views.Cards
             else
             {
                 ActionFromKeyDown(e.Key);
-            }            
+            }
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            pressedKey = false;
         }
 
         private void ResultFromKeyDown(Key key)
@@ -335,7 +219,14 @@ namespace CardWords.Views.Cards
                 && key != Key.Left)
             {
                 return;
-            }           
+            }
+
+            if(pressedKey)
+            {
+                return;
+            }
+
+            pressedKey = true;
 
             var currentWord = GetCurrentWord();
 
@@ -478,12 +369,18 @@ namespace CardWords.Views.Cards
             TB_ResultCorrectWordsCount.Text = info.CorrectAnswersCount.ToString();
             TB_ResultWrongWordsCount.Text = info.WrongAnswersCount.ToString();
             TB_ResultTime.Text = TimeHelper.GetTime(info.Duration);
+            
+            DrawStars();
 
-            // draw stars
+            G_Result.Visibility = Visibility.Visible;
+            G_WordCard.Visibility = Visibility.Collapsed;
+        }
 
+        private void DrawStars()
+        {
             var starsPointPolygons = G_Stars.Children.Cast<Polygon>().ToList();
 
-            var random = new Random((int)info.Duration.TotalSeconds);            
+            var random = new Random((int)info.Duration.TotalSeconds);
 
             foreach (var item in starsPointPolygons)
             {
@@ -491,9 +388,6 @@ namespace CardWords.Views.Cards
 
                 G_Stars.Children.Add(starPolygon);
             }
-
-            G_Result.Visibility = Visibility.Visible;
-            G_WordCard.Visibility = Visibility.Collapsed;
         }
 
         private void SaveResult()
@@ -533,6 +427,11 @@ namespace CardWords.Views.Cards
         private void Grid_Understood_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ActionFromKeyDown(Key.Enter);
+        }
+
+        private void GridResultClose_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ResultFromKeyDown(Key.Enter);
         }
 
         protected override void OnClosed(EventArgs e)

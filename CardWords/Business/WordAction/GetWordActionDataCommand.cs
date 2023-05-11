@@ -1,6 +1,7 @@
 ﻿using CardWords.Business.LanguageWords;
 using CardWords.Configurations;
 using CardWords.Core.Commands;
+using CardWords.Core.Helpers;
 using CardWords.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -251,17 +252,30 @@ namespace CardWords.Business.WordAction
                 return Array.Empty<LanguageWord>();
             }
 
-            var offset = allKnownWords > count ? GetRandom(0, allKnownWords - count) : 0;            
+            var offset = allKnownWords > count ? GetRandom(0, allKnownWords - count) : 0;
 
-            var sql = $"SELECT [lw].* FROM [language_words] as [lw] " +
-                $"LEFT JOIN (" +
-                $"SELECT LanguageWordId, count(*) as count FROM [word_activities] as [wa] " +
-                $"WHERE wa.LanguageId = {configuration.CurrentLanguage} GROUP BY wa.LanguageWordId" +
-                $") as t ON lw.Id = t.LanguageWordId " +
-                $"WHERE lw.LanguageId = {configuration.CurrentLanguage} " +
-                $"AND t.count IS NOT NULL " +
-                $"ORDER BY t.count " +
-                $"LIMIT {count} OFFSET {offset}";
+            var date = TimeHelper.GetCurrentDate().BeginDay();
+
+            var sql = $" SELECT [lw].* FROM [language_words] as [lw] " +
+                $" LEFT JOIN ( " +
+                $"           SELECT LanguageWordId, count(*) as count " +
+                $"           FROM [word_activities] as [wa] " +
+                $"           WHERE wa.LanguageId = {configuration.CurrentLanguage} " +
+                $"           GROUP BY wa.LanguageWordId " +
+                $"          ) " +
+                $" as t ON lw.Id = t.LanguageWordId " +
+                $" LEFT JOIN ( " +
+                $"           SELECT lwInn.Id, IIF(we.Id IS NULL, 0, 1) as hasError " +
+                $"           FROM [language_words] as [lwInn] " +
+                $"           LEFT JOIN [word_activity_errors] [we] ON we.LanguageWordId == lwInn.Id " +
+                $"           LEFT JOIN [word_actions] as [wa] ON we.InfoId = wa.Id " +
+                $"           WHERE lwInn.LanguageId = {configuration.CurrentLanguage} " +
+                $"           AND wa.EndDate < {date.ToSqlString()} " +
+                $" ) as lwe ON lwe.Id = lw.Id " +
+                $" WHERE lw.LanguageId = {configuration.CurrentLanguage} " +
+                $" AND t.count IS NOT NULL " +
+                $" ORDER BY lwe.hasError DESC, t.count ASC " +
+                $" LIMIT {count} OFFSET {offset} ";            
 
             return db.LanguageWords.FromSqlRaw(sql).ToArray();
         }

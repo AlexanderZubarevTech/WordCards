@@ -45,15 +45,27 @@
 		<text>
 			CREATE TABLE "word_activities" (
 			"Id" INTEGER NOT NULL CONSTRAINT "PK_word_activities" PRIMARY KEY,
-			"Date" INTEGER NOT NULL,
-			"LanguageWordId" TEXT NOT NULL,
-			"LanguageId" TEXT NOT NULL,
+			"Date" TEXT NOT NULL,
+			"LanguageWordId" INTEGER NOT NULL,
+			"LanguageId" INTEGER NOT NULL,
 			"ActivityType" INTEGER NOT NULL,
 			"InfoId" INTEGER NOT NULL
 			)
 		</text>
 	</sql>
-	
+	<sql>
+		<check>
+			SELECT NOT EXISTS (SELECT * FROM sqlite_master WHERE name='word_activity_errors' and type='table')
+		</check>
+		<text>
+			CREATE TABLE "word_activity_errors" (
+			"Id" INTEGER NOT NULL CONSTRAINT "word_activity_errors" PRIMARY KEY,
+			"LanguageWordId" INTEGER NOT NULL,
+			"LanguageId" INTEGER NOT NULL,
+			"InfoId" INTEGER NOT NULL
+			)
+		</text>
+	</sql>
 	
 	<!--SELECT instr(sql, '"Notification"') FROM sqlite_master WHERE name='notification_types' and type='table' проверка наличия столбца в таблице-->
 </main> 

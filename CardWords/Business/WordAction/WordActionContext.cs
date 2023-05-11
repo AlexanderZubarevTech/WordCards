@@ -15,6 +15,7 @@ namespace CardWords.Business.WordAction
         {
             EntityConfiguration<LanguageWord>(modelBuilder);            
             EntityConfiguration<WordActivity>(modelBuilder);
+            EntityConfiguration<ErrorWordActivity>(modelBuilder);
             EntityConfiguration<WordActionInfo>(modelBuilder);
         }
 
@@ -22,6 +23,8 @@ namespace CardWords.Business.WordAction
         public DbSet<LanguageWord> LanguageWords { get; set; } = null!;
 
         public DbSet<WordActivity> WordActivities { get; set; } = null!;
+
+        public DbSet<ErrorWordActivity> ErrorWordActivities { get; set; } = null!;
 
         public DbSet<WordActionInfo> WordActionInfos { get; set; } = null!;
     }
