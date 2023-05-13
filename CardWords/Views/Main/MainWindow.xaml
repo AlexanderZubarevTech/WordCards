@@ -5,20 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CardWords"
         mc:Ignorable="d"
-        Title="Слова - карточки" Height="450" Width="800"
+        Height="600" Width="1000" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True"
         WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Grid Background="#e9e9e9">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
+        </Grid.ColumnDefinitions>       
+
+        <Grid x:Name="heapGrid" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
+            </Grid.ColumnDefinitions>
+            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1"
+                    HorizontalAlignment="Right"
+                Background="Transparent" Click="Btn_Close_Click"
+                Content="X" Foreground="#CCC" BorderBrush="{x:Null}"/>
+            <Label VerticalAlignment="Center" MouseLeftButtonDown="Heap_MouseLeftButtonDown" 
+                   FontSize="16" Foreground="#CCC">Слова - карточки</Label>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"></RowDefinition>
+                <RowDefinition Height="10"></RowDefinition>
+                <RowDefinition Height="75"></RowDefinition>
+                <RowDefinition Height="10"></RowDefinition>
+                <RowDefinition Height="75"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="G_Menu_Main" Grid.Row="0" Cursor="Hand"
+                  MouseLeftButtonDown="G_Menu_Main_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Главная"></TextBlock>
+                <Grid Width="200" Height="75" Panel.ZIndex="0">
+                    <Rectangle Fill="#4d278b"/>
+                </Grid>
+            </Grid>
+
+            <Grid x:Name="G_Menu_Library" Grid.Row="2" Cursor="Hand"
+                  MouseLeftButtonDown="G_Menu_Library_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Библиотека"></TextBlock>
+                <Grid Width="200" Height="75" Panel.ZIndex="0">
+                    <Rectangle Fill="#5da7a8"/>
+                </Grid>
+            </Grid>
+
+            <Grid x:Name="G_Menu_Settings" Grid.Row="4" Cursor="Hand"
+                  MouseLeftButtonDown="G_Menu_Settings_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Настройки"></TextBlock>
+                <Grid Width="200" Height="75" Panel.ZIndex="0">
+                    <Rectangle Fill="#5da7a8"/>
+                </Grid>
+            </Grid>
+
+        </Grid>
+        
+        <!--<StackPanel Grid.Row="1" Grid.Column="0">
             <Button x:Name="Btn_Main_Menu" Height="75" FontSize="26" Cursor="Hand" Click="Btn_Main_Menu_Click">Главная</Button>
             <Button Height="75" FontSize="26" Cursor="Hand">Библиотека</Button>
-        </StackPanel>
+        </StackPanel>-->
 
-        <Grid x:Name="mainGrid" Grid.Column="1">
-            <Button x:Name="Btn_Start" FontSize="50" Width="300" Height="100" Cursor="Hand" Click="Btn_Start_Click">Старт</Button>
+        <Grid x:Name="mainGrid" Grid.Row="1" Grid.Column="1">
+
+            <Grid x:Name="G_Start" Grid.Row="1" Grid.ColumnSpan="2" Cursor="Hand" Visibility="Visible"
+                  MouseLeftButtonDown="G_Start_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                <TextBlock FontSize="60" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Начать"></TextBlock>
+                <Grid Width="600" Height="200" Panel.ZIndex="0">
+                    <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
+                    <Polygon Fill="#6cc3c4" Points="0, 100, 125, 0, 205, 0, 0, 164" />
+                    <Polygon Fill="#6cc3c4" Points="600, 100, 477, 200, 397, 200, 600, 36" />
+                </Grid>
+            </Grid>
 
             <Grid x:Name="startGrid" Visibility="Collapsed">
                 <Grid.RowDefinitions>
@@ -31,17 +97,55 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Row="0" Grid.Column="0" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">10</Button>
-                <Button Grid.Row="0" Grid.Column="1" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">20</Button>
-                <Button Grid.Row="1" Grid.Column="0" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">25</Button>
-                <Button Grid.Row="1" Grid.Column="1" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">50</Button>
-                <Button Grid.Row="2" Grid.Column="0" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">75</Button>
-                <Button Grid.Row="2" Grid.Column="1" FontSize="50" Width="200" Height="75" Cursor="Hand" Click="Btn_Start_Count_Click">100</Button>
+                <Grid Grid.Row="0" Grid.Column="0" Cursor="Hand"
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="10"></TextBlock>
+                    <Grid Width="250" Height="150" Panel.ZIndex="0">
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="0" Grid.Column="1" Cursor="Hand"
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="20"></TextBlock>
+                    <Grid Width="250" Height="150" Panel.ZIndex="0">
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.Column="0" Cursor="Hand"
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="25"></TextBlock>
+                    <Grid Width="250" Height="150" Panel.ZIndex="0">
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.Column="1" Cursor="Hand"
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="50"></TextBlock>
+                    <Grid Width="250" Height="150" Panel.ZIndex="0">
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="0" Cursor="Hand"
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="75"></TextBlock>
+                    <Grid Width="250" Height="150" Panel.ZIndex="0">
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="1" Cursor="Hand"
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="100"></TextBlock>
+                    <Grid Width="250" Height="150" Panel.ZIndex="0">
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
-        
-        
-
 
     </Grid>
 </Window>

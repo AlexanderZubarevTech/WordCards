@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CardWords.Views.Cards"
         mc:Ignorable="d"
-        Title="Тест" Height="850" Width="1350"
+        Title="Тест" Height="850" Width="1350" Topmost="True"
         WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="#e9e9e9">
         <Grid.RowDefinitions>
@@ -58,7 +58,6 @@
                     <Polygon Name="P_WordBackground_Line_1" Fill="#6cc3c4" Points="0, 264, 330, 0, 530, 0, 0, 424" />
                     <Polygon Name="P_WordBackground_Line_2" Fill="#6cc3c4" Points="670, 450, 1200, 26, 1200, 186, 870, 450" />                    
                 </Grid>
-
             </Grid>
 
             <!--#5da7a8 - по умолчанию (основа)
