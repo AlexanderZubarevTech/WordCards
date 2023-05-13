@@ -3,17 +3,11 @@ using CardWords.Business.WordActivities;
 using CardWords.Core.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using static CardWords.Business.WordAction.WordActionData;
 
 namespace CardWords.Views.Cards
 {
@@ -32,7 +26,7 @@ namespace CardWords.Views.Cards
 
         private WordActionInfo info;
 
-        private System.Timers.Timer timer;
+        private Timer timer;
 
         private Dispatcher mainDispatcher;
 
@@ -74,10 +68,7 @@ namespace CardWords.Views.Cards
             PB_timer.Value = 0;
 
             timer = CreateTimer();
-            timer.Start();
-
-            //// тест
-            //ShowResult();
+            timer.Start();            
         }
 
         private int maxCorrectAnswerSequence;
@@ -160,9 +151,9 @@ namespace CardWords.Views.Cards
             SetDelaultColor();
         }
 
-        private System.Timers.Timer CreateTimer()
+        private Timer CreateTimer()
         {
-            var timer = new System.Timers.Timer();
+            var timer = new Timer();
             
             timer.Enabled = true;
             timer.Interval = 10;
@@ -302,7 +293,18 @@ namespace CardWords.Views.Cards
         private void GridResultClose_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ResultFromKeyDown(Key.Enter);
+        }        
+
+        private void Btn_Close_Click(object sender, RoutedEventArgs e)
+        {
+            ResultFromKeyDown(Key.Enter);
         }
+
+        private void Heap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
 
         #endregion
 

@@ -23,7 +23,7 @@ namespace CardWords.Views.Cards
                     {
                         this.Id = Id;
 
-                        SetPoints(startArea, endArea);                        
+                        SetPoints(startArea, endArea);
                     }
 
                     private void SetPoints(Point startArea, Point endArea)
@@ -34,7 +34,7 @@ namespace CardWords.Views.Cards
                         P_4 = new Point(startArea.X, endArea.Y);
                     }
 
-                    
+
 
                     public Point Id { get; }
 
@@ -48,7 +48,7 @@ namespace CardWords.Views.Cards
 
                     public void ReCalculateArea(Point startArea, Point endArea)
                     {
-                        SetPoints(startArea, endArea);                        
+                        SetPoints(startArea, endArea);
                     }
 
                     public bool IsIntersect(Area other)
@@ -58,7 +58,7 @@ namespace CardWords.Views.Cards
                             return false;
                         }
 
-                        if(PointInArea(this, other.P_1) 
+                        if (PointInArea(this, other.P_1)
                             || PointInArea(this, other.P_2)
                             || PointInArea(this, other.P_3)
                             || PointInArea(this, other.P_4)
@@ -191,7 +191,7 @@ namespace CardWords.Views.Cards
                     FillReservedArray(areaId);
 
                     return reservedArray.Intersect(reservedAreaIds).Count() == 0;
-                }                
+                }
 
                 private void FillReservedArray(Point areaId)
                 {
@@ -263,17 +263,18 @@ namespace CardWords.Views.Cards
                     public void BeginAnimation()
                     {
                         Polygon.BeginAnimation(OpacityProperty, animation);
-                        //Polygon.RenderTransform.BeginAnimation(RenderTransformProperty, animation);
+                        Polygon.RenderTransform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
+                        Polygon.RenderTransform.BeginAnimation(ScaleTransform.ScaleYProperty, animation);
                     }
 
                     private void Animation_Completed(object sender, EventArgs e)
                     {
                         changeAreaEvent(this);
                     }
-                }                
+                }
 
                 private sealed class StarEventInfo
-                {                    
+                {
                     public delegate void StarInfoEventHandler(Star star);
                     private event StarInfoEventHandler Event;
 
@@ -293,7 +294,7 @@ namespace CardWords.Views.Cards
                         Event.Invoke(Star);
                     }
                 }
-                                
+
                 public delegate void StarManagerEventHandler(Star star);
                 public event StarManagerEventHandler EndAnimationEvent;
 
@@ -318,7 +319,7 @@ namespace CardWords.Views.Cards
                     timer = CreateTimer();
                     timePassed = new TimeSpan();
                     EndAnimationEvent += EndAnimation;
-                }                
+                }
 
                 private Timer CreateTimer()
                 {
@@ -347,18 +348,18 @@ namespace CardWords.Views.Cards
 
                     var count = timeline.Count(x => x.StartTime <= timePassed);
 
-                    if(count > 0)
+                    if (count > 0)
                     {
-                        while(true)
+                        while (true)
                         {
                             var info = timeline.Where(x => x.StartTime <= timePassed).FirstOrDefault();
 
-                            if(info != null)
+                            if (info != null)
                             {
                                 timeline.Remove(info);
 
-                                mainDispatcher.BeginInvoke(delegate(StarEventInfo x) { x.Action(); }, info);                                
-                            } 
+                                mainDispatcher.BeginInvoke(delegate (StarEventInfo x) { x.Action(); }, info);
+                            }
                             else
                             {
                                 break;
@@ -459,6 +460,13 @@ namespace CardWords.Views.Cards
                     star.Area = newArea;
 
                     DrawPolygon(star.Polygon, newArea);
+
+                    var center = newArea.GetCenter();
+
+                    var scaleTransform = star.Polygon.RenderTransform as ScaleTransform;
+
+                    scaleTransform.CenterX = center.X;
+                    scaleTransform.CenterY = center.Y;
                 }
 
                 private Polygon GetPolygon(AreaManager.Area area)
@@ -469,7 +477,7 @@ namespace CardWords.Views.Cards
 
                     var center = area.GetCenter();
 
-                    //polygon.RenderTransform = new ScaleTransform(0, 0, center.X, center.Y);
+                    polygon.RenderTransform = new ScaleTransform(0, 0, center.X, center.Y);
 
                     return polygon;
                 }
@@ -480,8 +488,7 @@ namespace CardWords.Views.Cards
 
                     polygon.Points.Clear();
 
-                    var scale = random.Next(20, 100) / 100d;
-                    //var color = (byte)random.Next(200, 250);
+                    var scale = random.Next(20, 100) / 100d;                    
 
                     DrawByCenter(polygon, centerPoint, scale);
 
@@ -525,17 +532,15 @@ namespace CardWords.Views.Cards
             private const int defaultDurationInMillisecons = 2000;
             private const int defaultDelayInMillisecons = 2000;
 
-            private static readonly double halfDefaultSize = defaultSize / 2;
-            private static readonly Point defaultPolygonCenterPoint = new(halfDefaultSize, halfDefaultSize);
-            private static readonly byte defaultColor = 204; //#CCC           
-            
+            private static readonly double halfDefaultSize = defaultSize / 2;            
+
             private readonly AreaManager areaManager;
             private readonly StarManager starManager;
 
             public ResultStars(Dispatcher dispatcher, Grid drawGrid, Random random, double intensity)
             {
                 areaManager = new AreaManager(drawGrid, random);
-                starManager = new StarManager(dispatcher, drawGrid, areaManager, random, intensity);                
+                starManager = new StarManager(dispatcher, drawGrid, areaManager, random, intensity);
             }
 
             public void SetProhibitedArea(UIElement element)
@@ -551,11 +556,6 @@ namespace CardWords.Views.Cards
             public void Stop()
             {
                 starManager.Stop();
-            }
-
-            public void Resize()
-            {
-
             }
         }
     }
