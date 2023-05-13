@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CardWords.Views.Cards"
         mc:Ignorable="d"
-        Title="Тест" Height="800" Width="1350"
+        Title="Тест" Height="850" Width="1350"
         WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp">
     <Grid Background="#e9e9e9">
 
-        <Grid x:Name="G_WordCard" Visibility="Visible">
+        <Grid x:Name="G_WordCard" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition Height="200"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -22,7 +23,8 @@
 
 
             <ProgressBar x:Name="PB_progress" Grid.Row="0" Grid.ColumnSpan="2" 
-                     Minimum="0" Maximum="100" Value="70" Height="50" Foreground="#5da7a8"/>
+                     Minimum="0" Maximum="100" Value="70" Height="50" Foreground="#5da7a8"/>            
+            
             <TextBlock x:Name="WordIndex" Visibility="Collapsed" Text="0"></TextBlock>
             <Grid Grid.Row="1" Grid.ColumnSpan="2">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1">
@@ -34,7 +36,7 @@
                     <TextBlock x:Name="TB_NewWord" FontSize="38" Panel.ZIndex="1" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Right" Text="Новое слово!" Visibility="Collapsed" Margin="0 10 50 0"></TextBlock>
                     <Rectangle Name="R_WordBackground" Fill="#5da7a8" RadiusX="25" RadiusY="25"/>
                     <Polygon Name="P_WordBackground_Line_1" Fill="#6cc3c4" Points="0, 264, 330, 0, 530, 0, 0, 424" />
-                    <Polygon Name="P_WordBackground_Line_2" Fill="#6cc3c4" Points="670, 450, 1200, 26, 1200, 186, 870, 450" />
+                    <Polygon Name="P_WordBackground_Line_2" Fill="#6cc3c4" Points="670, 450, 1200, 26, 1200, 186, 870, 450" />                    
                 </Grid>
 
             </Grid>
@@ -51,26 +53,28 @@
 
             <Grid Grid.Row="2" Grid.Column="0" x:Name="G_LeftTranslation" Visibility="Visible">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition Width="500"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="TB_LeftTranslation" Grid.Column="1" FontSize="40" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="0 0 50 0" TextWrapping="Wrap" Text="Left word name"></TextBlock>
-                <TextBlock Grid.Column="0" FontSize="120" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Left" Panel.ZIndex="1" Margin="64,10,0,0" Text="&lt;"></TextBlock>
+                <TextBlock x:Name="TB_LeftTranslation" Grid.Column="2" FontSize="40" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="0 0 50 0" TextWrapping="Wrap" Text="Left word name"></TextBlock>
+                <TextBlock Grid.Column="1" FontSize="120" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Left" Panel.ZIndex="1" Margin="64,10,0,0" Text="&lt;"></TextBlock>
 
-                <Grid Grid.ColumnSpan="2" Width="600" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_LeftTranslation_MouseLeftButtonDown"  Cursor="Hand">
+                <Grid Grid.Column="1" Grid.ColumnSpan="2" Width="600" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_LeftTranslation_MouseLeftButtonDown"  Cursor="Hand">
                     <Rectangle Name="R_LeftTranslationBackbround" Fill="#5da7a8" RadiusX="25" RadiusY="25" />                    
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="2" Grid.Column="1" x:Name="G_RightTranslation" Visibility="Visible">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="500"></ColumnDefinition>
                     <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="TB_RightTranslation" Grid.Column="0" FontSize="40" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="50 0 0 0" TextWrapping="Wrap" Text="Right word name"></TextBlock>
                 <TextBlock Grid.Column="1" FontSize="120" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Margin="0,10,64,0" Text=">"></TextBlock>
 
-                <Grid Grid.ColumnSpan="2" Width="600" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_RightTranslation_MouseLeftButtonDown"  Cursor="Hand">
+                <Grid Grid.Column="0" Grid.ColumnSpan="2" Width="600" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_RightTranslation_MouseLeftButtonDown"  Cursor="Hand">
                     <Rectangle Name="R_RightTranslationBackbround" Fill="#5da7a8" RadiusX="25" RadiusY="25" />                    
                 </Grid>
             </Grid>
@@ -78,20 +82,25 @@
             <Grid Grid.Row="2" Grid.ColumnSpan="2" x:Name="G_Understood" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="1000"></ColumnDefinition>
                     <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock  Grid.Column="0" FontSize="60" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="200 0 0 0" TextWrapping="Wrap" Text="Понятно!"></TextBlock>
-                <TextBlock Grid.Column="1" FontSize="120" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Margin="0,10,100,0" Text=">"></TextBlock>
+                <TextBlock  Grid.Column="1" FontSize="60" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="200 0 0 0" TextWrapping="Wrap" Text="Понятно!"></TextBlock>
+                <TextBlock Grid.Column="2" FontSize="120" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Margin="0,10,100,0" Text=">"></TextBlock>
 
-                <Grid Grid.ColumnSpan="2" Width="1200" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_Understood_MouseLeftButtonDown" Cursor="Hand">
+                <Grid Grid.Column="1" Grid.ColumnSpan="2" Width="1200" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_Understood_MouseLeftButtonDown" Cursor="Hand">
                     <Rectangle Name="R_UnderstoodBackbround" Fill="#4d278b" RadiusX="25" RadiusY="25"/>
                     <Polygon Name="P_UnderstoodBackbround_Line_1" Fill="#622cb9" Points="87, 170, 300, 0, 500, 0, 287, 170" />
                     <Polygon Name="P_UnderstoodBackbround_Line_2" Fill="#622cb9" Points="700, 170, 913, 0, 1113, 0, 900, 170" />
                 </Grid>
             </Grid>
+
+            <ProgressBar x:Name="PB_timer" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+                     Minimum="0" Maximum="500" Value="22" Height="50" Foreground="#4d278b"/>            
         </Grid>
 
-        <Grid x:Name="G_Result" Visibility="Collapsed" Background="#4d278b">
+        <Grid x:Name="G_Result" Visibility="Visible" Background="#4d278b">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="300"></RowDefinition>
@@ -110,82 +119,49 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock FontSize="60" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Слов:"></TextBlock>
+                <TextBlock x:Name="TB_ResultWordsCountTitle" FontSize="60" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Слов:"></TextBlock>
                 <TextBlock x:Name="TB_ResultWordsCount" FontSize="100" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="20"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock FontSize="30" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Максимальная последовательность:"></TextBlock>
+                <TextBlock x:Name="TB_ResultSequenceCountTitle" FontSize="30" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Максимальная последовательность:"></TextBlock>
                 <TextBlock x:Name="TB_ResultSequenceCount" FontSize="100" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="7"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="1" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Новых слов:"></TextBlock>
+                <TextBlock x:Name="TB_ResultNewWordsCountTitle" FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Новых слов:"></TextBlock>
                 <TextBlock x:Name="TB_ResultNewWordsCount" FontSize="40" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="5"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="2" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Правильных ответов:"></TextBlock>
+                <TextBlock x:Name="TB_ResultCorrectWordsCountTitle" FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Правильных ответов:"></TextBlock>
                 <TextBlock x:Name="TB_ResultCorrectWordsCount" FontSize="40" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="11"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="3" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Ошибок:"></TextBlock>
+                <TextBlock x:Name="TB_ResultWrongWordsCountTitle" FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Ошибок:"></TextBlock>
                 <TextBlock x:Name="TB_ResultWrongWordsCount" FontSize="40" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="4"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="4" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Затраченное время:"></TextBlock>
+                <TextBlock x:Name="TB_ResultTimeTitle" FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Затраченное время:"></TextBlock>
                 <TextBlock x:Name="TB_ResultTime" FontSize="40" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="1 мин 20 с"/>
             </StackPanel>           
 
-            <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="2" Panel.ZIndex="0" >
+            <Grid Name="G_Result_BackgroundInfo"  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="2" Panel.ZIndex="0" >
                 <Rectangle Fill="#622cb9" RadiusX="25" RadiusY="25"/>
+                <Grid Name="G_Stars">                    
+                </Grid>
             </Grid>
 
-            <Grid Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Cursor="Hand" MouseLeftButtonDown="GridResultClose_MouseLeftButtonDown">
+            <Grid Name="G_Result_Close" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Cursor="Hand" MouseLeftButtonDown="GridResultClose_MouseLeftButtonDown">
                 <StackPanel Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock FontSize="30" FontWeight="Bold" Foreground="#DDD"  TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Закрыть"></TextBlock>                    
+                    <TextBlock Name="TB_Result_Close" FontSize="30" FontWeight="Bold" Foreground="#DDD"  TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Закрыть"></TextBlock>                    
                 </StackPanel>
                 <Grid Panel.ZIndex="0">
                     <Rectangle Fill="#622cb9" RadiusX="25" RadiusY="25"/>
                 </Grid>
-            </Grid>
-
-            <Grid x:Name="G_Stars" Grid.RowSpan="6" Grid.ColumnSpan="6">                
-                <Polygon Fill="#CCC" Points="	49	,	49	,		51	,	49	,		51	,	51	,		49	,	51	"></Polygon>
-                <Polygon Fill="#CCC" Points="	129	,	129	,		131	,	129	,		131	,	131	,		129	,	131	"></Polygon>
-                <Polygon Fill="#CCC" Points="	190	,	105	,		192	,	105	,		192	,	107	,		190	,	107	"></Polygon>
-                <Polygon Fill="#CCC" Points="	179	,	204	,		181	,	204	,		181	,	206	,		179	,	206	"></Polygon>
-                <Polygon Fill="#CCC" Points="	149	,	254	,		151	,	254	,		151	,	256	,		149	,	256	"></Polygon>
-                <Polygon Fill="#CCC" Points="	249	,	334	,		251	,	334	,		251	,	336	,		249	,	336	"></Polygon>
-                <Polygon Fill="#CCC" Points="	99	,	434	,		101	,	434	,		101	,	436	,		99	,	436	"></Polygon>
-                <Polygon Fill="#CCC" Points="	339	,	414	,		341	,	414	,		341	,	416	,		339	,	416	"></Polygon>
-                <Polygon Fill="#CCC" Points="	539	,	214	,		541	,	214	,		541	,	216	,		539	,	216	"></Polygon>
-                <Polygon Fill="#CCC" Points="	639	,	114	,		641	,	114	,		641	,	116	,		639	,	116	"></Polygon>
-                <Polygon Fill="#CCC" Points="	669	,	254	,		671	,	254	,		671	,	256	,		669	,	256	"></Polygon>
-                <Polygon Fill="#CCC" Points="	439	,	314	,		441	,	314	,		441	,	316	,		439	,	316	"></Polygon>
-                <Polygon Fill="#CCC" Points="	839	,	214	,		841	,	214	,		841	,	216	,		839	,	216	"></Polygon>
-                <Polygon Fill="#CCC" Points="	799	,	314	,		801	,	314	,		801	,	316	,		799	,	316	"></Polygon>
-                <Polygon Fill="#CCC" Points="	899	,	284	,		901	,	284	,		901	,	286	,		899	,	286	"></Polygon>
-                <Polygon Fill="#CCC" Points="	1199	,	284	,		1201	,	284	,		1201	,	286	,		1199	,	286	"></Polygon>
-                <Polygon Fill="#CCC" Points="	999	,	319	,		1001	,	319	,		1001	,	321	,		999	,	321	"></Polygon>
-                <Polygon Fill="#CCC" Points="	1099	,	249	,		1101	,	249	,		1101	,	251	,		1099	,	251	"></Polygon>
-                <Polygon Fill="#CCC" Points="	1149	,	89	,		1151	,	89	,		1151	,	91	,		1149	,	91	"></Polygon>
-                <Polygon Fill="#CCC" Points="	1249	,	199	,		1251	,	199	,		1251	,	201	,		1249	,	201	"></Polygon>
-                <Polygon Fill="#CCC" Points="	949	,	419	,		951	,	419	,		951	,	421	,		949	,	421	"></Polygon>
-
-                <Polygon Fill="#CCC" Points="	499	,	649	,		501	,	649	,		501	,	651	,		499	,	651	"></Polygon>
-                <Polygon Fill="#CCC" Points="	449	,	679	,		451	,	679	,		451	,	681	,		449	,	681	"></Polygon>
-                <Polygon Fill="#CCC" Points="	569	,	689	,		571	,	689	,		571	,	691	,		569	,	691	"></Polygon>                
-                <Polygon Fill="#CCC" Points="	769	,	649	,		771	,	649	,		771	,	651	,		769	,	651	"></Polygon>
-                <Polygon Fill="#CCC" Points="	849	,	679	,		851	,	679	,		851	,	681	,		849	,	681	"></Polygon>
-                <Polygon Fill="#CCC" Points="	919	,	639	,		921	,	639	,		921	,	641	,		919	,	641	"></Polygon>
-                <Polygon Fill="#CCC" Points="	519	,	104	,		521	,	104	,		521	,	106	,		519	,	106	"></Polygon>
-                <Polygon Fill="#CCC" Points="	799	,	94	,		801	,	94	,		801	,	96	,		799	,	96	"></Polygon>
-                <Polygon Fill="#CCC" Points="	899	,	79	,		901	,	79	,		901	,	81	,		899	,	81	"></Polygon>
-                <Polygon Fill="#CCC" Points="	1269	,	434	,		1271	,	434	,		1271	,	436	,		1269	,	436	"></Polygon>
-                <Polygon Fill="#CCC" Points="	699	,	434	,		701	,	434	,		701	,	436	,		699	,	436	"></Polygon>
+                <Grid Name="G_CloseStars"></Grid>
             </Grid>
         </Grid> 
     </Grid>

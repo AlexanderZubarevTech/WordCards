@@ -2,11 +2,18 @@
 using CardWords.Business.WordActivities;
 using CardWords.Core.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using static CardWords.Business.WordAction.WordActionData;
 
 namespace CardWords.Views.Cards
 {
@@ -25,9 +32,17 @@ namespace CardWords.Views.Cards
 
         private WordActionInfo info;
 
+        private System.Timers.Timer timer;
+
+        private Dispatcher mainDispatcher;
+
+        private List<ResultStars> resultStars = new(2);
+
         public CardsWindow(int wordCount)
         {
             InitializeComponent();
+
+            mainDispatcher = Dispatcher.CurrentDispatcher;
 
             data = CommandHelper.GetCommand<IGetWordActionDataCommand>().Execute(wordCount);
 
@@ -53,8 +68,16 @@ namespace CardWords.Views.Cards
                 SelectedCardWordsCount = wordCount
             };
 
-            G_Result.Visibility = Visibility.Collapsed;
+            G_Result.Visibility = Visibility.Hidden;
             G_WordCard.Visibility = Visibility.Visible;
+
+            PB_timer.Value = 0;
+
+            timer = CreateTimer();
+            timer.Start();
+
+            //// тест
+            //ShowResult();
         }
 
         private int maxCorrectAnswerSequence;
@@ -110,6 +133,45 @@ namespace CardWords.Views.Cards
             PB_progress.Value = 0;
         }
 
+        private void ShowWord(bool isNewWord)
+        {
+            if (isNewWord)
+            {
+                TB_TranslationNewWord.Visibility = Visibility.Visible;
+                TB_NewWord.Visibility = Visibility.Visible;
+                G_Understood.Visibility = Visibility.Visible;
+
+                G_LeftTranslation.Visibility = Visibility.Collapsed;
+                G_RightTranslation.Visibility = Visibility.Collapsed;
+
+                SetWordBackgroundColor(BackgroundColor.ColorType.NewWord);
+                SetUnderstoodBackgroundColor(BackgroundColor.ColorType.NewWord);
+
+                return;
+            }
+
+            G_LeftTranslation.Visibility = Visibility.Visible;
+            G_RightTranslation.Visibility = Visibility.Visible;
+
+            TB_TranslationNewWord.Visibility = Visibility.Collapsed;
+            TB_NewWord.Visibility = Visibility.Collapsed;
+            G_Understood.Visibility = Visibility.Collapsed;
+
+            SetDelaultColor();
+        }
+
+        private System.Timers.Timer CreateTimer()
+        {
+            var timer = new System.Timers.Timer();
+            
+            timer.Enabled = true;
+            timer.Interval = 10;
+            timer.Elapsed += LeftTime;
+            timer.AutoReset = true;
+
+            return timer;
+        } 
+
         private void SetCorrectAnswerSequence(WordActivityType type)
         {
             if(type == WordActivityType.CorrectAnswer)
@@ -121,6 +183,23 @@ namespace CardWords.Views.Cards
                 CorrectAnswerSequence = 0;
             }
         }
+
+        private void LeftTime(object sender, ElapsedEventArgs e)
+        {
+            mainDispatcher.BeginInvoke(() => 
+            {
+                if (PB_timer.Value < PB_timer.Maximum)
+                {
+                    PB_timer.Value += 1;
+                } 
+                else
+                {
+                    TimeLeft();
+                }
+            });
+        }
+
+        #region Color
 
         private void SetDelaultColor()
         {
@@ -135,10 +214,15 @@ namespace CardWords.Views.Cards
             SetTranslationBackgroundColor(BackgroundColor.ColorType.Correct, side);
         }
 
-        private void SetWrongColor(WordActionData.Side side, WordActionData.Side correctSide)
+        private void SetWrongColor(WordActionData.Side correctSide, WordActionData.Side? side = null)
         {
             SetWordBackgroundColor(BackgroundColor.ColorType.Wrong);
-            SetTranslationBackgroundColor(BackgroundColor.ColorType.Wrong, side);
+
+            if(side != null)
+            {
+                SetTranslationBackgroundColor(BackgroundColor.ColorType.Wrong, side.Value);
+            }
+            
             SetTranslationBackgroundColor(BackgroundColor.ColorType.Correct, correctSide);
         }
 
@@ -179,6 +263,10 @@ namespace CardWords.Views.Cards
             BackgroundColor.SetLineColor(P_UnderstoodBackbround_Line_2, type);
         }
 
+        #endregion
+
+        #region Events
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if(isResult)
@@ -195,6 +283,28 @@ namespace CardWords.Views.Cards
         {
             pressedKey = false;
         }
+
+        private void Grid_LeftTranslation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ActionFromKeyDown(Key.Left);
+        }
+
+        private void Grid_RightTranslation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ActionFromKeyDown(Key.Right);
+        }
+
+        private void Grid_Understood_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ActionFromKeyDown(Key.Enter);
+        }
+
+        private void GridResultClose_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ResultFromKeyDown(Key.Enter);
+        }
+
+        #endregion
 
         private void ResultFromKeyDown(Key key)
         {
@@ -257,8 +367,21 @@ namespace CardWords.Views.Cards
             }
             else
             {
-                SetWrongColor(side, currentWord.CorrectSide);
+                SetWrongColor(currentWord.CorrectSide, side);
             }
+
+            SetCorrectAnswerSequence(result);
+
+            Next(true);
+        }
+
+        private void TimeLeft()
+        {
+            var currentWord = GetCurrentWord();
+
+            var result = currentWord.Check();
+
+            SetWrongColor(currentWord.CorrectSide);
 
             SetCorrectAnswerSequence(result);
 
@@ -267,9 +390,11 @@ namespace CardWords.Views.Cards
 
         private async void Next(bool wait = false)
         {
+            timer.Stop();
+
             wordIsShowed = false;
 
-            PB_progress.Value++;
+            PB_progress.Value++;            
 
             var nextWord = GetNextWord();
 
@@ -330,38 +455,22 @@ namespace CardWords.Views.Cards
             ShowWord(nextWord.IsNewWord);
 
             wordIsShowed = true;
-        }
 
-        private void ShowWord(bool isNewWord)
-        {
-            if(isNewWord)
+            if(nextWord.IsNewWord)
             {
-                TB_TranslationNewWord.Visibility = Visibility.Visible;
-                TB_NewWord.Visibility = Visibility.Visible;
-                G_Understood.Visibility = Visibility.Visible;
-
-                G_LeftTranslation.Visibility = Visibility.Collapsed;
-                G_RightTranslation.Visibility = Visibility.Collapsed;
-
-                SetWordBackgroundColor(BackgroundColor.ColorType.NewWord);
-                SetUnderstoodBackgroundColor(BackgroundColor.ColorType.NewWord);
-
-                return;
-            }
-
-            G_LeftTranslation.Visibility = Visibility.Visible;
-            G_RightTranslation.Visibility = Visibility.Visible;
-
-            TB_TranslationNewWord.Visibility = Visibility.Collapsed;
-            TB_NewWord.Visibility = Visibility.Collapsed;
-            G_Understood.Visibility = Visibility.Collapsed;
-
-            SetDelaultColor();
-        }
+                PB_timer.Value = PB_timer.Maximum;
+            } 
+            else
+            {
+                PB_timer.Value = 0;
+                timer.Start();
+            }            
+        }        
 
         private void ShowResult()
         {
             isResult = true;
+            timer.Stop();
 
             TB_ResultWordsCount.Text = info.WordsCount.ToString();
             TB_ResultSequenceCount.Text = info.MaxSequence.ToString();
@@ -369,25 +478,48 @@ namespace CardWords.Views.Cards
             TB_ResultCorrectWordsCount.Text = info.CorrectAnswersCount.ToString();
             TB_ResultWrongWordsCount.Text = info.WrongAnswersCount.ToString();
             TB_ResultTime.Text = TimeHelper.GetTime(info.Duration);
-            
-            DrawStars();
 
-            G_Result.Visibility = Visibility.Visible;
             G_WordCard.Visibility = Visibility.Collapsed;
+            G_Result.Visibility = Visibility.Visible;
+
+            DrawStars();
         }
 
         private void DrawStars()
         {
-            var starsPointPolygons = G_Stars.Children.Cast<Polygon>().ToList();
-
             var random = new Random((int)info.Duration.TotalSeconds);
 
-            foreach (var item in starsPointPolygons)
-            {
-                var starPolygon = ResultStars.GetPolygon(item, random);
+            var stars = new ResultStars(mainDispatcher, G_Stars, random, 0.3);
 
-                G_Stars.Children.Add(starPolygon);
-            }
+            stars.SetProhibitedArea(TB_ResultWordsCountTitle);
+            stars.SetProhibitedArea(TB_ResultWordsCount);
+
+            stars.SetProhibitedArea(TB_ResultSequenceCountTitle);
+            stars.SetProhibitedArea(TB_ResultSequenceCount);
+
+            stars.SetProhibitedArea(TB_ResultNewWordsCountTitle);
+            stars.SetProhibitedArea(TB_ResultNewWordsCount);
+
+            stars.SetProhibitedArea(TB_ResultCorrectWordsCountTitle);
+            stars.SetProhibitedArea(TB_ResultCorrectWordsCount);
+
+            stars.SetProhibitedArea(TB_ResultWrongWordsCountTitle);
+            stars.SetProhibitedArea(TB_ResultWrongWordsCount);
+
+            stars.SetProhibitedArea(TB_ResultTimeTitle);
+            stars.SetProhibitedArea(TB_ResultTime);
+
+            stars.StartDraw();
+
+            resultStars.Add(stars);
+
+            var closeStars = new ResultStars(mainDispatcher, G_CloseStars, random, 0.6);
+
+            closeStars.SetProhibitedArea(TB_Result_Close);
+
+            closeStars.StartDraw();
+
+            resultStars.Add(closeStars);
         }
 
         private void SaveResult()
@@ -414,31 +546,22 @@ namespace CardWords.Views.Cards
             CommandHelper.GetCommand<ISaveWordActionDataCommand>().Execute(data, info);
         }
 
-        private void Grid_LeftTranslation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ActionFromKeyDown(Key.Left);
-        }
-
-        private void Grid_RightTranslation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ActionFromKeyDown(Key.Right);
-        }
-
-        private void Grid_Understood_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ActionFromKeyDown(Key.Enter);
-        }
-
-        private void GridResultClose_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ResultFromKeyDown(Key.Enter);
-        }
+        #region Override
 
         protected override void OnClosed(EventArgs e)
         {
+            foreach (var item in resultStars)
+            {
+                item.Stop();
+            }
+
             Owner.Show();
+
+            timer.Dispose();
 
             base.OnClosed(e);
         }
+
+        #endregion        
     }
 }
