@@ -17,7 +17,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>       
 
-        <Grid x:Name="heapGrid" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
+        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1"
+            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1" ToolTip="Закрыть"
                     HorizontalAlignment="Right"
                 Background="Transparent" Click="Btn_Close_Click"
                 Content="X" Foreground="#CCC" BorderBrush="{x:Null}"/>
@@ -33,7 +33,7 @@
                    FontSize="16" Foreground="#CCC">Слова - карточки</Label>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="0">
+        <Grid x:Name="G_Menu" Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="75"></RowDefinition>
                 <RowDefinition Height="10"></RowDefinition>
@@ -44,49 +44,55 @@
             </Grid.RowDefinitions>
 
             <Grid x:Name="G_Menu_Main" Grid.Row="0" Cursor="Hand"
-                  MouseLeftButtonDown="G_Menu_Main_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Menu_Main_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                 <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Главная"></TextBlock>
                 <Grid Width="200" Height="75" Panel.ZIndex="0">
                     <Rectangle Fill="#4d278b"/>
+                    <Grid.Effect>
+                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                    </Grid.Effect>
                 </Grid>
             </Grid>
 
             <Grid x:Name="G_Menu_Library" Grid.Row="2" Cursor="Hand"
-                  MouseLeftButtonDown="G_Menu_Library_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Menu_Library_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                 <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Библиотека"></TextBlock>
                 <Grid Width="200" Height="75" Panel.ZIndex="0">
                     <Rectangle Fill="#5da7a8"/>
+                    <Grid.Effect>
+                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                    </Grid.Effect>
                 </Grid>
             </Grid>
 
             <Grid x:Name="G_Menu_Settings" Grid.Row="4" Cursor="Hand"
-                  MouseLeftButtonDown="G_Menu_Settings_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Menu_Settings_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                 <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Настройки"></TextBlock>
                 <Grid Width="200" Height="75" Panel.ZIndex="0">
                     <Rectangle Fill="#5da7a8"/>
+                    <Grid.Effect>
+                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                    </Grid.Effect>
                 </Grid>
             </Grid>
-
         </Grid>
-        
-        <!--<StackPanel Grid.Row="1" Grid.Column="0">
-            <Button x:Name="Btn_Main_Menu" Height="75" FontSize="26" Cursor="Hand" Click="Btn_Main_Menu_Click">Главная</Button>
-            <Button Height="75" FontSize="26" Cursor="Hand">Библиотека</Button>
-        </StackPanel>-->
 
-        <Grid x:Name="mainGrid" Grid.Row="1" Grid.Column="1">
+        <Grid x:Name="G_Main" Grid.Row="1" Grid.Column="1" Visibility="Collapsed">
 
             <Grid x:Name="G_Start" Grid.Row="1" Grid.ColumnSpan="2" Cursor="Hand" Visibility="Visible"
-                  MouseLeftButtonDown="G_Start_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Start_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                 <TextBlock FontSize="60" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Начать"></TextBlock>
                 <Grid Width="600" Height="200" Panel.ZIndex="0">
                     <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
                     <Polygon Fill="#6cc3c4" Points="0, 100, 125, 0, 205, 0, 0, 164" />
                     <Polygon Fill="#6cc3c4" Points="600, 100, 477, 200, 397, 200, 600, 36" />
+                    <Grid.Effect>
+                        <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
+                    </Grid.Effect>
                 </Grid>
             </Grid>
 
-            <Grid x:Name="startGrid" Visibility="Collapsed">
+            <Grid x:Name="G_Start_Count" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
@@ -98,54 +104,253 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Row="0" Grid.Column="0" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                     <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="10"></TextBlock>
                     <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
+                        </Grid.Effect>
                     </Grid>
                 </Grid>
 
                 <Grid Grid.Row="0" Grid.Column="1" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                     <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="20"></TextBlock>
                     <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
+                        </Grid.Effect>
                     </Grid>
                 </Grid>
 
                 <Grid Grid.Row="1" Grid.Column="0" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                     <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="25"></TextBlock>
                     <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
+                        </Grid.Effect>
                     </Grid>
                 </Grid>
 
                 <Grid Grid.Row="1" Grid.Column="1" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                     <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="50"></TextBlock>
                     <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
+                        </Grid.Effect>
                     </Grid>
                 </Grid>
 
                 <Grid Grid.Row="2" Grid.Column="0" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                     <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="75"></TextBlock>
                     <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
+                        </Grid.Effect>
                     </Grid>
                 </Grid>
 
                 <Grid Grid.Row="2" Grid.Column="1" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Start_MouseEnter" MouseLeave="G_Start_MouseLeave">
+                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
                     <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="100"></TextBlock>
                     <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                        
+                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
+                        </Grid.Effect>
                     </Grid>
                 </Grid>
             </Grid>
         </Grid>
+
+        <Grid x:Name="G_Library" Grid.Row="1" Grid.Column="1" Visibility="Visible" Margin="10 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="130"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="220"></ColumnDefinition>                
+            </Grid.ColumnDefinitions>
+
+            <Grid x:Name="G_Library_Language" Grid.Row="0" Grid.Column="0">
+                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" 
+                           Text="Английский - Русский"></TextBlock>
+                <Grid Width="400" Height="60" Panel.ZIndex="0">
+                    <Rectangle Fill="#4d278b" />
+                    <Grid.Effect>
+                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                    </Grid.Effect>
+                </Grid>
+            </Grid>
+
+            <Grid x:Name="G_Library_Add" Grid.Row="0" Grid.Column="1" Cursor="Hand" 
+                  MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave" MouseLeftButtonDown="AddWord">
+                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Добавить"></TextBlock>
+                <Grid Height="60" Panel.ZIndex="0">
+                    <Rectangle Fill="#5da7a8" />
+                    <Grid.Effect>
+                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                    </Grid.Effect>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="105"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="TBx_Library_Search" Grid.Row="0" Grid.Column="0" Height="60" Margin="0 0 5 0" Cursor="IBeam" FontSize="26" VerticalContentAlignment="Center">
+                    <TextBox.Effect>
+                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                    </TextBox.Effect>
+                </TextBox>
+
+                <Grid x:Name="G_Library_Search" Grid.Row="0" Grid.Column="1" Cursor="Hand" Width="100" Height="60" VerticalAlignment="Center" HorizontalAlignment="Center"
+                      MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave" MouseLeftButtonDown="G_Library_Search_MouseLeftButtonDown">
+                    <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Поиск"></TextBlock>
+                    <Grid Width="100" Height="60" Panel.ZIndex="0">
+                        <Rectangle Fill="#5da7a8" />
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                        </Grid.Effect>
+                    </Grid>
+                </Grid>
+
+                <CheckBox x:Name="CB_Library_Search_WithoutTranscription" Grid.Row="1" FontSize="16" Height="30" Width="160" HorizontalAlignment="Left" VerticalContentAlignment="Center" >Без транскрипции</CheckBox>
+
+                <TextBlock x:Name="TB_Library_Search_Result" Grid.Row="2" FontSize="16" VerticalAlignment="Bottom" Visibility="Collapsed">
+                    <TextBlock Text="Найдено: " FontWeight="DemiBold"></TextBlock>
+                    <TextBlock x:Name="TB_Library_Search_ResultCount" FontWeight="DemiBold" Text="8000"></TextBlock>
+                </TextBlock>
+
+            </Grid>
+
+            <Grid Name="G_Library_Result" Grid.Row="2" Grid.ColumnSpan="3" Margin="0 0 0 10" Background="#EEE">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.Effect>
+                    <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                </Grid.Effect>
+
+                <TextBlock x:Name="G_Library_NoResult" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="5" FontSize="40" FontWeight="DemiBold" Foreground="#555" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Ничего не найдено"></TextBlock>
+
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Слово"></TextBlock>
+                    <Grid Height="50" Panel.ZIndex="0">
+                        <Rectangle Fill="#223" />
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Перевод"></TextBlock>
+                    <Grid Height="50" Panel.ZIndex="0">
+                        <Rectangle Fill="#223" />
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="2">
+                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Транскрипция"></TextBlock>
+                    <Grid Height="50" Panel.ZIndex="0">
+                        <Rectangle Fill="#223" />
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2">
+                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="-"></TextBlock>
+                    <Grid Height="50" Panel.ZIndex="0">
+                        <Rectangle Fill="#223" />
+                    </Grid>
+                </Grid>
+                <Grid Height="50" Grid.Row="0" Grid.Column="5" Panel.ZIndex="0">
+                    <Rectangle Fill="#223" />
+                </Grid> 
+                <ListBox x:Name="LBx_Word" Visibility="Visible" Grid.Row="1" Grid.ColumnSpan="6"
+                         AlternationCount="2" HorizontalContentAlignment="Stretch" 
+                         VirtualizingPanel.IsVirtualizing="True" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition ></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.Effect>
+                                    <DropShadowEffect Opacity="0" Color="#223" RenderingBias="Performance" Direction="315" BlurRadius="30"></DropShadowEffect>
+                                </Grid.Effect>                               
+
+                                <Border Grid.Column="0" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
+                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" Text="{Binding Path=LanguageWordName}"></TextBlock>
+                                </Border>
+                                <Border Grid.Column="1" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
+                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" Text="{Binding Path=Translation}"></TextBlock>
+                                </Border>
+                                <Border Grid.Column="2" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
+                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" Text="{Binding Path=Transcription}"></TextBlock>
+                                </Border>
+                                <Border Grid.Column="3" BorderBrush="#223" BorderThickness="0, 0, 0, 1" >
+                                    <Image Source="/Source/Images/edit.png" Tag="{Binding Path=Id}" Width="30" Height="30" 
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" Cursor="Hand" 
+                                           ToolTip="Редактировать" MouseLeftButtonDown="EditWord"></Image>
+                                </Border>
+                                <Border Grid.Column="4" BorderBrush="#223" BorderThickness="0, 0, 0, 1" >
+                                    <Grid Cursor="Hand" ToolTip="Удалить" MouseLeftButtonDown="DeleteWord" Tag="{Binding Path=Id}">                                       
+                                        <TextBlock Foreground="#A00" Panel.ZIndex="1" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="X"></TextBlock>
+                                        <Grid Panel.ZIndex="0">
+                                            <Rectangle Fill="#00ffffff"></Rectangle>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="G_Settings" Grid.Row="1" Grid.Column="1" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>            
+
+        </Grid>
+
+        
 
     </Grid>
 </Window>

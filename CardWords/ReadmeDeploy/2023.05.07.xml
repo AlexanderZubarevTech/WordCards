@@ -4,38 +4,39 @@
 		INSERT INTO [languages]
 		([Timestamp], [Name])
 		VALUES
+		(DATETIME(), 'Русский'),
 		(DATETIME(), 'Английский')
 	</sql>
 	<sql>
 		INSERT INTO [configurations]
 		([Id], [Value])
-		SELECT
-		'current_language' as [Id],
-		'1' as [Value]
+		VALUES
+		('current_translation_language', 1),
+		('current_language', 2)
 	</sql>
 	<sql>
 		INSERT INTO [language_words]
-		([Timestamp], [LanguageId], [LanguageWordName], [Transcription], [Translation])
+		([Timestamp], [LanguageId], [TranslationLanguageId], [LanguageWordName], [Transcription], [Translation])
 		VALUES
-		(DATETIME(), 1, 'one', '', 'один'),
-		(DATETIME(), 1, 'two', '', 'два'),
-		(DATETIME(), 1, 'three', '', 'три'),
-		(DATETIME(), 1, 'four', '', 'четыре'),
-		(DATETIME(), 1, 'five', '', 'пять'),
-		(DATETIME(), 1, 'six', '', 'шесть'),
-		(DATETIME(), 1, 'seven', '', 'семь'),
-		(DATETIME(), 1, 'eight', '', 'восемь'),
-		(DATETIME(), 1, 'nine', '', 'девять'),
-		(DATETIME(), 1, 'ten', '', 'делять'),
-		(DATETIME(), 1, 'eleven', '', 'одиннадцать'),
-		(DATETIME(), 1, 'twelve', '', 'двенадцать'),
-		(DATETIME(), 1, 'thirteen', '', 'тринадцать'),
-		(DATETIME(), 1, 'fourteen', '', 'четырнадцать'),
-		(DATETIME(), 1, 'fifteen', '', 'пятнадцать'),
-		(DATETIME(), 1, 'sixteen', '', 'шестнадцать'),
-		(DATETIME(), 1, 'seventeen', '', 'семнадцать'),
-		(DATETIME(), 1, 'eighteen', '', 'восемнадцать'),
-		(DATETIME(), 1, 'nineteen', '', 'девятнадцать'),
-		(DATETIME(), 1, 'twenty', '', 'двадцать')
+		(DATETIME(), 2, 1, 'one', '', 'один'),
+		(DATETIME(), 2, 1, 'two', '', 'два'),
+		(DATETIME(), 2, 1, 'three', '', 'три'),
+		(DATETIME(), 2, 1, 'four', '', 'четыре'),
+		(DATETIME(), 2, 1, 'five', '', 'пять'),
+		(DATETIME(), 2, 1, 'six', '', 'шесть'),
+		(DATETIME(), 2, 1, 'seven', '', 'семь'),
+		(DATETIME(), 2, 1, 'eight', '', 'восемь'),
+		(DATETIME(), 2, 1, 'nine', '', 'девять'),
+		(DATETIME(), 2, 1, 'ten', '', 'десять'),
+		(DATETIME(), 2, 1, 'eleven', '', 'одиннадцать'),
+		(DATETIME(), 2, 1, 'twelve', '', 'двенадцать'),
+		(DATETIME(), 2, 1, 'thirteen', '', 'тринадцать'),
+		(DATETIME(), 2, 1, 'fourteen', '', 'четырнадцать'),
+		(DATETIME(), 2, 1, 'fifteen', '', 'пятнадцать'),
+		(DATETIME(), 2, 1, 'sixteen', '', 'шестнадцать'),
+		(DATETIME(), 2, 1, 'seventeen', '', 'семнадцать'),
+		(DATETIME(), 2, 1, 'eighteen', '', 'восемнадцать'),
+		(DATETIME(), 2, 1, 'nineteen', '', 'девятнадцать'),
+		(DATETIME(), 2, 1, 'twenty', '', 'двадцать')
 	</sql>
 </main> 

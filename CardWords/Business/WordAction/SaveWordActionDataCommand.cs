@@ -1,5 +1,4 @@
 ﻿using CardWords.Business.WordActivities;
-using CardWords.Configurations;
 using CardWords.Core.Commands;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -9,8 +8,6 @@ namespace CardWords.Business.WordAction
 {
     public sealed class SaveWordActionDataCommand : EntityCommand, ISaveWordActionDataCommand
     {
-        private readonly AppConfiguration configuration = AppConfiguration.GetInstance();
-
         public bool Execute(WordActionData[] data, WordActionInfo info)
         {
             using (var db = new WordActionContext())
@@ -38,7 +35,7 @@ namespace CardWords.Business.WordAction
 
         private WordActivity GetActivity(WordActionData item, int infoId)
         {
-            return new WordActivity(item.Date, item.Id, configuration.CurrentLanguage, item.Result, infoId);
+            return new WordActivity(item.Date, item.Id, item.Result, infoId);
         }
 
         private IReadOnlyDictionary<int, ErrorWordActivity> GetErrorActivity(WordActionContext db, WordActionData[] data)
@@ -71,7 +68,7 @@ namespace CardWords.Business.WordAction
                 }
                 else
                 {
-                    var errorActivity = new ErrorWordActivity(item.Id, configuration.CurrentLanguage, infoId);
+                    var errorActivity = new ErrorWordActivity(item.Id, infoId);
 
                     db.Add(errorActivity);
                 }

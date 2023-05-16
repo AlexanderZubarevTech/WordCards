@@ -1,7 +1,12 @@
-﻿using CardWords.Configurations;
+﻿using CardWords.Business.LanguageWords;
+using CardWords.Configurations;
+using CardWords.Core.Helpers;
 using CardWords.Views.Cards;
+using CardWords.Views.Main;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,13 +23,22 @@ namespace CardWords
     {
         private static class BackgroundColor
         {
-            public enum TypeColor
+            public enum ActionType
             {
-                Defalut,
+                Default,
+                Active,
+                Delete
+            }
+
+            public enum ColorType
+            {
+                Default,
                 Line,
                 Text,
                 Active,
                 ActiveText,
+                Delete,
+                DeleteText
             }
 
             private static Color defaultColor = Color.FromRgb(93, 167, 168); // #5da7a8
@@ -32,64 +46,88 @@ namespace CardWords
             private static Color defaultTextColor = Color.FromRgb(238, 238, 238); // #DDD
             private static Color defaultActiveMenuColor = Color.FromRgb(77, 39, 139); //#4d278b
             private static Color defaultActiveTextMenuColor = Color.FromRgb(204, 204, 204); //#CCC
+            private static Color defaultDeleteColor = Color.FromArgb(0, 255, 255, 255);
+            private static Color defaultDeleteTextColor = Color.FromRgb(170, 0, 0); //#A00
 
             private static Color hoverColor = Color.FromRgb(108, 195, 196); // #6cc3c4
             private static Color hoverLineColor = Color.FromRgb(140, 211, 212); //#8cd3d4
             private static Color hoverTextColor = Color.FromRgb(255, 255, 255); // #FFF
             private static Color hoverActiveMenuColor = Color.FromRgb(93, 55, 155); //#5d379b
             private static Color hoverActiveTextMenuColor = Color.FromRgb(238, 238, 238); //#DDD
+            private static Color hoverDeleteColor = Color.FromArgb(255, 170, 0, 0); //#A00
+            private static Color hoverDeleteTextColor = Color.FromRgb(255, 255, 255);
 
-            private static readonly Dictionary<bool, Dictionary<TypeColor, Color>> colors = new ()
+            private static readonly Dictionary<bool, Dictionary<ColorType, Color>> colors = new ()
             {
-                {false, new Dictionary<TypeColor, Color>()
+                {false, new Dictionary<ColorType, Color>()
                     {
-                        {TypeColor.Defalut, defaultColor},
-                        {TypeColor.Line, defaultLineColor},
-                        {TypeColor.Text, defaultTextColor},
-                        {TypeColor.Active, defaultActiveMenuColor},
-                        {TypeColor.ActiveText, defaultActiveTextMenuColor},
+                        {ColorType.Default, defaultColor},
+                        {ColorType.Line, defaultLineColor},
+                        {ColorType.Text, defaultTextColor},
+                        {ColorType.Active, defaultActiveMenuColor},
+                        {ColorType.ActiveText, defaultActiveTextMenuColor},
+                        {ColorType.Delete, defaultDeleteColor},
+                        {ColorType.DeleteText, defaultDeleteTextColor},
                     }
                 },
-                {true, new Dictionary<TypeColor, Color>()
+                {true, new Dictionary<ColorType, Color>()
                     {
-                        {TypeColor.Defalut, hoverColor},
-                        {TypeColor.Line, hoverLineColor},
-                        {TypeColor.Text, hoverTextColor},
-                        {TypeColor.Active, hoverActiveMenuColor},
-                        {TypeColor.ActiveText, hoverActiveTextMenuColor},
+                        {ColorType.Default, hoverColor},
+                        {ColorType.Line, hoverLineColor},
+                        {ColorType.Text, hoverTextColor},
+                        {ColorType.Active, hoverActiveMenuColor},
+                        {ColorType.ActiveText, hoverActiveTextMenuColor},
+                        {ColorType.Delete, hoverDeleteColor},
+                        {ColorType.DeleteText, hoverDeleteTextColor},
                     }
                 }
             };
 
-            private static readonly Dictionary<TypeColor, TypeColor> backgroundWithTextColors = new()
+            private static readonly Dictionary<ActionType, ColorType> colorByActions = new()
             {
-                {TypeColor.Defalut, TypeColor.Text},
-                {TypeColor.Active, TypeColor.ActiveText},
+                {ActionType.Default, ColorType.Default},
+                {ActionType.Active, ColorType.Active},
+                {ActionType.Delete, ColorType.Delete},
             };
 
-            public static void BeginAnimation(Shape item, bool isHover, bool isActive)
+            private static readonly Dictionary<ColorType, ColorType> backgroundWithTextColors = new()
             {
-                var typeColor = isActive ? TypeColor.Active : GetTypeColor(item);
+                {ColorType.Default, ColorType.Text},
+                {ColorType.Active, ColorType.ActiveText},
+                {ColorType.Delete, ColorType.DeleteText},
+            };
 
-                var animation = GetColorAnimation(isHover, typeColor);
+            public static readonly Dictionary<string, ActionType> ActionByTags = new()
+            {
+                {"delete", ActionType.Delete},
+            };
+
+            public static void BeginAnimation(UIElement item, bool isHover, ActionType actionType, Action<DependencyProperty, AnimationTimeline> beginAnimation)
+            {
+                var animation = GetColorAnimation(item, isHover, actionType);                
+
+                beginAnimation.Invoke(SolidColorBrush.ColorProperty, animation);
+            }
+
+            public static void BeginAnimation(Shape item, bool isHover, ActionType actionType)
+            {
+                var animation = GetColorAnimation(item, isHover, actionType);
 
                 item.Fill.BeginAnimation(SolidColorBrush.ColorProperty, animation);
             }
 
-            public static void BeginAnimation(TextBlock item, bool isHover, bool isActive)
+            public static void BeginAnimation(TextBlock item, bool isHover, ActionType actionType)
             {
-                var typeColor = isActive ? TypeColor.ActiveText : GetTypeColor(item);
-
-                var animation = GetColorAnimation(isHover, typeColor);
+                var animation = GetColorAnimation(item, isHover, actionType);
 
                 item.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, animation);
             }
 
-            public static void SetMenuColor(Grid grid, TypeColor typeColor)
+            public static void SetMenuColor(Grid grid, ColorType typeColor)
             {
                 var textTypeColor = backgroundWithTextColors[typeColor];
 
-                var isHover = typeColor == TypeColor.Active;
+                var isHover = typeColor == ColorType.Active;
 
                 for (int i = 0; i < grid.Children.Count; i++)
                 {
@@ -107,28 +145,30 @@ namespace CardWords
                 }
             }
 
-            private static TypeColor GetTypeColor(UIElement item)
+            private static ColorType GetTypeColor(UIElement item, ActionType actionType)
             {
                 if(item is Rectangle)
                 {
-                    return TypeColor.Defalut;
+                    return colorByActions[actionType];
                 }
 
                 if(item is Polygon)
                 {
-                    return TypeColor.Line;
+                    return ColorType.Line;
                 }
 
                 if(item is TextBlock)
                 {
-                    return TypeColor.Text;
+                    return backgroundWithTextColors[colorByActions[actionType]];
                 }
 
-                return TypeColor.Defalut;
+                return ColorType.Default;
             }
 
-            private static ColorAnimation GetColorAnimation(bool isHover, TypeColor typeColor)
+            private static ColorAnimation GetColorAnimation(UIElement item, bool isHover, ActionType actionType)
             {
+                var typeColor = GetTypeColor(item, actionType);
+
                 var animation = new ColorAnimation();
 
                 animation.AutoReverse = false;
@@ -145,42 +185,39 @@ namespace CardWords
 
         private Grid activeMenu;
 
-        private readonly List<Grid> menu;
+        private readonly Dictionary<Grid, Grid> menu;
+
+        private ObservableCollection<LanguageWord> LanguageWords;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            mainGrid.Visibility = Visibility.Visible;
-            G_Start.Visibility = Visibility.Visible;
-            startGrid.Visibility = Visibility.Collapsed;
-
-            BackgroundColor.SetMenuColor(G_Menu_Main, BackgroundColor.TypeColor.Active);
-            BackgroundColor.SetMenuColor(G_Menu_Library, BackgroundColor.TypeColor.Defalut);
-            BackgroundColor.SetMenuColor(G_Menu_Settings, BackgroundColor.TypeColor.Defalut);
-
-            menu = new List<Grid>
+            menu = new Dictionary<Grid, Grid>
             {
-                G_Menu_Main,
-                G_Menu_Library,
-                G_Menu_Settings
+                {G_Menu_Main, G_Main},
+                {G_Menu_Library, G_Library},
+                {G_Menu_Settings, G_Settings}
             };
 
-            activeMenu = G_Menu_Main;
-        }
+            SetActiveMenu(G_Menu_Main);
+            
+            G_Start.Visibility = Visibility.Visible;
+            G_Start_Count.Visibility = Visibility.Collapsed;            
+        }        
 
         #region Events
 
         private void G_Start_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            startGrid.Visibility = Visibility.Visible;
+            G_Start_Count.Visibility = Visibility.Visible;
             G_Start.Visibility = Visibility.Collapsed;
         }
 
         private void G_Start_Count_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             G_Start.Visibility = Visibility.Visible;
-            startGrid.Visibility = Visibility.Collapsed;
+            G_Start_Count.Visibility = Visibility.Collapsed;
 
             var textBlock = GetCountBlock(sender);
 
@@ -197,24 +234,19 @@ namespace CardWords
 
         private void G_Menu_Main_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            mainGrid.Visibility = Visibility.Visible;
-            G_Start.Visibility = Visibility.Visible;
-            startGrid.Visibility = Visibility.Collapsed;
-
             SetActiveMenu(G_Menu_Main);
+            
+            G_Start.Visibility = Visibility.Visible;
+            G_Start_Count.Visibility = Visibility.Collapsed;
         }
 
         private void G_Menu_Library_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            mainGrid.Visibility = Visibility.Collapsed;
-
             SetActiveMenu(G_Menu_Library);
         }
 
         private void G_Menu_Settings_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            mainGrid.Visibility = Visibility.Collapsed;
-
             SetActiveMenu(G_Menu_Settings);
         }
 
@@ -228,14 +260,19 @@ namespace CardWords
             DragMove();
         }
 
-        private void G_Start_MouseEnter(object sender, MouseEventArgs e)
+        private void G_Button_MouseEnter(object sender, MouseEventArgs e)
         {
             StartHoverAnimation(sender, true);
         }
 
-        private void G_Start_MouseLeave(object sender, MouseEventArgs e)
+        private void G_Button_MouseLeave(object sender, MouseEventArgs e)
         {
             StartHoverAnimation(sender, false);
+        }
+
+        private void G_Library_Search_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Search();
         }
 
         #endregion
@@ -261,8 +298,11 @@ namespace CardWords
 
             foreach(var item in menu)
             {
-                var typeColor = item == grid ? BackgroundColor.TypeColor.Active : BackgroundColor.TypeColor.Defalut;
-                BackgroundColor.SetMenuColor(item, typeColor);
+                var typeColor = item.Key == activeMenu ? BackgroundColor.ColorType.Active : BackgroundColor.ColorType.Default;
+                var visibility = item.Key == activeMenu ? Visibility.Visible : Visibility.Collapsed;
+
+                item.Value.Visibility = visibility;
+                BackgroundColor.SetMenuColor(item.Key, typeColor);
             }
         }
 
@@ -270,27 +310,92 @@ namespace CardWords
         {
             var grid = sender as Grid;
 
-            var isActiveMenu = grid == activeMenu;            
+            var actionType = GetColorActionType(grid);
 
             for (int i = 0; i < grid.Children.Count; i++)
             {
-                if (grid.Children[i] is TextBlock)
+                var item = grid.Children[i];
+
+                if (item is TextBlock)
                 {
-                    BackgroundColor.BeginAnimation(grid.Children[i] as TextBlock, isHover, isActiveMenu);
+                    BackgroundColor.BeginAnimation(item, isHover, actionType, (item as TextBlock).Foreground.BeginAnimation);
                 }
 
-                if (grid.Children[i] is Grid)
+                if (item is Grid)
                 {
-                    var backgroundGrid = grid.Children[i] as Grid;
+                    var backgroundGrid = item as Grid;
 
                     for (int k = 0; k < backgroundGrid.Children.Count; k++)
                     {
-                        var item = backgroundGrid.Children[k];
+                        var backgroundItem = backgroundGrid.Children[k];
 
-                        BackgroundColor.BeginAnimation(item as Shape, isHover, isActiveMenu);
+                        BackgroundColor.BeginAnimation(backgroundItem, isHover, actionType, (backgroundItem as Shape).Fill.BeginAnimation);
                     }
                 }
             }
+        }
+
+        private BackgroundColor.ActionType GetColorActionType(Grid grid)
+        {
+            if(grid == activeMenu)
+            {
+                return BackgroundColor.ActionType.Active;
+            }
+
+            if(grid.Tag != null && grid.Tag is string)
+            {
+                if(BackgroundColor.ActionByTags.ContainsKey(grid.Tag.ToString()))
+                {
+                    return BackgroundColor.ActionByTags[grid.Tag.ToString()];
+                }
+            }
+
+            return BackgroundColor.ActionType.Default;
+        }
+
+        private void Search()
+        {
+            LanguageWords = CommandHelper.GetCommand<IGetLanguageWordsCommand>().Execute(TBx_Library_Search.Text, CB_Library_Search_WithoutTranscription.IsChecked ?? false);
+
+            LBx_Word.ItemsSource = LanguageWords;
+
+            if (LanguageWords.Count == 0)
+            {
+                TB_Library_Search_Result.Visibility = Visibility.Collapsed;
+                G_Library_NoResult.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TB_Library_Search_ResultCount.Text = LanguageWords.Count.ToString();
+                TB_Library_Search_Result.Visibility = Visibility.Visible;
+                G_Library_NoResult.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void DeleteWord(object sender, MouseButtonEventArgs e)
+        {
+            var id = Convert.ToInt32((sender as Grid).Tag.ToString());
+
+            var word = LanguageWords.First(x => x.Id == id);
+
+            var deleteWindow = new DeleteWordWindow(word);
+
+            if(deleteWindow.ShowDialog() == true)
+            {
+                CommandHelper.GetCommand<IDeleteLanguageWordCommand>().Execute(id);
+
+                Search();
+            }
+        }
+
+        private void AddWord(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void EditWord(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

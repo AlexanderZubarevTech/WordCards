@@ -12,17 +12,59 @@ namespace CardWords.Business.WordAction
 {
     public sealed class GetWordActionDataCommand : EntityCommand, IGetWordActionDataCommand
     {
-        private static readonly Dictionary<int, string> getCountNewWordsSqlDictionary = new Dictionary<int, string>();
-        private static readonly Dictionary<int, string> getCountKnownWordsSqlDictionary = new Dictionary<int, string>();        
+        private readonly struct LanguagePair
+        {
+            public LanguagePair(int languageId, int translationLanguageId)
+            {
+                LanguageId = languageId;
+                TranslationLanguageId = translationLanguageId;
+            }
+
+            public int LanguageId { get; }
+
+            public int TranslationLanguageId { get; }
+
+            public static bool operator ==(LanguagePair left, LanguagePair right)
+            {
+                return left.LanguageId == right.LanguageId && left.TranslationLanguageId == right.TranslationLanguageId;
+            }
+
+            public static bool operator !=(LanguagePair left, LanguagePair right)
+            {
+                return !(left == right);
+            }            
+
+            public override bool Equals(object? obj)
+            {
+                if(obj == null || obj is not LanguagePair)
+                {
+                    return false;
+                }
+
+                var pair = (LanguagePair) obj;
+
+                return this == pair;
+            }
+
+            public override int GetHashCode()
+            {
+                return LanguageId ^ TranslationLanguageId;
+            }
+        }
+
+        private static readonly Dictionary<LanguagePair, string> getCountNewWordsSqlDictionary = new Dictionary<LanguagePair, string>();
+        private static readonly Dictionary<LanguagePair, string> getCountKnownWordsSqlDictionary = new Dictionary<LanguagePair, string>();        
 
         private Random random;
         private readonly AppConfiguration configuration = AppConfiguration.GetInstance();
+        private LanguagePair currentLanguage;
 
         public WordActionData[] Execute(int count)
         {
             var seed = (int)Math.Round(DateTime.Now.TimeOfDay.TotalSeconds);
 
             random = new Random(seed);
+            currentLanguage = new LanguagePair(configuration.CurrentLanguage, configuration.CurrentTranslationLanguage);
 
             List<WordActionData> result;
 
@@ -134,54 +176,59 @@ namespace CardWords.Business.WordAction
             }
         }
 
-        private static string GetSqlCountNewWords(int languageId)
+        private string GetSqlCountNewWords()
         {
-            if(getCountNewWordsSqlDictionary.ContainsKey(languageId))
+            if(getCountNewWordsSqlDictionary.ContainsKey(currentLanguage))
             {
-                return getCountNewWordsSqlDictionary[languageId];
+                return getCountNewWordsSqlDictionary[currentLanguage];
             }
 
-            var sql = $"SELECT count(*) as NewWordsCount FROM [language_words] as [lw] " +
-                $"LEFT JOIN (" +
-                $"      SELECT LanguageWordId, count(*) as count FROM [word_activities] as [wa] " +
-                $"      WHERE wa.LanguageId = {languageId} " +
-                $"      GROUP BY wa.LanguageWordId " +
-                $") as t ON lw.Id = t.LanguageWordId " +
-                $"WHERE lw.LanguageId = {languageId} AND t.count IS NULL";
+            var sql = GetSqlCount(true);
 
-            getCountNewWordsSqlDictionary.Add(languageId, sql);
+            getCountNewWordsSqlDictionary.Add(currentLanguage, sql);
 
             return sql;
         }
 
-        private static string GetSqlCountKnownWords(int languageId)
+        private string GetSqlCount(bool isNewWords)
         {
-            if (getCountKnownWordsSqlDictionary.ContainsKey(languageId))
+            var condition = isNewWords ? "[t].count IS NULL" : "[t].count IS NOT NULL";
+
+            return $"SELECT count(*) as NewWordsCount FROM [language_words] as [lw] " +
+                $" LEFT JOIN (" +
+                $"      SELECT [wa].LanguageWordId, count(*) as count FROM [word_activities] as [wa] " +
+                $"      JOIN [language_words] as [lwInn] ON [wa].LanguageWordId = [lwInn].Id " +
+                $"      WHERE [lwInn].LanguageId = {currentLanguage.LanguageId} " +
+                $"      AND [lwInn].TranslationLanguageId = {currentLanguage.TranslationLanguageId}" +
+                $"      GROUP BY [wa].LanguageWordId " +
+                $") as [t] ON [lw].Id = [t].LanguageWordId " +
+                $" WHERE [lw].LanguageId = {currentLanguage.LanguageId} " +
+                $" AND [lw].TranslationLanguageId = {currentLanguage.TranslationLanguageId} " +
+                $" AND {condition} ";
+        }
+
+        private string GetSqlCountKnownWords()
+        {
+            if (getCountKnownWordsSqlDictionary.ContainsKey(currentLanguage))
             {
-                return getCountKnownWordsSqlDictionary[languageId];
+                return getCountKnownWordsSqlDictionary[currentLanguage];
             }
 
-            var sql = $"SELECT count(*) as NewWordsCount FROM [language_words] as [lw] " +
-                $"LEFT JOIN (" +
-                $"      SELECT LanguageWordId, count(*) as count FROM [word_activities] as [wa] " +
-                $"      WHERE wa.LanguageId = {languageId} " +
-                $"      GROUP BY wa.LanguageWordId " +
-                $") as t ON lw.Id = t.LanguageWordId " +
-                $"WHERE lw.LanguageId = {languageId} AND t.count IS NOT NULL";
+            var sql = GetSqlCount(false);
 
-            getCountKnownWordsSqlDictionary.Add(languageId, sql);
+            getCountKnownWordsSqlDictionary.Add(currentLanguage, sql);
 
             return sql;
         }
 
         private int GetCountAllNewWords(WordActionContext db)
         {
-            return db.Database.SqlQueryRaw<int>(GetSqlCountNewWords(configuration.CurrentLanguage)).ToList().FirstOrDefault();
+            return db.Database.SqlQueryRaw<int>(GetSqlCountNewWords()).ToList().FirstOrDefault();
         }
 
         private int GetCountAllKnownWords(WordActionContext db)
         {
-            return db.Database.SqlQueryRaw<int>(GetSqlCountKnownWords(configuration.CurrentLanguage)).ToList().FirstOrDefault();
+            return db.Database.SqlQueryRaw<int>(GetSqlCountKnownWords()).ToList().FirstOrDefault();
         }
 
         private int CalculateNewWordsCount(int count, int allNewWords, int allKnownWords)
@@ -258,10 +305,11 @@ namespace CardWords.Business.WordAction
 
             var sql = $" SELECT [lw].* FROM [language_words] as [lw] " +
                 $" LEFT JOIN ( " +
-                $"           SELECT LanguageWordId, count(*) as count " +
-                $"           FROM [word_activities] as [wa] " +
-                $"           WHERE wa.LanguageId = {configuration.CurrentLanguage} " +
-                $"           GROUP BY wa.LanguageWordId " +
+                $"          SELECT [wa].LanguageWordId, count(*) as count FROM [word_activities] as [wa] " +
+                $"          JOIN [language_words] as [lwInn] ON [wa].LanguageWordId = [lwInn].Id " +
+                $"          WHERE [lwInn].LanguageId = {currentLanguage.LanguageId} " +
+                $"          AND [lwInn].TranslationLanguageId = {currentLanguage.TranslationLanguageId} " +
+                $"          GROUP BY [wa].LanguageWordId " +
                 $"          ) " +
                 $" as t ON lw.Id = t.LanguageWordId " +
                 $" LEFT JOIN ( " +
@@ -269,13 +317,15 @@ namespace CardWords.Business.WordAction
                 $"           FROM [language_words] as [lwInn] " +
                 $"           LEFT JOIN [word_activity_errors] [we] ON we.LanguageWordId == lwInn.Id " +
                 $"           LEFT JOIN [word_actions] as [wa] ON we.InfoId = wa.Id " +
-                $"           WHERE lwInn.LanguageId = {configuration.CurrentLanguage} " +
+                $"           WHERE [lwInn].LanguageId = {currentLanguage.LanguageId} " +
+                $"           AND [lwInn].TranslationLanguageId = {currentLanguage.TranslationLanguageId} " +
                 $"           AND wa.EndDate < {date.ToSqlString()} " +
                 $" ) as lwe ON lwe.Id = lw.Id " +
-                $" WHERE lw.LanguageId = {configuration.CurrentLanguage} " +
+                $" WHERE [lw].LanguageId = {currentLanguage.LanguageId} " +
+                $" AND [lw].TranslationLanguageId = {currentLanguage.TranslationLanguageId} " +
                 $" AND t.count IS NOT NULL " +
                 $" ORDER BY lwe.hasError DESC, t.count ASC " +
-                $" LIMIT {count} OFFSET {offset} ";            
+                $" LIMIT {count} OFFSET {offset} ";
 
             return db.LanguageWords.FromSqlRaw(sql).ToArray();
         }
@@ -300,11 +350,15 @@ namespace CardWords.Business.WordAction
 
             var sql = $"SELECT Id FROM [language_words] as [lw] " +
                 $" LEFT JOIN (" +
-                $"      SELECT LanguageWordId, count(*) as count FROM [word_activities] as [wa] " +
-                $"      WHERE wa.LanguageId = {configuration.CurrentLanguage} " +
-                $"      GROUP BY wa.LanguageWordId " +
+                $"     SELECT [wa].LanguageWordId, count(*) as count FROM [word_activities] as [wa] " +
+                $"      JOIN [language_words] as [lwInn] ON [wa].LanguageWordId = [lwInn].Id " +
+                $"      WHERE [lwInn].LanguageId = {currentLanguage.LanguageId} " +
+                $"      AND [lwInn].TranslationLanguageId = {currentLanguage.TranslationLanguageId}" +
+                $"      GROUP BY [wa].LanguageWordId " +
                 $") as t ON lw.Id = t.LanguageWordId " +
-                $" WHERE lw.LanguageId = {configuration.CurrentLanguage} AND t.count IS NULL " +                
+                $" WHERE [lw].LanguageId = {currentLanguage.LanguageId} " +
+                $" AND [lw].TranslationLanguageId = {currentLanguage.TranslationLanguageId} " +
+                $" AND t.count IS NULL " +
                 $" LIMIT {count} OFFSET {offset}";
 
             return db.Database.SqlQueryRaw<int>(sql).ToArray();

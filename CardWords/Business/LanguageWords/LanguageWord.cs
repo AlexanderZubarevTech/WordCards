@@ -1,5 +1,4 @@
 ﻿using CardWords.Core.Entities;
-using CardWords.Core.Ids;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CardWords.Business.LanguageWords
@@ -12,6 +11,8 @@ namespace CardWords.Business.LanguageWords
                 .Table("language_words")
                     .Column(x => x.LanguageId)
                     .End()
+                    .Column(x => x.TranslationLanguageId)
+                    .End()
                     .Column(x => x.LanguageWordName)
                     .End()
                     .Column(x => x.Transcription)
@@ -22,6 +23,8 @@ namespace CardWords.Business.LanguageWords
         }
 
         public int LanguageId { get; set; }
+
+        public int TranslationLanguageId { get; set; }
 
         public string LanguageWordName { get; set; }
 

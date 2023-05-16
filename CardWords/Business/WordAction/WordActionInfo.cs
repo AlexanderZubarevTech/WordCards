@@ -14,6 +14,10 @@ namespace CardWords.Business.WordAction
                     .End()
                     .Column(x => x.EndDate)
                     .End()
+                    .Column(x => x.LanguageId)
+                    .End()
+                    .Column(x => x.TranslationLanguageId)
+                    .End()
                     .Column(x => x.MaxSequence)
                     .End()
                     .Column(x => x.WordsCount)
@@ -36,6 +40,10 @@ namespace CardWords.Business.WordAction
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        public int LanguageId { get; set; }
+
+        public int TranslationLanguageId { get; set; }
 
         public int MaxSequence { get; set; }
 

@@ -32,6 +32,7 @@
 			"Id" INTEGER NOT NULL CONSTRAINT "PK_language_words" PRIMARY KEY,
 			"Timestamp" TEXT NOT NULL,
 			"LanguageId" INTEGER NOT NULL,
+			"TranslationLanguageId" INTEGER NOT NULL,
 			"LanguageWordName" TEXT NOT NULL,
 			"Transcription" TEXT NOT NULL,
 			"Translation" TEXT NOT NULL
@@ -46,8 +47,7 @@
 			CREATE TABLE "word_activities" (
 			"Id" INTEGER NOT NULL CONSTRAINT "PK_word_activities" PRIMARY KEY,
 			"Date" TEXT NOT NULL,
-			"LanguageWordId" INTEGER NOT NULL,
-			"LanguageId" INTEGER NOT NULL,
+			"LanguageWordId" INTEGER NOT NULL,			
 			"ActivityType" INTEGER NOT NULL,
 			"InfoId" INTEGER NOT NULL
 			)
@@ -60,8 +60,7 @@
 		<text>
 			CREATE TABLE "word_activity_errors" (
 			"Id" INTEGER NOT NULL CONSTRAINT "word_activity_errors" PRIMARY KEY,
-			"LanguageWordId" INTEGER NOT NULL,
-			"LanguageId" INTEGER NOT NULL,
+			"LanguageWordId" INTEGER NOT NULL,			
 			"InfoId" INTEGER NOT NULL
 			)
 		</text>

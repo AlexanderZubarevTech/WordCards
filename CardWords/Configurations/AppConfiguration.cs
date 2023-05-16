@@ -46,7 +46,10 @@ namespace CardWords.Configurations
         }
 
         [IdConfiguration("current_language")]
-        public int CurrentLanguage { get; private set; }        
+        public int CurrentLanguage { get; private set; }
+
+        [IdConfiguration("current_translation_language")]
+        public int CurrentTranslationLanguage { get; private set; }
 
         private void SetProperties(IReadOnlyDictionary<string, Configuration> data)
         {

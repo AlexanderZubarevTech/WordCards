@@ -98,7 +98,7 @@ namespace CardWords.Core.ReadmeDeploy
 
         private static DeployTransaction? GetDeployTransactionFromNode(XmlNode node)
         {
-            if(node.ChildNodes.Count == 0)
+            if(node.ChildNodes.Count == 0 || node.FirstChild.NodeType == XmlNodeType.Text)
             {
                 return new DeployTransaction(node.InnerText);
             }

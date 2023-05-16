@@ -30,7 +30,7 @@ namespace CardWords.Views.Cards
 
         private Dispatcher mainDispatcher;
 
-        private List<ResultStars> resultStars = new(2);
+        private List<ResultStars> resultStars = new(2);        
 
         public CardsWindow(int wordCount)
         {
@@ -59,16 +59,22 @@ namespace CardWords.Views.Cards
             {
                 StartDate = TimeHelper.GetCurrentDate(),
                 WordsCount = data.Length,
-                SelectedCardWordsCount = wordCount
+                SelectedCardWordsCount = wordCount,
+                LanguageId = MainWindow.AppConfiguration.CurrentLanguage,
+                TranslationLanguageId = MainWindow.AppConfiguration.CurrentTranslationLanguage,
             };
 
             G_Result.Visibility = Visibility.Hidden;
             G_WordCard.Visibility = Visibility.Visible;
 
-            PB_timer.Value = 0;
+            PB_timer.Value = word.IsNewWord ? PB_timer.Maximum : 0;
 
             timer = CreateTimer();
-            timer.Start();            
+
+            if(!word.IsNewWord)
+            {
+                timer.Start();
+            }
         }
 
         private int maxCorrectAnswerSequence;
@@ -155,7 +161,7 @@ namespace CardWords.Views.Cards
         {
             var timer = new Timer();
             
-            timer.Enabled = true;
+            timer.Enabled = false;
             timer.Interval = 10;
             timer.Elapsed += LeftTime;
             timer.AutoReset = true;
@@ -460,6 +466,7 @@ namespace CardWords.Views.Cards
 
             if(nextWord.IsNewWord)
             {
+                timer.Stop();
                 PB_timer.Value = PB_timer.Maximum;
             } 
             else

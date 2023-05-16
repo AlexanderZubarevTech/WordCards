@@ -9,6 +9,8 @@
 			"Id" INTEGER CONSTRAINT "PK_word_actions" PRIMARY KEY,
 			"StartDate" TEXT NOT NULL,
 			"EndDate" TEXT NOT NULL,
+			"LanguageId" INTEGER NOT NULL,
+			"TranslationLanguageId" INTEGER NOT NULL,
 			"MaxSequence" INTEGER NOT NULL,
 			"WordsCount" INTEGER NOT NULL,
 			"NewWordsCount" INTEGER NOT NULL,
