@@ -1,12 +1,11 @@
-﻿using CardWords.Business.LanguageWords;
-using CardWords.Configurations;
+﻿using CardWords.Configurations;
 using CardWords.Core.Commands;
 using CardWords.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace CardWords.Business.WordAction
+namespace CardWords.Business.LanguageWords
 {
     public sealed class GetLanguageWordsCommand : EntityCommand, IGetLanguageWordsCommand
     {        
@@ -34,7 +33,7 @@ namespace CardWords.Business.WordAction
                     query = query.Where(x => x.Transcription == string.Empty);
                 }
 
-                result = new ObservableCollection<LanguageWord>(query.ToList());
+                result = new ObservableCollection<LanguageWord>(query.OrderBy(x => x.LanguageWordName).ToList());
             }
 
             return result;

@@ -564,6 +564,8 @@ namespace CardWords.Views.Cards
                 item.Stop();
             }
 
+            (Owner as MainWindow).IsRunCards = false;
+
             Owner.Show();
 
             timer.Dispose();

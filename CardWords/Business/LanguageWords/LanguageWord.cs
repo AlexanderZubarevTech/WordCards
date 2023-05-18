@@ -1,5 +1,6 @@
 ﻿using CardWords.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace CardWords.Business.LanguageWords
 {
@@ -20,6 +21,21 @@ namespace CardWords.Business.LanguageWords
                     .Column(x => x.Translation)
                     .End()
                 .End();
+        }
+
+        public LanguageWord()
+        {
+        }
+
+        public LanguageWord(EditLanguageWord editWord, DateTime now)
+        {
+            Id = editWord.Id;
+            Timestamp = now;
+            LanguageId = editWord.LanguageId;
+            TranslationLanguageId = editWord.TranslationLanguageId;
+            LanguageWordName = editWord.LanguageWordName;
+            Transcription = editWord.Transcription;
+            Translation = editWord.Translation;
         }
 
         public int LanguageId { get; set; }

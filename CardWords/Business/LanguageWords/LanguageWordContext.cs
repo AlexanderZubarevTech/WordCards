@@ -1,4 +1,5 @@
-﻿using CardWords.Core.Contexts;
+﻿using CardWords.Business.Languages;
+using CardWords.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace CardWords.Business.LanguageWords
@@ -11,10 +12,13 @@ namespace CardWords.Business.LanguageWords
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            EntityConfiguration<LanguageWord>(modelBuilder);            
+            EntityConfiguration<LanguageWord>(modelBuilder);
+            EntityConfiguration<Language>(modelBuilder);
         }
 
 
-        public DbSet<LanguageWord> LanguageWords { get; set; } = null!;        
+        public DbSet<LanguageWord> LanguageWords { get; set; } = null!;     
+        
+        public DbSet<Language> Languages { get; set; } = null!;
     }
 }

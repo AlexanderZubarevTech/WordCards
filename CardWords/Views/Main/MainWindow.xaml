@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CardWords"
         mc:Ignorable="d"
         Height="600" Width="1000" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
     <Grid Background="#e9e9e9">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
@@ -171,7 +171,7 @@
             </Grid>
         </Grid>
 
-        <Grid x:Name="G_Library" Grid.Row="1" Grid.Column="1" Visibility="Visible" Margin="10 0">
+        <Grid x:Name="G_Library" Grid.Row="1" Grid.Column="1" Visibility="Collapsed" Margin="10 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"></RowDefinition>
                 <RowDefinition Height="130"></RowDefinition>
@@ -183,7 +183,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid x:Name="G_Library_Language" Grid.Row="0" Grid.Column="0">
-                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" 
+                <TextBlock x:Name="TB_Library_LanguageTitle" FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" 
                            HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" 
                            Text="Английский - Русский"></TextBlock>
                 <Grid Width="400" Height="60" Panel.ZIndex="0">
@@ -249,9 +249,9 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition MinWidth="200"></ColumnDefinition>
+                    <ColumnDefinition MinWidth="200"></ColumnDefinition>
+                    <ColumnDefinition MinWidth="200"></ColumnDefinition>
                     <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="50"></ColumnDefinition>
                     <ColumnDefinition Width="20"></ColumnDefinition>
@@ -292,13 +292,14 @@
                 <ListBox x:Name="LBx_Word" Visibility="Visible" Grid.Row="1" Grid.ColumnSpan="6"
                          AlternationCount="2" HorizontalContentAlignment="Stretch" 
                          VirtualizingPanel.IsVirtualizing="True" >
+                    
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition ></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition MinWidth="200"></ColumnDefinition>
+                                    <ColumnDefinition MinWidth="200"></ColumnDefinition>
+                                    <ColumnDefinition MinWidth="200"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
@@ -307,13 +308,13 @@
                                 </Grid.Effect>                               
 
                                 <Border Grid.Column="0" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
-                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" Text="{Binding Path=LanguageWordName}"></TextBlock>
+                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 0 0 0" Text="{Binding Path=LanguageWordName}"></TextBlock>
                                 </Border>
                                 <Border Grid.Column="1" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
-                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" Text="{Binding Path=Translation}"></TextBlock>
+                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 0 0 0" Text="{Binding Path=Translation}"></TextBlock>
                                 </Border>
                                 <Border Grid.Column="2" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
-                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" Text="{Binding Path=Transcription}"></TextBlock>
+                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 0 0 0" Text="{Binding Path=Transcription}"></TextBlock>
                                 </Border>
                                 <Border Grid.Column="3" BorderBrush="#223" BorderThickness="0, 0, 0, 1" >
                                     <Image Source="/Source/Images/edit.png" Tag="{Binding Path=Id}" Width="30" Height="30" 
@@ -350,7 +351,7 @@
 
         </Grid>
 
-        
+        <Rectangle x:Name="G_DisabledWindow" Grid.RowSpan="2" Grid.ColumnSpan="2" Fill="#7000" Visibility="Collapsed"></Rectangle>
 
     </Grid>
 </Window>

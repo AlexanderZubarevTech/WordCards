@@ -33,16 +33,21 @@ namespace CardWords.Configurations
                 return;
             }
 
-            var data = CommandHelper.GetCommand<ILoadConfigurationCommand>().Execute();
+            var data = GetData();
 
             instance.SetProperties(data);
         }
 
         private static AppConfiguration Load()
         {
-            var data = CommandHelper.GetCommand<ILoadConfigurationCommand>().Execute();
+            var data = GetData();
 
             return new AppConfiguration(data);
+        }
+
+        private static IReadOnlyDictionary<string, Configuration> GetData()
+        {
+            return CommandHelper.GetCommand<ILoadConfigurationCommand>().Execute();
         }
 
         [IdConfiguration("current_language")]
