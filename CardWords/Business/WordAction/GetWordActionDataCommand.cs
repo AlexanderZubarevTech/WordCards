@@ -55,8 +55,7 @@ namespace CardWords.Business.WordAction
         private static readonly Dictionary<LanguagePair, string> getCountNewWordsSqlDictionary = new Dictionary<LanguagePair, string>();
         private static readonly Dictionary<LanguagePair, string> getCountKnownWordsSqlDictionary = new Dictionary<LanguagePair, string>();        
 
-        private Random random;
-        private readonly AppConfiguration configuration = AppConfiguration.GetInstance();
+        private Random random;        
         private LanguagePair currentLanguage;
 
         public WordActionData[] Execute(int count)
@@ -64,7 +63,7 @@ namespace CardWords.Business.WordAction
             var seed = (int)Math.Round(DateTime.Now.TimeOfDay.TotalSeconds);
 
             random = new Random(seed);
-            currentLanguage = new LanguagePair(configuration.CurrentLanguage, configuration.CurrentTranslationLanguage);
+            currentLanguage = new LanguagePair(AppConfiguration.Instance.CurrentLanguage, AppConfiguration.Instance.CurrentTranslationLanguage);
 
             List<WordActionData> result;
 

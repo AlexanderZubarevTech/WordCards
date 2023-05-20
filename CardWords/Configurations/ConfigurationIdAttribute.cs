@@ -3,11 +3,11 @@
 namespace CardWords.Configurations
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public sealed class IdConfigurationAttribute : Attribute
+    public sealed class ConfigurationIdAttribute : Attribute
     {
-        public IdConfigurationAttribute() { }
+        public ConfigurationIdAttribute() { }
 
-        public IdConfigurationAttribute(string id) 
+        public ConfigurationIdAttribute(string id) 
         { 
             Id = id;
         }

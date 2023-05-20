@@ -1,5 +1,6 @@
 ﻿using CardWords.Business.WordAction;
 using CardWords.Business.WordActivities;
+using CardWords.Configurations;
 using CardWords.Core.Helpers;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,15 @@ namespace CardWords.Views.Cards
     /// </summary>
     public partial class CardsWindow : Window
     {
-        private WordActionData[] data;
+        private readonly WordActionData[] data;
+
+        private readonly WordActionInfo info;
+
+        private readonly Dispatcher mainDispatcher;
+
+        private readonly List<ResultStars> resultStars = new(2);
+
+        private readonly CustomTimer timer;
 
         private bool wordIsShowed;
 
@@ -24,60 +33,48 @@ namespace CardWords.Views.Cards
 
         private bool isResult;
 
-        private WordActionInfo info;
-
-        private Timer timer;
-
-        private Dispatcher mainDispatcher;
-
-        private List<ResultStars> resultStars = new(2);        
+        private int maxCorrectAnswerSequence;
 
         public CardsWindow(int wordCount)
         {
             InitializeComponent();
 
-            mainDispatcher = Dispatcher.CurrentDispatcher;
-
-            data = CommandHelper.GetCommand<IGetWordActionDataCommand>().Execute(wordCount);
-
-            var word = data[0];
-
-            SetProgress(data.Length);
-
-            SetDataItem(word);
-
-            ShowWord(word.IsNewWord);
-
             wordIsShowed = true;
-
             maxCorrectAnswerSequence = 0;
             CorrectAnswerSequence = 0;
             isResult = false;
             pressedKey = false;
 
+            mainDispatcher = Dispatcher.CurrentDispatcher;
+
             info = new WordActionInfo
             {
-                StartDate = TimeHelper.GetCurrentDate(),
-                WordsCount = data.Length,
+                StartDate = TimeHelper.GetCurrentDate(),                
                 SelectedCardWordsCount = wordCount,
-                LanguageId = MainWindow.AppConfiguration.CurrentLanguage,
-                TranslationLanguageId = MainWindow.AppConfiguration.CurrentTranslationLanguage,
+                LanguageId = AppConfiguration.Instance.CurrentLanguage,
+                TranslationLanguageId = AppConfiguration.Instance.CurrentTranslationLanguage,
             };
 
-            G_Result.Visibility = Visibility.Hidden;
-            G_WordCard.Visibility = Visibility.Visible;
+            data = CommandHelper.GetCommand<IGetWordActionDataCommand>().Execute(wordCount);
 
-            PB_timer.Value = word.IsNewWord ? PB_timer.Maximum : 0;
-
-            timer = CreateTimer();
-
-            if(!word.IsNewWord)
+            if(data.Length == 0)
             {
-                timer.Start();
+                timer = new CustomTimer(PB_timer);
+
+                info.WordsCount = 0;
+                info.EndDate = info.StartDate;
+
+                ShowResult();
+            }
+            else
+            {
+                var word = data[0];
+
+                timer = new CustomTimer(word, PB_timer, LeftTime);
+
+                Initialize(word);
             }
         }
-
-        private int maxCorrectAnswerSequence;
 
         private int _correctAnswerSequence;
         private int CorrectAnswerSequence
@@ -96,6 +93,25 @@ namespace CardWords.Views.Cards
                 }
             } 
         }        
+
+        private void Initialize(WordActionData word)
+        {
+            info.WordsCount = data.Length;
+
+            SetProgress(data.Length);
+
+            SetDataItem(word);
+
+            ShowWord(word.IsNewWord);
+
+            G_Result.Visibility = Visibility.Hidden;
+            G_WordCard.Visibility = Visibility.Visible;
+
+            if (!word.IsNewWord)
+            {
+                timer.Start();
+            }
+        }
 
         private void SetDataItem(WordActionData item)
         {
@@ -155,19 +171,7 @@ namespace CardWords.Views.Cards
             G_Understood.Visibility = Visibility.Collapsed;
 
             SetDelaultColor();
-        }
-
-        private Timer CreateTimer()
-        {
-            var timer = new Timer();
-            
-            timer.Enabled = false;
-            timer.Interval = 10;
-            timer.Elapsed += LeftTime;
-            timer.AutoReset = true;
-
-            return timer;
-        } 
+        }        
 
         private void SetCorrectAnswerSequence(WordActivityType type)
         {
@@ -181,17 +185,17 @@ namespace CardWords.Views.Cards
             }
         }
 
-        private void LeftTime(object sender, ElapsedEventArgs e)
+        private void LeftTime(object? sender, ElapsedEventArgs e)
         {
             mainDispatcher.BeginInvoke(() => 
             {
-                if (PB_timer.Value < PB_timer.Maximum)
+                if (timer.IsTimeLeft)
                 {
-                    PB_timer.Value += 1;
+                    TimeLeft();
                 } 
                 else
                 {
-                    TimeLeft();
+                    timer.Progress();
                 }
             });
         }
@@ -464,16 +468,7 @@ namespace CardWords.Views.Cards
 
             wordIsShowed = true;
 
-            if(nextWord.IsNewWord)
-            {
-                timer.Stop();
-                PB_timer.Value = PB_timer.Maximum;
-            } 
-            else
-            {
-                PB_timer.Value = 0;
-                timer.Start();
-            }            
+            timer.Restart(nextWord);
         }        
 
         private void ShowResult()

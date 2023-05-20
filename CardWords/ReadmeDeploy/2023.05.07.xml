@@ -12,7 +12,9 @@
 		([Id], [Value])
 		VALUES
 		('current_translation_language', 1),
-		('current_language', 2)
+		('current_language', 2),
+		('word_card_has_timer', 'True'),
+		('word_card_timer_duration_in_seconds', '5')
 	</sql>
 	<sql>
 		INSERT INTO [language_words]

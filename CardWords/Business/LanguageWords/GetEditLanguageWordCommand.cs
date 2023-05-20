@@ -9,8 +9,6 @@ namespace CardWords.Business.LanguageWords
 {
     public sealed class GetEditLanguageWordsCommand : EntityCommand, IGetEditLanguageWordCommand
     {        
-        private readonly AppConfiguration configuration = AppConfiguration.GetInstance();
-
         public EditLanguageWord Execute(int? id)
         {
             EditLanguageWord result;
@@ -19,7 +17,7 @@ namespace CardWords.Business.LanguageWords
             {
                 var word = id != null && id > 0 ? db.LanguageWords.First(x => x.Id == id) : null;
 
-                var languageIds = new int[] {configuration.CurrentLanguage, configuration.CurrentTranslationLanguage };
+                var languageIds = new int[] { AppConfiguration.Instance.CurrentLanguage, AppConfiguration.Instance.CurrentTranslationLanguage };
 
                 var languages = db.Languages.Where(x => languageIds.Contains(x.Id)).ToDictionary(x => x.Id);
 
@@ -31,8 +29,8 @@ namespace CardWords.Business.LanguageWords
 
         private EditLanguageWord GetEditWord(LanguageWord? word, Dictionary<int, Language> languages)
         {
-            var language = languages[configuration.CurrentLanguage];
-            var translationLanguage = languages[configuration.CurrentTranslationLanguage];
+            var language = languages[AppConfiguration.Instance.CurrentLanguage];
+            var translationLanguage = languages[AppConfiguration.Instance.CurrentTranslationLanguage];
 
             if (word == null)
             {

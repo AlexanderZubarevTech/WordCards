@@ -65,76 +65,77 @@
             <Label Name="L_TitleName" VerticalAlignment="Center" MouseLeftButtonDown="Heap_MouseLeftButtonDown" FontSize="16" Foreground="#CCC" Content="Добавление"></Label>
         </Grid>
 
-        <StackPanel Grid.Row="1" Margin="10">
-            <StackPanel Name="SP_Fields">
-                <Grid x:Name="G_WordName" Tag="required" Margin="0 0 0 10">
+        <StackPanel Grid.Row="1" Margin="10" Name="SP_FieldsWithValidation">
+            <StackPanel Name="SP_Fields" Tag="Fields">
+                <Grid x:Name="G_WordName" Tag="FieldPropertyName=LanguageWordName" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.7*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <StackPanel Orientation="Horizontal" Style="{StaticResource TitleStyle}">
-                            <TextBlock Text="Слово" ></TextBlock>
+                            <TextBlock Text="Слово" Tag="FieldName" ></TextBlock>
                             <TextBlock Text=" (" ></TextBlock>
                             <TextBlock x:Name="TB_WordNameTitle" Text="{Binding LanguageName}"></TextBlock>
                             <TextBlock Text="):*" ></TextBlock>
                         </StackPanel>
                         <Grid Style="{StaticResource BacgroundTitle}">
-                            <Rectangle Style="{StaticResource BacgroundTitleFill}" />
+                            <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
                             <Grid.Effect>
                                 <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
                             </Grid.Effect>
                         </Grid>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <TextBox Style="{StaticResource ValueStyle}" Text="{Binding LanguageWordName}"></TextBox>
+                        <TextBox x:Name="TBx_LanguageWordName" Tag="FieldValue" Style="{StaticResource ValueStyle}" Text="{Binding LanguageWordName}"></TextBox>
                         <Grid.Effect>
                             <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
                         </Grid.Effect>
                     </Grid>
                 </Grid>
-                <Grid x:Name="G_Transcription"  Margin="0 0 0 10">
+                <Grid x:Name="G_Transcription"  Margin="0 0 0 10" Tag="FieldPropertyName=Transcription">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.7*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <TextBlock Text="Транскрипция:" Style="{StaticResource TitleStyle}"></TextBlock>
+                        <TextBlock Text="Транскрипция" Tag="FieldName" Visibility="Collapsed"></TextBlock>
                         <Grid Style="{StaticResource BacgroundTitle}">
-                            <Rectangle Style="{StaticResource BacgroundTitleFill}" />
+                            <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
                             <Grid.Effect>
                                 <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
                             </Grid.Effect>
                         </Grid>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <TextBox x:Name="TBx_Transcription" Style="{StaticResource ValueStyle}" Text="{Binding Transcription}"></TextBox>
+                        <TextBox x:Name="TBx_Transcription" Tag="FieldValue" Style="{StaticResource ValueStyle}" Text="{Binding Transcription}"></TextBox>
                         <Grid.Effect>
                             <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
                         </Grid.Effect>
                     </Grid>
                 </Grid>
-                <Grid x:Name="G_Translation" Tag="required"  Margin="0 0 0 10">
+                <Grid x:Name="G_Translation" Tag="FieldPropertyName=Translation"  Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.7*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <StackPanel Orientation="Horizontal" Style="{StaticResource TitleStyle}">
-                            <TextBlock Text="Перевод" ></TextBlock>
+                            <TextBlock Text="Перевод" Tag="FieldName" ></TextBlock>
                             <TextBlock Text=" (" ></TextBlock>
                             <TextBlock x:Name="TB_TranslationTitle" Text="{Binding TranslationLanguageName}"></TextBlock>
                             <TextBlock Text="):*" ></TextBlock>
                         </StackPanel>
                         <Grid Style="{StaticResource BacgroundTitle}">
-                            <Rectangle Style="{StaticResource BacgroundTitleFill}" />
+                            <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
                             <Grid.Effect>
                                 <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
                             </Grid.Effect>
                         </Grid>
                     </Grid>
                     <Grid  Grid.Column="1">
-                        <TextBox x:Name="TBx_Translation" Style="{StaticResource ValueStyle}" Text="{Binding Translation}"></TextBox>
+                        <TextBox x:Name="TBx_Translation" Tag="FieldValue" Style="{StaticResource ValueStyle}" Text="{Binding Translation}"></TextBox>
                         <Grid.Effect>
                             <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
                         </Grid.Effect>
@@ -142,8 +143,7 @@
                 </Grid>
             </StackPanel>           
             
-            <StackPanel x:Name="SP_ErrorMessages">
-                <TextBlock x:Name="TB_ExistWord" Text="Слово уже существует в библиотеке!" Style="{StaticResource ErrorMessage}" Visibility="Collapsed"></TextBlock>
+            <StackPanel x:Name="SP_ErrorMessages" Tag="Validation">                
             </StackPanel>
         </StackPanel>
         

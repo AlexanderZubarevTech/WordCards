@@ -8,9 +8,7 @@ using System.Linq;
 namespace CardWords.Business.LanguageWords
 {
     public sealed class GetLanguageWordsCommand : EntityCommand, IGetLanguageWordsCommand
-    {        
-        private readonly AppConfiguration configuration = AppConfiguration.GetInstance();
-
+    {
         public ObservableCollection<LanguageWord> Execute(string name, bool withoutTranscription)
         {
             ObservableCollection<LanguageWord> result;
@@ -18,8 +16,8 @@ namespace CardWords.Business.LanguageWords
             using (var db = new LanguageWordContext())
             {
                 var query = db.LanguageWords
-                    .Where(x => x.LanguageId == configuration.CurrentLanguage 
-                    && x.TranslationLanguageId == configuration.CurrentTranslationLanguage);
+                    .Where(x => x.LanguageId == AppConfiguration.Instance.CurrentLanguage 
+                    && x.TranslationLanguageId == AppConfiguration.Instance.CurrentTranslationLanguage);
 
                 if(!name.IsNullOrEmptyOrWhiteSpace())
                 {

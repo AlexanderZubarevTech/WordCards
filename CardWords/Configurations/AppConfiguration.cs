@@ -9,20 +9,23 @@ namespace CardWords.Configurations
     {
         private static AppConfiguration? instance;
 
+        public static AppConfiguration Instance 
+        { 
+            get 
+            {
+                if (instance == null)
+                {
+                    instance = Load();
+                }
+
+                return instance;
+            } 
+        }
+
         private AppConfiguration(IReadOnlyDictionary<string, Configuration> data) 
         {
             SetProperties(data);
-        }
-
-        public static AppConfiguration GetInstance()
-        {
-            if(instance == null)
-            {
-                instance = Load();
-            }
-
-            return instance;
-        }
+        }        
 
         public static void Refresh()
         {
@@ -50,11 +53,17 @@ namespace CardWords.Configurations
             return CommandHelper.GetCommand<ILoadConfigurationCommand>().Execute();
         }
 
-        [IdConfiguration("current_language")]
+        [ConfigurationId("current_language")]
         public int CurrentLanguage { get; private set; }
 
-        [IdConfiguration("current_translation_language")]
+        [ConfigurationId("current_translation_language")]
         public int CurrentTranslationLanguage { get; private set; }
+
+        [ConfigurationId("word_card_has_timer")]
+        public bool WordCardHasTimer { get; private set; }
+
+        [ConfigurationId("word_card_timer_duration_in_seconds")]
+        public int WordCardTimerDutationInSeconds { get; private set; }
 
         private void SetProperties(IReadOnlyDictionary<string, Configuration> data)
         {
@@ -73,7 +82,7 @@ namespace CardWords.Configurations
 
                 foreach (var attr in attributes)
                 {
-                    if(attr is IdConfigurationAttribute idAttr)
+                    if(attr is ConfigurationIdAttribute idAttr)
                     {
                         var configuration = data[idAttr.Id];
 

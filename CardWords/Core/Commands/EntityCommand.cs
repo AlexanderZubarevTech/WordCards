@@ -2,7 +2,7 @@
 
 namespace CardWords.Core.Commands
 {
-    public class EntityCommand : IEntityCommand
+    public abstract class EntityCommand : IEntityCommand
     {
         public event EventHandler? CanExecuteChanged;
 

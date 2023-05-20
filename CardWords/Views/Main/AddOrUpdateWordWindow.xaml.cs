@@ -1,11 +1,9 @@
 ﻿using CardWords.Business.LanguageWords;
 using CardWords.Core.Helpers;
-using CardWords.Extensions;
+using CardWords.Core.Validations;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace CardWords.Views.Main
 {
@@ -15,9 +13,9 @@ namespace CardWords.Views.Main
     public partial class AddOrUpdateWordWindow : Window
     {
         private static Color errorColor = Color.FromRgb(108, 36, 33); // #6c2421
-        private static Color defaultColor = Color.FromRgb(77, 39, 139);
 
         private EditLanguageWord word;
+        private ValidationManager validationManager;
 
         public AddOrUpdateWordWindow(EditLanguageWord editWord)
         {
@@ -28,6 +26,10 @@ namespace CardWords.Views.Main
 
             word = editWord;
             DataContext = editWord;
+
+            var errorStyle = Resources["ErrorMessage"] as Style;
+
+            validationManager = new ValidationManager(SP_FieldsWithValidation, errorStyle, errorColor, Save);
         }
 
         private void Heap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -45,74 +47,19 @@ namespace CardWords.Views.Main
         {
             PrepareToSave();
 
-            var isValid = Validate();
-
-            if (isValid)
-            {
-                var isSaveValid = CommandHelper.GetCommand<ISaveEditLanguageWordCommand>().Execute(word);
-
-                if(isSaveValid)
-                {
-                    DialogResult = true;
-                    Close();
-                }
-
-                if(!isSaveValid)
-                {
-                    ExistErrorMessage();
-                }
-            }            
+            validationManager.Execute();
         }
 
-        private bool Validate()
+        private void Save()
         {
-            SP_ErrorMessages.Children.Clear();
+            var isSaveValid = CommandHelper.GetCommand<ISaveEditLanguageWordCommand>().Execute(word);
 
-            foreach (var item in SP_Fields.Children)
+            if (isSaveValid)
             {
-                var grid = item as Grid;
-
-                var isError = false;
-
-                if(grid.Tag != null && grid.Tag.ToString() == "required")
-                {
-                    var textBox = (grid.Children[1] as Grid).Children[0] as TextBox;
-
-                    if(textBox.Text.IsNullOrEmptyOrWhiteSpace())
-                    {
-                        var fieldName = (((grid.Children[0] as Grid).Children[0] as StackPanel).Children[0] as TextBlock).Text;
-
-                        RequiredErrorMessage(fieldName);
-
-                        isError = true;
-                    }
-                }
-
-                var color = isError ? errorColor : defaultColor;
-
-                (((grid.Children[0] as Grid).Children[1] as Grid).Children[0] as Rectangle).Fill = new SolidColorBrush(color);
+                DialogResult = true;
+                Close();
             }
-
-            return SP_ErrorMessages.Children.Count == 0;
-        }
-
-        private void RequiredErrorMessage(string fieldName)
-        {
-            var block = new TextBlock();
-            block.Style = Resources["ErrorMessage"] as Style;
-            block.Text = $"Поле \"{fieldName}\" обязательно для заполнения";
-
-            SP_ErrorMessages.Children.Add(block);
-        }
-
-        private void ExistErrorMessage()
-        {
-            var block = new TextBlock();
-            block.Style = Resources["ErrorMessage"] as Style;
-            block.Text = $"Слово уже существует в библиотеке!";
-
-            SP_ErrorMessages.Children.Add(block);
-        }
+        }        
 
         private void PrepareToSave()
         {

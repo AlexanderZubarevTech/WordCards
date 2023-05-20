@@ -7,6 +7,53 @@
         mc:Ignorable="d"
         Height="600" Width="1000" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True"
         WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
+    <Window.Resources>
+        <Style x:Key="TitleStyle">
+            <Setter Property="TextBlock.FontSize" Value="22" />
+            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
+            <Setter Property="TextBlock.Foreground" Value="#EEE" />
+            <Setter Property="TextBlock.VerticalAlignment" Value="Center" />
+            <Setter Property="TextBlock.HorizontalAlignment" Value="Right" />
+            <Setter Property="Panel.ZIndex" Value="1" />
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+            <Setter Property="TextBlock.Margin" Value="0 0 10 0" />
+        </Style>
+        <Style x:Key="BacgroundTitle">
+            <Setter Property="Control.Height" Value="60" />
+            <Setter Property="Panel.ZIndex" Value="0" />
+        </Style>
+        <Style x:Key="BacgroundTitleFill">
+            <Setter Property="Shape.Fill" Value="#5da7a8" />
+        </Style>
+        <Style x:Key="ComboBoxValueStyle">
+            <Setter Property="ComboBox.Background" Value="#EEE" />
+            <Setter Property="ComboBox.Height" Value="60" />             
+            <Setter Property="ComboBox.FontSize" Value="22" />
+            <Setter Property="ComboBox.VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="CheckBoxValueStyle">
+            <Setter Property="CheckBox.VerticalAlignment" Value="Center" />
+            <Setter Property="CheckBox.VerticalContentAlignment" Value="Center" />
+            <Setter Property="CheckBox.HorizontalAlignment" Value="Left" />
+            <Setter Property="TextBlock.Margin" Value="15 0 0 0" />
+            <Setter Property="TextBlock.Width" Value="25" />
+            <Setter Property="TextBlock.Height" Value="30" />
+        </Style>
+        <Style x:Key="ErrorMessage">
+            <Setter Property="TextBlock.FontSize" Value="20" />
+            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
+            <Setter Property="TextBlock.Foreground" Value="#6c2421" />
+            <Setter Property="TextBlock.Margin" Value="0 0 0 10" />
+        </Style>
+        <Style x:Key="ValueStyle">
+            <Setter Property="TextBox.Background" Value="#EEE" />
+            <Setter Property="TextBox.Height" Value="60" />
+            <Setter Property="Panel.ZIndex" Value="1" />
+            <Setter Property="TextBox.Cursor" Value="IBeam" />
+            <Setter Property="TextBox.FontSize" Value="26" />
+            <Setter Property="TextBox.VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
     <Grid Background="#e9e9e9">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
@@ -15,7 +62,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>       
+        </Grid.ColumnDefinitions>
+
+        <Rectangle x:Name="G_DisabledWindow" Grid.RowSpan="2" Grid.ColumnSpan="2" Fill="#7000" Visibility="Collapsed"></Rectangle>
 
         <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
             <Grid.RowDefinitions>
@@ -234,7 +283,7 @@
                     </Grid>
                 </Grid>
 
-                <CheckBox x:Name="CB_Library_Search_WithoutTranscription" Grid.Row="1" FontSize="16" Height="30" Width="160" HorizontalAlignment="Left" VerticalContentAlignment="Center" >Без транскрипции</CheckBox>
+                <CheckBox x:Name="ChBx_Library_Search_WithoutTranscription" Grid.Row="1" FontSize="16" Height="30" Width="160" HorizontalAlignment="Left" VerticalContentAlignment="Center" >Без транскрипции</CheckBox>
 
                 <TextBlock x:Name="TB_Library_Search_Result" Grid.Row="2" FontSize="16" VerticalAlignment="Bottom" Visibility="Collapsed">
                     <TextBlock Text="Найдено: " FontWeight="DemiBold"></TextBlock>
@@ -337,21 +386,130 @@
             </Grid>
         </Grid>
 
-        <Grid x:Name="G_Settings" Grid.Row="1" Grid.Column="1" Visibility="Collapsed">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="100"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>            
-
+        <Grid x:Name="G_Settings" Grid.Row="1" Grid.Column="1" Visibility="Visible" Margin="10 0">
+            <TabControl Background="#F5F5F5">
+                <TabItem Width="200" Name="TI_Settings_Genaral" >
+                    <TabItem.Header>
+                        <TextBlock FontSize="26">Общие</TextBlock>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <StackPanel Margin="10 30 10 10" Name="SP_Settings_FieldsAndValidation">
+                            <StackPanel Name="SP_Settings_Fields" Tag="Fields">
+                                <Grid x:Name="G_Settings_CurrentLanguage" Tag="FieldPropertyName=CurrentLanguage" Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <TextBlock Style="{StaticResource TitleStyle}">
+                                                <TextBlock Tag="FieldName">Язык изучения</TextBlock>
+                                                <TextBlock>:</TextBlock>
+                                        </TextBlock>
+                                        <Grid Style="{StaticResource BacgroundTitle}">
+                                            <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
+                                            <Grid.Effect>
+                                                <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                                            </Grid.Effect>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <ComboBox Name="Cbx_Settings_CurrentLanguage" Tag="FieldValue" Style="{StaticResource ComboBoxValueStyle}" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage}"></ComboBox>
+                                        <Grid.Effect>
+                                            <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                                        </Grid.Effect>
+                                    </Grid>
+                                </Grid>
+                                <Grid x:Name="G_Settings_TranslationLanguage" Tag="FieldPropertyName=TranslationLanguage"  Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <TextBlock Style="{StaticResource TitleStyle}">
+                                                <TextBlock Tag="FieldName">Язык перевода</TextBlock>
+                                                <TextBlock>:</TextBlock>
+                                        </TextBlock>
+                                        <Grid Style="{StaticResource BacgroundTitle}">
+                                            <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
+                                            <Grid.Effect>
+                                                <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                                            </Grid.Effect>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <ComboBox Name="CbBx_Settings_TranslationLanguage" Tag="FieldValue" Style="{StaticResource ComboBoxValueStyle}" ItemsSource="{Binding Languages}" SelectedItem="{Binding TranslationLanguage}"></ComboBox>
+                                        <Grid.Effect>
+                                            <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                                        </Grid.Effect>
+                                    </Grid>
+                                </Grid>
+                                <Grid x:Name="G_Settings_WordCard_Timer" Tag="FieldPropertyName=WordCardHasTimer" Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <TextBlock Style="{StaticResource TitleStyle}">
+                                                <TextBlock Tag="FieldName">Таймер в карточках</TextBlock>
+                                                <TextBlock>:</TextBlock>
+                                        </TextBlock>
+                                        <Grid Style="{StaticResource BacgroundTitle}">
+                                            <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
+                                            <Grid.Effect>
+                                                <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                                            </Grid.Effect>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid  Grid.Column="1">
+                                        <CheckBox x:Name="ChBx_Settings_WordCard_Timer" Tag="FieldValue" IsChecked="{Binding WordCardHasTimer}" Style="{StaticResource CheckBoxValueStyle}">
+                                            <CheckBox.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2"></ScaleTransform>
+                                            </CheckBox.LayoutTransform>
+                                        </CheckBox>
+                                        <Grid.Effect>
+                                            <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                                        </Grid.Effect>
+                                    </Grid>
+                                </Grid>
+                                <Grid x:Name="G_Settings_WordCard_Timer_Dutation" Tag="FieldPropertyName=WordCardTimerDurationInSeconds"  Margin="0 0 0 10" Visibility="Collapsed">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <TextBlock Style="{StaticResource TitleStyle}">Продолжительность таймера, с:</TextBlock>
+                                        <TextBlock Tag="FieldName" Visibility="Collapsed">Продолжительность таймера</TextBlock>                                        
+                                        <Grid Style="{StaticResource BacgroundTitle}">
+                                            <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
+                                            <Grid.Effect>
+                                                <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                                            </Grid.Effect>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <TextBox x:Name="TBx_Settings_WordCard_Timer_Duration" Tag="FieldValue" Style="{StaticResource ValueStyle}" Text="{Binding WordCardTimerDurationInSeconds}"></TextBox>
+                                        <Grid.Effect>
+                                            <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
+                                        </Grid.Effect>
+                                    </Grid>
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel x:Name="SP_Settings_ErrorMessage" Tag="Validation"></StackPanel>
+                        </StackPanel>
+                    </TabItem.Content>
+                </TabItem>
+                <TabItem Width="200" Name="TI_Settings_Languages">
+                    <TabItem.Header>
+                        <TextBlock FontSize="26">Языки</TextBlock>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <TextBlock></TextBlock>
+                    </TabItem.Content>
+                </TabItem>
+            </TabControl>
         </Grid>
 
-        <Rectangle x:Name="G_DisabledWindow" Grid.RowSpan="2" Grid.ColumnSpan="2" Fill="#7000" Visibility="Collapsed"></Rectangle>
+        
 
     </Grid>
 </Window>
