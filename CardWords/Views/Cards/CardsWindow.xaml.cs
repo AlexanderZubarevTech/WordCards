@@ -29,8 +29,6 @@ namespace CardWords.Views.Cards
 
         private bool wordIsShowed;
 
-        private bool pressedKey;
-
         private bool isResult;
 
         private int maxCorrectAnswerSequence;
@@ -42,8 +40,7 @@ namespace CardWords.Views.Cards
             wordIsShowed = true;
             maxCorrectAnswerSequence = 0;
             CorrectAnswerSequence = 0;
-            isResult = false;
-            pressedKey = false;
+            isResult = false;            
 
             mainDispatcher = Dispatcher.CurrentDispatcher;
 
@@ -270,6 +267,11 @@ namespace CardWords.Views.Cards
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            if(e.IsRepeat)
+            {
+                return;
+            }
+
             if(isResult)
             {
                 ResultFromKeyDown(e.Key);
@@ -278,12 +280,7 @@ namespace CardWords.Views.Cards
             {
                 ActionFromKeyDown(e.Key);
             }
-        }
-
-        private void Window_KeyUp(object sender, KeyEventArgs e)
-        {
-            pressedKey = false;
-        }
+        }        
 
         private void Grid_LeftTranslation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -341,14 +338,7 @@ namespace CardWords.Views.Cards
                 && key != Key.Left)
             {
                 return;
-            }
-
-            if(pressedKey)
-            {
-                return;
-            }
-
-            pressedKey = true;
+            }            
 
             var currentWord = GetCurrentWord();
 
@@ -489,7 +479,19 @@ namespace CardWords.Views.Cards
             DrawStars();
         }
 
-        private void DrawStars()
+        private async void DrawStars()
+        {
+            await AsyncDrawStars();
+        }
+
+        private async Task AsyncDrawStars()
+        {
+            await Task.Delay(200);
+
+            DrawStarsInternal();
+        }
+
+        private void DrawStarsInternal()
         {
             var random = new Random((int)info.Duration.TotalSeconds);
 

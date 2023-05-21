@@ -5,6 +5,6 @@ namespace CardWords.Business.LanguageWords
 {
     interface IGetLanguageWordsCommand : IEntityCommand
     {
-        public ObservableCollection<LanguageWord> Execute(string name, bool withoutTranscription);
+        public ObservableCollection<LanguageWordView> Execute(string name, bool withoutTranscription, WordStatus status);
     }
 }

@@ -41,7 +41,7 @@ namespace CardWords.Core.Validations
             var message = ErrorMessage.CreateField("Поле \"{0}\" обязательно для заполнения", expr);
 
             errors.Add(message);
-        }        
+        }
 
         public void AddGreaterThan<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expr, TProperty value)
             where TEntity : Entity
@@ -70,6 +70,16 @@ namespace CardWords.Core.Validations
         public static void ThrowError(string message)
         {
             throw new ValidationResultException(message);
+        }
+
+        public static void ThrowError<TEntity, TProperty>(string message, Expression<Func<TEntity, TProperty>> expr)
+            where TEntity : Entity
+        {
+            var result = new ValidationResult();
+
+            result.errors.Add(ErrorMessage.CreateField(message, expr));
+
+            result.ThrowIfHasError();
         }
 
         public override string ToString()

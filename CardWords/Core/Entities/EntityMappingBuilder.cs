@@ -104,6 +104,29 @@ namespace CardWords.Core.Entities
             return this;
         }
 
+        public EntityMappingBuilder<TEntity> Reference<TNafigationProperty>(
+            Expression<Func<TEntity, object?>> keyPropertyExpr,
+            Expression<Func<TEntity, TNafigationProperty?>> navigationPropertyExpr,
+            Expression<Func<TNafigationProperty, IEnumerable<TEntity>?>> listPropertyExpr)
+            where TNafigationProperty : Entity
+        {
+            var member = navigationPropertyExpr.Body as MemberExpression;
+
+            if (member == null)
+            {
+                return this;
+            }
+
+            properties.Add(member.Member.Name);
+
+            entityBuilder
+                .HasOne(navigationPropertyExpr)
+                .WithMany(listPropertyExpr)
+                .HasForeignKey(keyPropertyExpr);
+
+            return this;
+        }
+
         public EntityMappingBuilder<TEntity> HasKey(Expression<Func<TEntity, object?>> expr)
         {
             entityBuilder.HasKey(expr);

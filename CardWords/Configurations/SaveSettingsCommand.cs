@@ -15,6 +15,8 @@ namespace CardWords.Configurations
         {
             Validate(settings);
 
+            PrepareToSave(settings);
+
             using (var db = new ConfigurationContext())
             {
                 var configurations = db.Configurations.ToDictionary(x => x.Id);
@@ -22,10 +24,12 @@ namespace CardWords.Configurations
                 UpdateProperty(db, configurations, x => x.CurrentLanguage, settings.CurrentLanguage.Id);
                 UpdateProperty(db, configurations, x => x.CurrentTranslationLanguage, settings.TranslationLanguage.Id);
                 UpdateProperty(db, configurations, x => x.WordCardHasTimer, settings.WordCardHasTimer);
-                UpdateProperty(db, configurations, x => x.WordCardTimerDutationInSeconds, settings.WordCardTimerDutationInSeconds);
+                UpdateProperty(db, configurations, x => x.WordCardTimerDurationInSeconds, settings.WordCardTimerDurationInSeconds);
 
                 db.SaveChanges();
             }
+
+            AppConfiguration.Refresh();
 
             return true;
         }
@@ -60,13 +64,21 @@ namespace CardWords.Configurations
                 validationResult.Add("Язык изучения и язык перевода не могут быть одинаковыми");
             }
 
-            if(settings.WordCardHasTimer && settings.WordCardTimerDutationInSeconds <= 0)
+            if(settings.WordCardHasTimer && settings.WordCardTimerDurationInSeconds <= 0)
             {
-                validationResult.AddGreaterThan<Settings, int>(x => x.WordCardTimerDutationInSeconds, 0);                
+                validationResult.AddGreaterThan<Settings, int>(x => x.WordCardTimerDurationInSeconds, 0);                
             }            
         }
 
-        private void UpdateProperty<TProperty>(ConfigurationContext db, Dictionary<string, Configuration> configurations, 
+        private static void PrepareToSave(Settings settings)
+        {
+            if(!settings.WordCardHasTimer)
+            {
+                settings.WordCardTimerDurationInSeconds = 0;
+            }
+        }
+
+        private static void UpdateProperty<TProperty>(ConfigurationContext db, Dictionary<string, Configuration> configurations, 
             Expression<Func<AppConfiguration, TProperty>> expr, object newValue)
         {
             var configId = GetConfigurationId(expr);
@@ -83,7 +95,7 @@ namespace CardWords.Configurations
             }
         }
 
-        private string GetConfigurationId<TProperty>(Expression<Func<AppConfiguration, TProperty>> expr)
+        private static string GetConfigurationId<TProperty>(Expression<Func<AppConfiguration, TProperty>> expr)
         {
             var type = typeof(AppConfiguration);
             var name = (expr.Body as MemberExpression).Member.Name;

@@ -1,6 +1,8 @@
-﻿using CardWords.Core.Entities;
+﻿using CardWords.Business.WordActivities;
+using CardWords.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using System.Collections.Generic;
 
 namespace CardWords.Business.WordAction
 {
@@ -30,6 +32,8 @@ namespace CardWords.Business.WordAction
                     .End()
                     .Column(x => x.SelectedCardWordsCount)
                     .End()
+                    .ReferenceList(x => x.Activities)
+                    .ReferenceList(x => x.ErrorActivities)
                 .End();
         }
 
@@ -56,6 +60,10 @@ namespace CardWords.Business.WordAction
         public int WrongAnswersCount { get; set; }
 
         public int SelectedCardWordsCount { get; set; }
+
+        public List<WordActivity> Activities { get; set; }
+
+        public List<ErrorWordActivity> ErrorActivities { get; set; }
 
         public TimeSpan Duration => EndDate - StartDate;
     }

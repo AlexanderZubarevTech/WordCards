@@ -10,9 +10,7 @@ namespace CardWords.Views.Cards
     {
         private sealed class CustomTimer
         {
-            private const int interval = 10; // ms
-
-            private static readonly int progressMaximumValue = 1000 / interval * AppConfiguration.Instance.WordCardTimerDutationInSeconds;
+            private const int interval = 10; // ms            
 
             public CustomTimer(ProgressBar progressBar)
             {
@@ -26,6 +24,7 @@ namespace CardWords.Views.Cards
                 if(AppConfiguration.Instance.WordCardHasTimer)
                 {
                     timer = CreateTimer(elapsed);
+                    progressMaximumValue = 1000 / interval * AppConfiguration.Instance.WordCardTimerDurationInSeconds;
                     progressBar.Visibility = Visibility.Visible;
                     progressBar.Maximum = progressMaximumValue;
                     progressBar.Value = firstWord.IsNewWord ? progressMaximumValue : 0;
@@ -38,6 +37,7 @@ namespace CardWords.Views.Cards
 
             private readonly Timer? timer;
             private readonly ProgressBar progressBar;
+            private readonly int progressMaximumValue;
 
             public bool IsTimeLeft => progressBar.Value == progressMaximumValue;
 

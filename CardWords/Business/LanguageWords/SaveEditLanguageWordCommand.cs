@@ -8,17 +8,17 @@ namespace CardWords.Business.LanguageWords
 {
     public sealed class SaveEditLanguageWordsCommand : EntityCommand, ISaveEditLanguageWordCommand
     {
-        public bool Execute(EditLanguageWord editWord)
+        public bool Execute(EditLanguageWord entity)
         {
-            Validate(editWord);
+            Validate(entity);
 
             using (var db = new LanguageWordContext())
             {
-                var isEdit = editWord.Id > 0;
+                var isEdit = entity.Id > 0;
 
                 if (!isEdit)
                 {
-                    var existWord = db.LanguageWords.FirstOrDefault(x => x.LanguageWordName  == editWord.LanguageWordName);
+                    var existWord = db.LanguageWords.FirstOrDefault(x => x.LanguageWordName  == entity.LanguageWordName);
 
                     if(existWord != null)
                     {
@@ -26,7 +26,7 @@ namespace CardWords.Business.LanguageWords
                     }
                 }
 
-                var word = new LanguageWord(editWord, TimeHelper.GetCurrentDate());
+                var word = new LanguageWord(entity, TimeHelper.GetCurrentDate());
 
                 if(isEdit)
                 {

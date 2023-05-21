@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
 using CardWords.Core.Exceptions;
-using System.Xml.Linq;
+using CardWords.Core.Helpers;
 
 namespace CardWords.Core.Validations
 {
@@ -62,9 +62,9 @@ namespace CardWords.Core.Validations
                 }
             }
 
-            if (fieldsElement == null || errorMessageElement == null)
+            if (errorMessageElement == null)
             {
-                throw new Exception("Элементы не найдены");
+                throw new Exception("Элемент для вывода ошибок не найден");
             }
 
             if (errorMessageElement is StackPanel errorPanel)
@@ -72,7 +72,9 @@ namespace CardWords.Core.Validations
                 errorMessagePanel = errorPanel;
             }
 
-            fields = GetFields(fieldsElement, errorBacgroundColor);
+            fields = fieldsElement != null 
+                ? GetFields(fieldsElement, errorBacgroundColor) 
+                : DictionaryHelper.Empty<string, ValidationField>();
         }
 
         private Dictionary<string, ValidationField> GetFields(FrameworkElement fieldsElement, Color errorBacgroundColor)
@@ -179,9 +181,11 @@ namespace CardWords.Core.Validations
 
         #endregion
 
-        public void Execute()
+        public bool Execute()
         {
             SetDefault();
+
+            bool isValid = true;
 
             try
             {
@@ -197,7 +201,11 @@ namespace CardWords.Core.Validations
                 {
                     AddErrorMessage(ex.Message);
                 }
+
+                isValid = false;
             }
+
+            return isValid;
         }
 
         private void SetDefault()

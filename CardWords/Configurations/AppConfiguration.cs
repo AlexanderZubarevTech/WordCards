@@ -63,7 +63,7 @@ namespace CardWords.Configurations
         public bool WordCardHasTimer { get; private set; }
 
         [ConfigurationId("word_card_timer_duration_in_seconds")]
-        public int WordCardTimerDutationInSeconds { get; private set; }
+        public int WordCardTimerDurationInSeconds { get; private set; }
 
         private void SetProperties(IReadOnlyDictionary<string, Configuration> data)
         {

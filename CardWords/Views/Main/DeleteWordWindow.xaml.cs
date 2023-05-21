@@ -9,7 +9,7 @@ namespace CardWords.Views.Main
     /// </summary>
     public partial class DeleteWordWindow : Window
     {
-        public DeleteWordWindow(LanguageWord word)
+        public DeleteWordWindow(LanguageWordView word)
         {
             InitializeComponent();
 

@@ -1,4 +1,6 @@
-﻿using CardWords.Core.Entities;
+﻿using CardWords.Business.LanguageWords;
+using CardWords.Business.WordAction;
+using CardWords.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
@@ -18,6 +20,8 @@ namespace CardWords.Business.WordActivities
                     .End()
                     .Column(x => x.InfoId)
                     .End()
+                    .Reference(x => x.LanguageWordId, x => x.Word, x => x.Activities)
+                    .Reference(x => x.InfoId, x => x.Info, x => x.Activities)
                 .End();
         }
 
@@ -37,8 +41,12 @@ namespace CardWords.Business.WordActivities
 
         public int LanguageWordId { get; set; }
 
+        public LanguageWord Word { get; set; }
+
         public WordActivityType ActivityType { get; set; }
 
         public int InfoId { get; set; }
+
+        public WordActionInfo Info { get; set; }
     }
 }

@@ -1,6 +1,7 @@
-﻿using CardWords.Business.LanguageWords;
+﻿using CardWords.Business.Languages;
 using CardWords.Core.Helpers;
 using CardWords.Core.Validations;
+using CardWords.Extensions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -8,24 +9,24 @@ using System.Windows.Media;
 namespace CardWords.Views.Main
 {
     /// <summary>
-    /// Логика взаимодействия для AddOrUpdateWordWindow.xaml
+    /// Логика взаимодействия для AddOrUpdateLanguageWindow.xaml
     /// </summary>
-    public partial class AddOrUpdateWordWindow : Window
+    public partial class AddOrUpdateLanguageWindow : Window
     {
         private static Color errorColor = Color.FromRgb(108, 36, 33); // #6c2421
 
-        private EditLanguageWord word;
-        private ValidationManager validationManager;        
+        private Language language;
+        private ValidationManager validationManager;
 
-        public AddOrUpdateWordWindow(EditLanguageWord editWord)
+        public AddOrUpdateLanguageWindow(Language editLanguage)
         {
             InitializeComponent();
 
-            var titleName = editWord.Id == 0 ? "Добавление" : "Редактирование";
+            var titleName = editLanguage.Id == 0 ? "Добавление" : "Редактирование";
             L_TitleName.Content = titleName;
 
-            word = editWord;
-            DataContext = editWord;
+            language = editLanguage;
+            DataContext = editLanguage;
 
             var errorStyle = Resources["ErrorMessage"] as Style;
 
@@ -51,7 +52,7 @@ namespace CardWords.Views.Main
 
             var isValid = validationManager.Execute();
 
-            if (!isValid)
+            if(!isValid)
             {
                 SetEnabledWindow(true);
             }
@@ -59,20 +60,21 @@ namespace CardWords.Views.Main
 
         private void Save()
         {
-            var isSaveValid = CommandHelper.GetCommand<ISaveEditLanguageWordCommand>().Execute(word);
+            var isSaveValid = CommandHelper.GetCommand<ISaveLanguageCommand>().Execute(language);
 
             if (isSaveValid)
             {
                 DialogResult = true;
                 Close();
             }
-        }        
+        }
 
         private void PrepareToSave()
         {
-            word.LanguageWordName = word.LanguageWordName.Trim().ToLower();
-            word.Transcription = word.Transcription.Trim().ToLower();
-            word.Translation = word.Translation.Trim().ToLower();
+            if(!language.Name.IsNullOrEmpty())
+            {
+                language.Name = language.Name.Trim();
+            }
         }
 
         private void SetEnabledWindow(bool isEnabled)

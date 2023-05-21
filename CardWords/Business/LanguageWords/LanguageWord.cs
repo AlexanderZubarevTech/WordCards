@@ -1,6 +1,8 @@
-﻿using CardWords.Core.Entities;
+﻿using CardWords.Business.WordActivities;
+using CardWords.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using System.Collections.Generic;
 
 namespace CardWords.Business.LanguageWords
 {
@@ -20,6 +22,8 @@ namespace CardWords.Business.LanguageWords
                     .End()
                     .Column(x => x.Translation)
                     .End()
+                    .ReferenceList(x => x.Activities)
+                    .ReferenceList(x => x.ErrorActivities)
                 .End();
         }
 
@@ -47,5 +51,9 @@ namespace CardWords.Business.LanguageWords
         public string Transcription { get; set; }
 
         public string Translation { get; set; }
+
+        public List<WordActivity> Activities { get; set; }
+        
+        public List<ErrorWordActivity> ErrorActivities { get; set; }
     }
 }

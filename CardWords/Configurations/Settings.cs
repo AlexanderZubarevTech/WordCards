@@ -12,7 +12,7 @@ namespace CardWords.Configurations
             CurrentLanguage = languages[configuration.CurrentLanguage];
             TranslationLanguage = languages[configuration.CurrentTranslationLanguage];
             WordCardHasTimer = configuration.WordCardHasTimer;
-            WordCardTimerDutationInSeconds = configuration.WordCardTimerDutationInSeconds;
+            WordCardTimerDurationInSeconds = configuration.WordCardTimerDurationInSeconds;
             Languages = languages.Values.ToList();
         }
 
@@ -22,7 +22,7 @@ namespace CardWords.Configurations
         
         public bool WordCardHasTimer { get; set; }
         
-        public int WordCardTimerDutationInSeconds { get; set; }
+        public int WordCardTimerDurationInSeconds { get; set; }
 
         public List<Language> Languages { get; set; }
     }

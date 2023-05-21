@@ -9,29 +9,60 @@ namespace CardWords.Business.LanguageWords
 {
     public sealed class GetLanguageWordsCommand : EntityCommand, IGetLanguageWordsCommand
     {
-        public ObservableCollection<LanguageWord> Execute(string name, bool withoutTranscription)
+        public ObservableCollection<LanguageWordView> Execute(string name, bool withoutTranscription, WordStatus status)
         {
-            ObservableCollection<LanguageWord> result;
+            ObservableCollection<LanguageWordView> result;
 
             using (var db = new LanguageWordContext())
             {
-                var query = db.LanguageWords
-                    .Where(x => x.LanguageId == AppConfiguration.Instance.CurrentLanguage 
-                    && x.TranslationLanguageId == AppConfiguration.Instance.CurrentTranslationLanguage);
+                var queryInn = from wa in db.WordActivities
+                               join lw in db.LanguageWords on wa.LanguageWordId equals lw.Id
+                               where lw.LanguageId == AppConfiguration.Instance.CurrentLanguage
+                               && lw.TranslationLanguageId == AppConfiguration.Instance.CurrentTranslationLanguage
+                               group wa by wa.LanguageWordId into g
+                               select new
+                               {
+                                    LanguageWordId = g.Key,
+                                    Count = g.Count()
+                               };
 
-                if(!name.IsNullOrEmptyOrWhiteSpace())
+                var query = from lw in db.LanguageWords
+                            join t in queryInn on lw.Id equals t.LanguageWordId into inn
+                            from sub in inn.DefaultIfEmpty()
+                            where lw.LanguageId == AppConfiguration.Instance.CurrentLanguage
+                            && lw.TranslationLanguageId == AppConfiguration.Instance.CurrentTranslationLanguage
+                            select new LanguageWordView
+                            {
+                                Id = lw.Id,
+                                LanguageWordName = lw.LanguageWordName,
+                                Transcription = lw.Transcription,
+                                Translation = lw.Translation,
+                                IsNewWord = sub.Count == null
+                            };
+
+
+                if (!name.IsNullOrEmptyOrWhiteSpace())
                 {
                     var words = name.ToLower().Split(',').Select(x => x.Trim());
 
-                    query = query.Where(x => words.Contains(x.LanguageWordName));                    
+                    query = query.Where(x => words.Contains(x.LanguageWordName));
                 }
 
-                if(withoutTranscription)
+                if (withoutTranscription)
                 {
                     query = query.Where(x => x.Transcription == string.Empty);
                 }
 
-                result = new ObservableCollection<LanguageWord>(query.OrderBy(x => x.LanguageWordName).ToList());
+                if(status == WordStatus.NewWord)
+                {
+                    query = query.Where(x => x.IsNewWord);
+                }
+                else if(status == WordStatus.LearnedWord)
+                {
+                    query = query.Where(x => !x.IsNewWord);
+                }
+
+                result = new ObservableCollection<LanguageWordView>(query.OrderBy(x => x.LanguageWordName).ToList());
             }
 
             return result;
