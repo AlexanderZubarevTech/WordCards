@@ -19,10 +19,9 @@ namespace CardWords.Core.Validations
         private const string fieldValueTag = "FieldValue";
         private const string fieldBackgroundTag = "FieldBackground";
 
-        public ValidationManager(FrameworkElement mainElement, Style errorStyle, Color errorBacgroundColor, Action executeAction)
+        public ValidationManager(FrameworkElement mainElement, Style errorStyle, Color errorBacgroundColor)
         {
-            this.errorStyle = errorStyle;
-            this.executeAction = executeAction;
+            this.errorStyle = errorStyle;            
 
             Initialize(mainElement, errorBacgroundColor);
         }
@@ -31,9 +30,7 @@ namespace CardWords.Core.Validations
 
         private StackPanel errorMessagePanel;
 
-        private IReadOnlyDictionary<string, ValidationField> fields;
-
-        private readonly Action executeAction;
+        private IReadOnlyDictionary<string, ValidationField> fields;        
 
         #region Initialize
 
@@ -181,7 +178,7 @@ namespace CardWords.Core.Validations
 
         #endregion
 
-        public bool Execute()
+        public bool Execute(Action executeAction)
         {
             SetDefault();
 

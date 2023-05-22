@@ -24,12 +24,14 @@ namespace CardWords.Views.Main
             var titleName = editWord.Id == 0 ? "Добавление" : "Редактирование";
             L_TitleName.Content = titleName;
 
+            Btn_Load.Visibility = editWord.Id == 0 ? Visibility.Visible : Visibility.Collapsed;
+
             word = editWord;
             DataContext = editWord;
 
             var errorStyle = Resources["ErrorMessage"] as Style;
 
-            validationManager = new ValidationManager(SP_FieldsWithValidation, errorStyle, errorColor, Save);
+            validationManager = new ValidationManager(SP_FieldsWithValidation, errorStyle, errorColor);
         }
 
         private void Heap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -49,7 +51,7 @@ namespace CardWords.Views.Main
 
             SetEnabledWindow(false);
 
-            var isValid = validationManager.Execute();
+            var isValid = validationManager.Execute(Save);
 
             if (!isValid)
             {
@@ -87,6 +89,22 @@ namespace CardWords.Views.Main
             }
 
             IsEnabled = isEnabled;
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new LoadLibraryWindow();            
+
+            Hide();
+
+            if(window.ShowDialog() == true)
+            {                
+                Close();
+
+                return;
+            }
+
+            ShowDialog();
         }
     }
 }

@@ -9,10 +9,14 @@
 
   <ItemGroup>
     <None Remove="Source\Images\edit.png" />
+    <None Remove="Source\Images\template.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Source\Images\edit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\Images\template.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -30,7 +30,7 @@ namespace CardWords.Views.Main
 
             var errorStyle = Resources["ErrorMessage"] as Style;
 
-            validationManager = new ValidationManager(SP_FieldsWithValidation, errorStyle, errorColor, Save);
+            validationManager = new ValidationManager(SP_FieldsWithValidation, errorStyle, errorColor);
         }
 
         private void Heap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -50,7 +50,7 @@ namespace CardWords.Views.Main
 
             SetEnabledWindow(false);
 
-            var isValid = validationManager.Execute();
+            var isValid = validationManager.Execute(Save);
 
             if(!isValid)
             {

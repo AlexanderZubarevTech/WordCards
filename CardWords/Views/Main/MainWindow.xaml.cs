@@ -64,7 +64,7 @@ namespace CardWords
 
             var errorStyle = Resources["ErrorMessage"] as Style;
 
-            validationManager = new ValidationManager(SP_Settings_FieldsAndValidation, errorStyle, errorColor, SettingsSave);            
+            validationManager = new ValidationManager(SP_Settings_FieldsAndValidation, errorStyle, errorColor);            
         }
 
         public bool IsRunCards { get; set; }
@@ -272,7 +272,7 @@ namespace CardWords
 
         private void G_Settings_General_Save_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var isValid = validationManager.Execute();
+            var isValid = validationManager.Execute(SettingsSave);
 
             if (isValid)
             {
