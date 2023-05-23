@@ -7,13 +7,20 @@
         mc:Ignorable="d"
         Title="Тест" Height="850" Width="1350" Topmost="True"
         WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown" ResizeMode="NoResize" WindowStyle="None">
-    <Grid Background="#e9e9e9">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Common/CommonDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Style="{StaticResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="heapGrid" Grid.Row="0" Background="#223">
+        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource HeapBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
@@ -21,12 +28,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1"
-                    HorizontalAlignment="Right"
-                Background="Transparent" Click="Btn_Close_Click"
-                Content="X" Foreground="#CCC" BorderBrush="{x:Null}"/>
-            <Label VerticalAlignment="Center" MouseLeftButtonDown="Heap_MouseLeftButtonDown" 
-                   FontSize="16" Foreground="#CCC">Слова - карточки</Label>
+            <Button Name="Btn_Close" Grid.Column="1" Click="Btn_Close_Click" Style="{StaticResource HeapClose}"/>
+            <Label Name="L_TitleName" MouseLeftButtonDown="Heap_MouseLeftButtonDown" Content="Слова - карточки" Style="{StaticResource HeapTitle}"></Label>
         </Grid>
 
         <Grid x:Name="G_WordCard" Visibility="Visible" Grid.Row="1">
@@ -128,10 +131,10 @@
             </Grid>
 
             <ProgressBar x:Name="PB_timer" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
-                     Minimum="0" Maximum="500" Value="22" Height="50" Foreground="#4d278b"/>            
+                     Minimum="0" Maximum="500" Value="222" Height="50" Foreground="#4d278b"/>            
         </Grid>
 
-        <Grid x:Name="G_Result" Visibility="Hidden" Background="#4d278b" Grid.Row="1">
+        <Grid x:Name="G_Result" Visibility="Collapsed" Background="#4d278b" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="300"></RowDefinition>

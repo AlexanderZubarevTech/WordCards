@@ -8,14 +8,13 @@
         Title="Добавление" SizeToContent="Height"  MinHeight="540"  Width="900" WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Style x:Key="ErrorMessage">
-            <Setter Property="TextBlock.FontSize" Value="20" />
-            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
-            <Setter Property="TextBlock.Foreground" Value="#6c2421" />
-            <Setter Property="TextBlock.Margin" Value="0 0 0 10" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Common/CommonDictionary.xaml" />                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
-    <Grid Background="#e9e9e9">
+    <Grid Style="{StaticResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -24,7 +23,7 @@
 
         <Rectangle x:Name="G_DisabledWindow" Panel.ZIndex="100" Grid.RowSpan="3" Fill="#7000" Visibility="Collapsed"></Rectangle>
 
-        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
+        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource HeapBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
@@ -32,10 +31,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1" ToolTip="Закрыть"
-                    HorizontalAlignment="Right" Background="Transparent" Click="Btn_Close_Click"
-                Content="X" Foreground="#CCC" BorderBrush="{x:Null}"/>
-            <Label Name="L_TitleName" VerticalAlignment="Center" MouseLeftButtonDown="Heap_MouseLeftButtonDown" FontSize="16" Foreground="#CCC" Content="Загрузка словаря"></Label>
+            <Button Name="Btn_Close" Grid.Column="1" Click="Btn_Close_Click" Style="{StaticResource HeapClose}"/>
+            <Label Name="L_TitleName" MouseLeftButtonDown="Heap_MouseLeftButtonDown" Content="Загрузка словаря" Style="{StaticResource HeapTitle}"></Label>
         </Grid>
 
         <StackPanel Name="SP_MessageWithValidation" Grid.Row="1">
@@ -105,7 +102,8 @@
                     <Polyline  Points="130, 50, 150, 90, 170, 50" Stroke="#000" StrokeThickness="5"/>
                 </Grid>
 
-                <Button x:Name="Btn_Load" Grid.Row="3" Grid.Column="3" Width="200" Height="70" FontSize="26" Background="#555" Foreground="#ccc" Margin="0 0 10 0" Cursor="Hand" Click="Load_Click">Загрузить</Button>
+                <Button x:Name="Btn_Load" Grid.Row="3" Grid.Column="3" Width="200" Height="70" 
+                        Margin="0 0 10 0" Click="Load_Click" Style="{StaticResource MainAction}">Загрузить</Button>
 
                 <Grid Grid.Row="4" Grid.ColumnSpan="3" Margin="10 7">
                     <WrapPanel Name="WP_Progress_Percent" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -113,7 +111,9 @@
                         <TextBlock FontSize="18" Text="%"></TextBlock>
                     </WrapPanel>
 
-                    <ProgressBar x:Name="PB_Progress" Panel.ZIndex="0" Minimum="0" Maximum="100" Value="50" Foreground="#aad" ValueChanged="PB_Progress_ValueChanged" ></ProgressBar>
+                    <ProgressBar x:Name="PB_Progress" Panel.ZIndex="0" 
+                                 Minimum="0" Maximum="100" Value="50" 
+                                 ValueChanged="PB_Progress_ValueChanged" Style="{StaticResource DefaultProgress}"></ProgressBar>
                 </Grid>
 
                 <WrapPanel Name="WP_FoundWords" Grid.Row="5" Grid.Column="0" Margin="10 0 0 0">
@@ -137,12 +137,10 @@
                 <ColumnDefinition Width="200"></ColumnDefinition>
                 <ColumnDefinition Width="200"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            
-            <Button x:Name="Btn_Save" Grid.Column="2" FontSize="26" Background="#aaf" Foreground="#223" Margin="0 0 10 0" Cursor="Hand" Click="Save_Click">Сохранить</Button>
-            <Button Grid.Column="3" FontSize="26" Background="#CCC" Foreground="#000" Margin="10 0 0 0" Cursor="Hand" Click="Btn_Close_Click">Отмена</Button>
+
+            <Button x:Name="Btn_Save" Grid.Column="2"  Margin="0 0 10 0" Click="Save_Click" Style="{StaticResource MainAction}">Сохранить</Button>
+            <Button Grid.Column="3" Margin="10 0 0 0" Click="Btn_Close_Click" Style="{StaticResource DefaultAction}">Отмена</Button>
         </Grid>
-
-
 
     </Grid>
 </Window>

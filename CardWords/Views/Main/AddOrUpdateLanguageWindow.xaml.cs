@@ -13,10 +13,8 @@ namespace CardWords.Views.Main
     /// </summary>
     public partial class AddOrUpdateLanguageWindow : Window
     {
-        private static Color errorColor = Color.FromRgb(108, 36, 33); // #6c2421
-
+        private readonly ValidationManager validationManager;
         private Language language;
-        private ValidationManager validationManager;
 
         public AddOrUpdateLanguageWindow(Language editLanguage)
         {
@@ -29,6 +27,7 @@ namespace CardWords.Views.Main
             DataContext = editLanguage;
 
             var errorStyle = Resources["ErrorMessage"] as Style;
+            var errorColor = (Color)Resources["ValidationErrorFieldColor"];
 
             validationManager = new ValidationManager(SP_FieldsWithValidation, errorStyle, errorColor);
         }

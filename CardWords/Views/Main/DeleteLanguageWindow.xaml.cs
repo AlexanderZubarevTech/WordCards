@@ -12,10 +12,8 @@ namespace CardWords.Views.Main
     /// </summary>
     public partial class DeleteLanguageWindow : Window
     {
-        private static readonly Color errorColor = Color.FromRgb(108, 36, 33); // #6c2421
-
-        private readonly Language language;
         private readonly ValidationManager validationManager;
+        private readonly Language language;
 
         public DeleteLanguageWindow(Language language)
         {
@@ -25,6 +23,7 @@ namespace CardWords.Views.Main
             DataContext = language;
 
             var errorStyle = Resources["ErrorMessage"] as Style;
+            var errorColor = (Color)Resources["ValidationErrorFieldColor"];
 
             validationManager = new ValidationManager(SP_MessageWithValidation, errorStyle, errorColor);
         }
@@ -44,7 +43,7 @@ namespace CardWords.Views.Main
             Delete();
         }
 
-        private void Cancel(object sender, MouseButtonEventArgs e)
+        private void Cancel(object sender, RoutedEventArgs e)
         {
             Cancel();
         }

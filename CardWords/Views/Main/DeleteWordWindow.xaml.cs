@@ -24,12 +24,7 @@ namespace CardWords.Views.Main
         private void Delete(object sender, MouseButtonEventArgs e)
         {
             Delete();
-        }
-
-        private void Cancel(object sender, MouseButtonEventArgs e)
-        {
-            Cancel();
-        }
+        }        
 
         private void Delete()
         {

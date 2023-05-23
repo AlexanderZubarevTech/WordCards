@@ -8,42 +8,13 @@
         Title="Добавление" MinHeight="220" SizeToContent="Height" Width="800" WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Style x:Key="TitleStyle">
-            <Setter Property="TextBlock.FontSize" Value="26" />
-            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
-            <Setter Property="TextBlock.Foreground" Value="#DDD" />
-            <Setter Property="TextBlock.VerticalAlignment" Value="Center" />
-            <Setter Property="TextBlock.HorizontalAlignment" Value="Right" />
-            <Setter Property="Panel.ZIndex" Value="1" />
-            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-            <Setter Property="TextBlock.Margin" Value="0 0 10 0" />
-        </Style>
-        <Style x:Key="BacgroundTitle">
-            <Setter Property="Control.Height" Value="60" />
-            <Setter Property="Panel.ZIndex" Value="0" />
-        </Style>
-        <Style x:Key="BacgroundTitleFill">
-            <Setter Property="Shape.Fill" Value="#4d278e" />
-        </Style>
-        <Style x:Key="BacgroundTitleErrorFill">
-            <Setter Property="Shape.Fill" Value="#6c2421" />
-        </Style>
-        <Style x:Key="ErrorMessage">
-            <Setter Property="TextBlock.FontSize" Value="20" />
-            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
-            <Setter Property="TextBlock.Foreground" Value="#6c2421" />
-            <Setter Property="TextBlock.Margin" Value="0 0 0 10" />
-        </Style>
-        <Style x:Key="ValueStyle">
-            <Setter Property="TextBox.Background" Value="#EEE" />
-            <Setter Property="TextBox.Height" Value="60" />
-            <Setter Property="Panel.ZIndex" Value="1" />
-            <Setter Property="TextBox.Cursor" Value="IBeam" />
-            <Setter Property="TextBox.FontSize" Value="26" />
-            <Setter Property="TextBox.VerticalContentAlignment" Value="Center" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Common/CommonDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
-    <Grid Background="#e9e9e9">
+    <Grid Style="{StaticResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -52,7 +23,7 @@
 
         <Rectangle x:Name="G_DisabledWindow" Panel.ZIndex="100" Grid.RowSpan="3" Fill="#7000" Visibility="Collapsed"></Rectangle>
 
-        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
+        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource HeapBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
@@ -60,10 +31,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1" ToolTip="Закрыть"
-                    HorizontalAlignment="Right" Background="Transparent" Click="Btn_Close_Click"
-                Content="X" Foreground="#CCC" BorderBrush="{x:Null}"/>
-            <Label Name="L_TitleName" VerticalAlignment="Center" MouseLeftButtonDown="Heap_MouseLeftButtonDown" FontSize="16" Foreground="#CCC" Content="Добавление"></Label>
+            <Button Name="Btn_Close" Grid.Column="1" Click="Btn_Close_Click" Style="{StaticResource HeapClose}"/>
+            <Label Name="L_TitleName" MouseLeftButtonDown="Heap_MouseLeftButtonDown" Content="Добавление" Style="{StaticResource HeapTitle}"></Label>
         </Grid>
 
         <StackPanel Grid.Row="1" Margin="10" Name="SP_FieldsWithValidation">
@@ -74,22 +43,18 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <StackPanel Orientation="Horizontal" Style="{StaticResource TitleStyle}">
+                        <StackPanel Orientation="Horizontal" Style="{StaticResource DefaultFieldTitle}">
                             <TextBlock Text="Название" Tag="FieldName" ></TextBlock>                            
                             <TextBlock Text=":*" ></TextBlock>
                         </StackPanel>
-                        <Grid Style="{StaticResource BacgroundTitle}">
-                            <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
-                            <Grid.Effect>
-                                <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                            </Grid.Effect>
+                        <Grid Style="{StaticResource DefaultFieldTitleBacground}">
+                            <Rectangle Style="{StaticResource DefaultBackground}" Tag="FieldBackground" />                            
                         </Grid>
                     </Grid>
-                    <Grid Grid.Column="1">
-                        <TextBox x:Name="TBx_Name" Tag="FieldValue" Style="{StaticResource ValueStyle}" Text="{Binding Name}"></TextBox>
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                        </Grid.Effect>
+                    <Grid Grid.Column="1" Style="{StaticResource BaseBackground}">
+                        <TextBox x:Name="TBx_Name" Tag="FieldValue" 
+                                 Style="{StaticResource TextBoxValueStyle}" 
+                                 Text="{Binding Name}"></TextBox>                        
                     </Grid>
                 </Grid>                
             </StackPanel>
@@ -103,8 +68,8 @@
                 <ColumnDefinition Width="200"></ColumnDefinition>
                 <ColumnDefinition Width="200"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" FontSize="26" Background="#4d278e" Foreground="#fff" Margin="0 0 10 0" Cursor="Hand" Click="Save_Click">Сохранить</Button>
-            <Button Grid.Column="2" FontSize="26" Background="#CCC" Foreground="#000" Margin="10 0 0 0" Cursor="Hand" Click="Btn_Close_Click">Отмена</Button>
+            <Button Grid.Column="1"  Margin="0 0 10 0" Click="Save_Click" Style="{StaticResource MainAction}">Сохранить</Button>
+            <Button Grid.Column="3" Margin="10 0 0 0" Click="Btn_Close_Click" Style="{StaticResource DefaultAction}">Отмена</Button>
         </Grid>
 
     </Grid>

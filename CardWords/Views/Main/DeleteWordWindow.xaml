@@ -7,7 +7,15 @@
         mc:Ignorable="d"
         Title="Удаление слова" Height="220" Width="500" WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
-    <Grid Background="#e9e9e9">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Common/CommonDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid Style="{StaticResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -18,7 +26,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
+        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource HeapBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
@@ -26,16 +34,13 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1" ToolTip="Закрыть"
-                    HorizontalAlignment="Right" Background="Transparent" Click="Btn_Close_Click"
-                Content="X" Foreground="#CCC" BorderBrush="{x:Null}"/>
-            <Label VerticalAlignment="Center" MouseLeftButtonDown="Heap_MouseLeftButtonDown" 
-                   FontSize="16" Foreground="#CCC">Удаление слова</Label>
+            <Button Name="Btn_Close" Grid.Column="1" Click="Btn_Close_Click" Style="{StaticResource HeapClose}"/>
+            <Label Name="L_TitleName" MouseLeftButtonDown="Heap_MouseLeftButtonDown" Content="Удаление слова" Style="{StaticResource HeapTitle}"></Label>
         </Grid>
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="10">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1">
-                <TextBlock FontSize="20" FontWeight="SemiBold" Foreground="#223" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Вы действительно хотите удалить слово:"></TextBlock>
+                <TextBlock FontSize="20" Style="{StaticResource DefaultText}" Text="Вы действительно хотите удалить слово:"></TextBlock>
                 <TextBlock HorizontalAlignment="Center" Margin="0 10">
                     <TextBlock FontSize="24" FontWeight="SemiBold" Foreground="#223" VerticalAlignment="Center" Text="{Binding LanguageWordName}"></TextBlock>
                     <TextBlock FontSize="24" FontWeight="SemiBold" Foreground="#223" VerticalAlignment="Center" Text=" - "></TextBlock>
@@ -46,14 +51,10 @@
         <Grid Grid.Row="2" Grid.Column="0" Cursor="Hand" MouseLeftButtonDown="Delete">
             <TextBlock Panel.ZIndex="1" FontSize="20" FontWeight="SemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Удалить"></TextBlock>            
             <Grid Panel.ZIndex="0">                
-                <Rectangle Fill="#6c2421"/>                
+                <Rectangle Fill="{StaticResource ValidationErrorFieldBrush}"/>                
             </Grid>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="1" Cursor="Hand" MouseLeftButtonDown="Cancel">
-            <TextBlock Panel.ZIndex="1" FontSize="20" FontWeight="SemiBold" Foreground="#000" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Отмена"></TextBlock>
-            <Grid Panel.ZIndex="0">
-                <Rectangle Fill="#aaa"/>
-            </Grid>
-        </Grid>
+
+        <Button Grid.Row="2" Grid.Column="1" Margin="10 0 0 0" Click="Btn_Close_Click" Style="{StaticResource DefaultAction}">Отмена</Button>
     </Grid>
 </Window>

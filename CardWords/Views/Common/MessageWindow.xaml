@@ -8,23 +8,21 @@
        Title="Сообщение" SizeToContent="Height"  MinHeight="250"  Width="500" WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Style x:Key="Message">
-            <Setter Property="TextBlock.FontSize" Value="26" />
-            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
-            <Setter Property="TextBlock.Foreground" Value="#DDD" />
-            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="CommonDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
-    
-    
-    <Grid Background="#e9e9e9">
+
+    <Grid Style="{StaticResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
+        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource HeapBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
@@ -32,25 +30,20 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1" ToolTip="Закрыть"
-                    HorizontalAlignment="Right" Background="Transparent" Click="Btn_Close_Click"
-                Content="X" Foreground="#CCC" BorderBrush="{x:Null}"/>
-            <Label Name="L_TitleName" VerticalAlignment="Center" MouseLeftButtonDown="Heap_MouseLeftButtonDown" FontSize="16" Foreground="#CCC" Content="Сообщение"></Label>
+            <Button Name="Btn_Close" Grid.Column="1" Click="Btn_Close_Click" Style="{StaticResource HeapClose}"/>
+            <Label Name="L_TitleName" MouseLeftButtonDown="Heap_MouseLeftButtonDown" Content="Сообщение" Style="{StaticResource HeapTitle}"></Label>
         </Grid>
 
         <Grid  Grid.Row="1" Margin="10 20">
             <StackPanel Panel.ZIndex="1" Name="SP_Message" VerticalAlignment="Center" HorizontalAlignment="Center">                
             </StackPanel>
-            
-            <Grid Panel.ZIndex="0">
-                <Rectangle Fill="#5da7a8" />
-                <Grid.Effect>
-                    <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                </Grid.Effect>
+
+            <Grid Style="{StaticResource BaseBackground}">
+                <Rectangle Style="{StaticResource DefaultBackground10}" />                
             </Grid>
         </Grid>
 
-        <Button Grid.Row="2" Width="200" FontSize="26" Background="#ddd" Foreground="#223" Margin="0 0 0 10" Cursor="Hand" Click="Ok_Click">ОК</Button>
+        <Button Grid.Row="2" Width="200" Margin="0 0 0 10"  Style="{StaticResource DefaultAction}" Click="Ok_Click">ОК</Button>
 
     </Grid>
 </Window>

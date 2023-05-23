@@ -30,21 +30,44 @@ namespace CardWords
                 DeleteText
             }
 
-            private static Color defaultColor = Color.FromRgb(93, 167, 168); // #5da7a8
-            private static Color defaultLineColor = Color.FromRgb(108, 195, 196); // #6cc3c4
-            private static Color defaultTextColor = Color.FromRgb(238, 238, 238); // #DDD
-            private static Color defaultActiveMenuColor = Color.FromRgb(77, 39, 139); //#4d278b
-            private static Color defaultActiveTextMenuColor = Color.FromRgb(204, 204, 204); //#CCC
-            private static Color defaultDeleteColor = Color.FromArgb(0, 255, 255, 255);
-            private static Color defaultDeleteTextColor = Color.FromRgb(170, 0, 0); //#A00
+            private static Color defaultBacgroundColor = Color.FromRgb(233, 233, 233); // #e9e9e9
 
-            private static Color hoverColor = Color.FromRgb(108, 195, 196); // #6cc3c4
-            private static Color hoverLineColor = Color.FromRgb(140, 211, 212); //#8cd3d4
+            private static Color defaultColor = Color.FromRgb(0, 121, 169); // #0079a9
+            private static Color defaultLineColor = Color.FromRgb(0, 151, 211); // #0097d3
+            private static Color defaultTextColor = Color.FromRgb(238, 238, 238); // #DDD
+
+            private static Color defaultActiveMenuColor = Color.FromRgb(78, 49, 130); //#4e3182
+            private static Color defaultActiveLineColor = Color.FromRgb(106, 68, 174); //#6a44ae
+            private static Color defaultActiveTextMenuColor = Color.FromRgb(204, 204, 204); //#CCC
+
+            private static Color hoverColor = Color.FromRgb(0, 151, 211); // #0097d3
+            private static Color hoverLineColor = Color.FromRgb(41, 186, 244); // #29baf4
             private static Color hoverTextColor = Color.FromRgb(255, 255, 255); // #FFF
-            private static Color hoverActiveMenuColor = Color.FromRgb(93, 55, 155); //#5d379b
-            private static Color hoverActiveTextMenuColor = Color.FromRgb(238, 238, 238); //#DDD
-            private static Color hoverDeleteColor = Color.FromArgb(255, 170, 0, 0); //#A00
-            private static Color hoverDeleteTextColor = Color.FromRgb(255, 255, 255);
+
+            private static Color hoverActiveMenuColor = Color.FromRgb(106, 68, 174); //#6a44ae
+            private static Color hoverActiveLineColor = Color.FromRgb(132, 83, 220); //#8453dc
+            private static Color hoverActiveTextMenuColor = Color.FromRgb(221, 221, 221); //#DDD
+
+            private static Color correctColor = Color.FromRgb(3, 132, 36); // #038424
+            private static Color correctLineColor = Color.FromRgb(53, 162, 81); //#35a251
+            private static Color correctTextColor = Color.FromRgb(221, 221, 221); // #DDD
+
+            private static Color wrongtColor = Color.FromRgb(108, 36, 33); // #6c2421
+            private static Color wrongLineColor = Color.FromRgb(134, 58, 55); // #863a37
+            private static Color wrongTextColor = Color.FromRgb(221, 221, 221); // #DDD
+
+            private static Color newWordColor = Color.FromRgb(78, 49, 130); // #4e3182
+            private static Color newWordLineColor = Color.FromRgb(106, 68, 174); // #6a44ae
+            private static Color newWordTextColor = Color.FromRgb(221, 221, 221); // #DDD
+
+            private static Color wordResultColor = Color.FromRgb(0, 136, 189); // #0088bd
+            private static Color wordResultBacgroundColor = Color.FromRgb(0, 101, 141); // #00658d
+            private static Color wordResultTextColor = Color.FromRgb(221, 221, 221); // #DDD
+
+            private static Color validationErrorFieldColor = Color.FromRgb(108, 36, 33); // #6c2421
+            private static Color validationErrorFieldTextColor = Color.FromRgb(238, 238, 238); // #EEE
+
+            private static Color validationErrorTextColor = Color.FromRgb(108, 36, 33); // #6c2421
 
             private static readonly Dictionary<bool, Dictionary<ColorType, Color>> colors = new ()
             {
@@ -54,9 +77,7 @@ namespace CardWords
                         {ColorType.Line, defaultLineColor},
                         {ColorType.Text, defaultTextColor},
                         {ColorType.Active, defaultActiveMenuColor},
-                        {ColorType.ActiveText, defaultActiveTextMenuColor},
-                        {ColorType.Delete, defaultDeleteColor},
-                        {ColorType.DeleteText, defaultDeleteTextColor},
+                        {ColorType.ActiveText, defaultActiveTextMenuColor},                        
                     }
                 },
                 {true, new Dictionary<ColorType, Color>()
@@ -65,9 +86,7 @@ namespace CardWords
                         {ColorType.Line, hoverLineColor},
                         {ColorType.Text, hoverTextColor},
                         {ColorType.Active, hoverActiveMenuColor},
-                        {ColorType.ActiveText, hoverActiveTextMenuColor},
-                        {ColorType.Delete, hoverDeleteColor},
-                        {ColorType.DeleteText, hoverDeleteTextColor},
+                        {ColorType.ActiveText, hoverActiveTextMenuColor},                        
                     }
                 }
             };

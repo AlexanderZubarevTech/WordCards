@@ -17,8 +17,6 @@ namespace CardWords.Views.Main
     /// </summary>
     public partial class LoadLibraryWindow : Window
     {
-        private static Color errorColor = Color.FromRgb(108, 36, 33); // #6c2421
-
         private ValidationManager validationManager;
         private Dispatcher mainDispatcher;
         private string fullFileName;
@@ -44,6 +42,7 @@ namespace CardWords.Views.Main
             Btn_Save.IsEnabled = false;
 
             var errorStyle = Resources["ErrorMessage"] as Style;
+            var errorColor = (Color)Resources["ValidationErrorFieldColor"];
 
             validationManager = new ValidationManager(SP_MessageWithValidation, errorStyle, errorColor);
         }

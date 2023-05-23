@@ -14,7 +14,7 @@ namespace CardWords.Views.Common
         {
             InitializeComponent();
 
-            var style = Resources["Message"] as Style;
+            var style = Resources["DefaultWhiteText"] as Style;
 
             if(messages != null)
             {

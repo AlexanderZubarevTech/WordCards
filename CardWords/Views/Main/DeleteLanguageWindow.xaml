@@ -8,14 +8,13 @@
         Title="Удаление языка" MinHeight="320" Width="700" WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown" SizeToContent="Height">
     <Window.Resources>
-        <Style x:Key="ErrorMessage">
-            <Setter Property="TextBlock.FontSize" Value="20" />
-            <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
-            <Setter Property="TextBlock.Foreground" Value="#6c2421" />
-            <Setter Property="TextBlock.Margin" Value="0 0 0 10" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Common/CommonDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
-    <Grid Background="#e9e9e9">
+    <Grid Style="{StaticResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -27,8 +26,8 @@
         </Grid.ColumnDefinitions>
 
         <Rectangle x:Name="G_DisabledWindow" Panel.ZIndex="100" Grid.RowSpan="3" Fill="#7000" Visibility="Collapsed"></Rectangle>
-        
-        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Background="#223">
+
+        <Grid x:Name="G_heap" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource HeapBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
@@ -36,31 +35,23 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-            <Button Name="Btn_Close" FontSize="26" FontWeight="Bold" Width="30" Cursor="Hand" Grid.Column="1" ToolTip="Закрыть"
-                    HorizontalAlignment="Right" Background="Transparent" Click="Btn_Close_Click"
-                Content="X" Foreground="#CCC" BorderBrush="{x:Null}"/>
-            <Label VerticalAlignment="Center" MouseLeftButtonDown="Heap_MouseLeftButtonDown" 
-                   FontSize="16" Foreground="#CCC">Удаление языка</Label>
+            <Button Name="Btn_Close" Grid.Column="1" Click="Btn_Close_Click" Style="{StaticResource HeapClose}"/>
+            <Label Name="L_TitleName" MouseLeftButtonDown="Heap_MouseLeftButtonDown" Content="Удаление языка" Style="{StaticResource HeapTitle}"></Label>
         </Grid>
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="10">
             <StackPanel Name="SP_MessageWithValidation">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1">
-                    <TextBlock FontSize="20" FontWeight="SemiBold" Foreground="#223" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Вы действительно хотите удалить язык:"></TextBlock>
-                    <TextBlock HorizontalAlignment="Center" Margin="0 10" FontSize="24" FontWeight="SemiBold" Foreground="#223" VerticalAlignment="Center" Text="{Binding Name}"></TextBlock>
+                    <TextBlock Style="{StaticResource DefaultText}" Text="Вы действительно хотите удалить язык:"></TextBlock>
+                    <TextBlock Margin="0 10" Style="{StaticResource DefaultText}" Text="{Binding Name}"></TextBlock>
                 </StackPanel>
                 <Grid Margin="0 0 0 40">
                     <StackPanel Panel.ZIndex="1" >
-                        <TextBlock FontSize="20" FontWeight="SemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                               TextWrapping="Wrap" Margin="0 10 0 0">Внимание!</TextBlock>
-                        <TextBlock FontSize="20" FontWeight="SemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                               TextWrapping="Wrap" Margin="0 10">Будут удалены все слова и активность, связанная с данным языком!</TextBlock>                        
+                        <TextBlock FontSize="20" Style="{StaticResource DefaultWhiteText}" Margin="0 10 0 0">Внимание!</TextBlock>
+                        <TextBlock FontSize="20" Style="{StaticResource DefaultWhiteText}" Margin="0 10">Будут удалены все слова и активность, связанная с данным языком!</TextBlock>                        
                     </StackPanel>                    
-                    <Grid Panel.ZIndex="0" >
-                        <Rectangle Fill="#6c2421" RadiusX="10" RadiusY="10"/>
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                        </Grid.Effect>
+                    <Grid Style="{StaticResource BaseBackground}" >
+                        <Rectangle Fill="{StaticResource ValidationErrorFieldBrush}" Style="{StaticResource DefaultBackground10}"/>                       
                     </Grid>
                 </Grid>
                 <StackPanel x:Name="SP_ErrorMessages" Tag="Validation"></StackPanel>                
@@ -68,16 +59,13 @@
             
         </Grid>
         <Grid Grid.Row="2" Grid.Column="0" Cursor="Hand" MouseLeftButtonDown="Delete">
-            <TextBlock Panel.ZIndex="1" FontSize="20" FontWeight="SemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Удалить"></TextBlock>
+            <TextBlock Panel.ZIndex="1" FontSize="20" Style="{StaticResource DefaultWhiteText}" Text="Удалить"></TextBlock>
             <Grid Panel.ZIndex="0">
-                <Rectangle Fill="#6c2421"/>
+                <Rectangle Fill="{StaticResource ValidationErrorFieldBrush}"/>
             </Grid>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="1" Cursor="Hand" MouseLeftButtonDown="Cancel">
-            <TextBlock Panel.ZIndex="1" FontSize="20" FontWeight="SemiBold" Foreground="#000" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Отмена"></TextBlock>
-            <Grid Panel.ZIndex="0">
-                <Rectangle Fill="#aaa"/>
-            </Grid>
-        </Grid>
+
+        <Button  Grid.Row="2" Grid.Column="1" Style="{StaticResource DefaultAction}" Click="Cancel">Отмена</Button>
+                
     </Grid>
 </Window>

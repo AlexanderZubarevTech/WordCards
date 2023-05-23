@@ -1,0 +1,118 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="DefaultBackgroundColor" A="0xFF" R="0xE9" G="0xE9" B="0xE9"/>
+    <SolidColorBrush x:Key="DefaultBacgroundBrush" Color="#e9e9e9"></SolidColorBrush>
+    
+    
+
+    <Color x:Key="DefaultColor" A="0xFF" R="0x00" G="0x79" B="0xA9"/>
+    <SolidColorBrush x:Key="DefaultBrush" Color="{StaticResource DefaultColor}"></SolidColorBrush>
+
+    <Color x:Key="DefaultLineColor" A="0xFF" R="0x00" G="0x97" B="0xD3"/>
+    <SolidColorBrush x:Key="DefaultLineBrush" Color="{StaticResource DefaultLineColor}"></SolidColorBrush>
+
+    <Color x:Key="DefaultTextColor" A="0xFF" R="0xDD" G="0xDD" B="0xDD"/>
+    <SolidColorBrush x:Key="DefaultTextBrush" Color="{StaticResource DefaultTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="NotEnabledButtonColor" A="0xFF" R="0x88" G="0x88" B="0x88"/>
+    <SolidColorBrush x:Key="NotEnabledButtonBrush" Color="{StaticResource NotEnabledButtonColor}"></SolidColorBrush>
+
+    <Color x:Key="NotEnabledButtonTextColor" A="0xFF" R="0x66" G="0x66" B="0x66"/>
+    <SolidColorBrush x:Key="NotEnabledButtonTextBrush" Color="{StaticResource NotEnabledButtonTextColor}"></SolidColorBrush>
+
+    
+
+    <Color x:Key="CancelButtonColor" A="0xFF" R="0xC0" G="0xC0" B="0xC0"/>
+    <SolidColorBrush x:Key="CancelButtonBrush" Color="{StaticResource CancelButtonColor}"></SolidColorBrush>
+
+    <Color x:Key="CancelButtonTextColor" A="0xFF" R="0x00" G="0x00" B="0x00"/>
+    <SolidColorBrush x:Key="CancelButtonTextBrush" Color="{StaticResource CancelButtonTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="HoverCancelButtonColor" A="0xFF" R="0xEE" G="0xEE" B="0xEE"/>
+    <SolidColorBrush x:Key="HoverCancelButtonBrush" Color="{StaticResource HoverCancelButtonColor}"></SolidColorBrush>
+    
+    
+
+    <Color x:Key="DefaultActiveColor" A="0xFF" R="0x4E" G="0x32" B="0x82"/>
+    <SolidColorBrush x:Key="DefaultActiveBrush" Color="{StaticResource DefaultActiveColor}"></SolidColorBrush>
+
+    <Color x:Key="DefaultActiveTextColor" A="0xFF" R="0xCC" G="0xCC" B="0xCC"/>
+    <SolidColorBrush x:Key="DefaultActiveTextBrush" Color="{StaticResource DefaultActiveTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="HoverColor" A="0xFF" R="0x00" G="0x97" B="0xD3"/>
+    <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}"></SolidColorBrush>
+
+    <Color x:Key="HoverLineColor" A="0xFF" R="0x29" G="0xBA" B="0xF4"/>
+    <SolidColorBrush x:Key="HoverLineBrush" Color="{StaticResource HoverLineColor}"></SolidColorBrush>
+
+    <Color x:Key="HoverTextColor" A="0xFF" R="0xFF" G="0xFF" B="0xFF"/>
+    <SolidColorBrush x:Key="HoverTextBrush" Color="{StaticResource HoverTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="HoverActiveColor" A="0xFF" R="0x6A" G="0x44" B="0xAE"/>
+    <SolidColorBrush x:Key="HoverActiveBrush" Color="{StaticResource HoverActiveColor}"></SolidColorBrush>
+
+    <Color x:Key="HoverActiveTextColor" A="0xFF" R="0xDD" G="0xDD" B="0xDD"/>
+    <SolidColorBrush x:Key="HoverActiveTextBrush" Color="{StaticResource HoverActiveTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="CorrectColor" A="0xFF" R="0x03" G="0x84" B="0x24"/>
+    <SolidColorBrush x:Key="CorrectBrush" Color="{StaticResource CorrectColor}"></SolidColorBrush>
+
+    <Color x:Key="CorrectLineColor" A="0xFF" R="0x35" G="0xA2" B="0x51"/>
+    <SolidColorBrush x:Key="CorrectLineBrush" Color="{StaticResource CorrectLineColor}"></SolidColorBrush>
+
+    <Color x:Key="CorrectTextColor" A="0xFF" R="0xDD" G="0xDD" B="0xDD"/>
+    <SolidColorBrush x:Key="CorrectTextBrush" Color="{StaticResource CorrectTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="WrongColor" A="0xFF" R="0x6C" G="0x24" B="0x21"/>
+    <SolidColorBrush x:Key="WrongBrush" Color="{StaticResource WrongColor}"></SolidColorBrush>
+
+    <Color x:Key="WrongLineColor" A="0xFF" R="0x86" G="0x3A" B="0x37"/>
+    <SolidColorBrush x:Key="WrongLineBrush" Color="{StaticResource WrongLineColor}"></SolidColorBrush>
+
+    <Color x:Key="WrongTextColor" A="0xFF" R="0xDD" G="0xDD" B="0xDD"/>
+    <SolidColorBrush x:Key="WrongTextBrush" Color="{StaticResource WrongTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="NewWordColor" A="0xFF" R="0x4E" G="0x31" B="0x82"/>
+    <SolidColorBrush x:Key="NewWordBrush" Color="{StaticResource NewWordColor}"></SolidColorBrush>
+
+    <Color x:Key="NewWordLineColor" A="0xFF" R="0x6A" G="0x44" B="0xAE"/>
+    <SolidColorBrush x:Key="NewWordLineBrush" Color="{StaticResource NewWordLineColor}"></SolidColorBrush>
+
+    <Color x:Key="NewWordTextColor" A="0xFF" R="0xDD" G="0xDD" B="0xDD"/>
+    <SolidColorBrush x:Key="NewWordTextBrush" Color="{StaticResource NewWordTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="WordResultColor" A="0xFF" R="0x00" G="0x88" B="0xBD"/>
+    <SolidColorBrush x:Key="WordResultBrush" Color="{StaticResource WordResultColor}"></SolidColorBrush>
+
+    <Color x:Key="WordResultBackgroundColor" A="0xFF" R="0x00" G="0x65" B="0x8D"/>
+    <SolidColorBrush x:Key="WordResultBackgroundBrush" Color="{StaticResource WordResultBackgroundColor}"></SolidColorBrush>
+
+    <Color x:Key="WordResultTextColor" A="0xFF" R="0xDD" G="0xDD" B="0xDD"/>
+    <SolidColorBrush x:Key="WordResultTextBrush" Color="{StaticResource WordResultTextColor}"></SolidColorBrush>
+
+
+
+    <Color x:Key="ValidationErrorFieldColor" A="0xFF" R="0x6C" G="0x24" B="0x21"/>
+    <SolidColorBrush x:Key="ValidationErrorFieldBrush" Color="{StaticResource ValidationErrorFieldColor}"></SolidColorBrush>
+
+    <Color x:Key="ValidationErrorTextColor" A="0xFF" R="0x6C" G="0x24" B="0x21"/>
+    <SolidColorBrush x:Key="ValidationErrorTextBrush" Color="{StaticResource ValidationErrorTextColor}"></SolidColorBrush>
+    
+</ResourceDictionary>
