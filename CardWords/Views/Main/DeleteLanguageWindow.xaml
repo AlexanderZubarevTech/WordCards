@@ -43,12 +43,12 @@
             <StackPanel Name="SP_MessageWithValidation">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1">
                     <TextBlock Style="{StaticResource DefaultText}" Text="Вы действительно хотите удалить язык:"></TextBlock>
-                    <TextBlock Margin="0 10" Style="{StaticResource DefaultText}" Text="{Binding Name}"></TextBlock>
+                    <TextBlock Margin="0 10" Style="{StaticResource DefaultTextBold}" Text="{Binding Name}"></TextBlock>
                 </StackPanel>
                 <Grid Margin="0 0 0 40">
                     <StackPanel Panel.ZIndex="1" >
-                        <TextBlock FontSize="20" Style="{StaticResource DefaultWhiteText}" Margin="0 10 0 0">Внимание!</TextBlock>
-                        <TextBlock FontSize="20" Style="{StaticResource DefaultWhiteText}" Margin="0 10">Будут удалены все слова и активность, связанная с данным языком!</TextBlock>                        
+                        <TextBlock FontSize="20" Style="{StaticResource DefaultWhiteTextLight}" Margin="0 10 0 0">Внимание!</TextBlock>
+                        <TextBlock FontSize="20" Style="{StaticResource DefaultWhiteTextLight}" Margin="0 10">Будут удалены все слова и активность, связанная с данным языком!</TextBlock>                        
                     </StackPanel>                    
                     <Grid Style="{StaticResource BaseBackground}" >
                         <Rectangle Fill="{StaticResource ValidationErrorFieldBrush}" Style="{StaticResource DefaultBackground10}"/>                       

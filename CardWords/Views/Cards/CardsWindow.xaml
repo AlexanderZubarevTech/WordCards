@@ -32,7 +32,7 @@
             <Label Name="L_TitleName" MouseLeftButtonDown="Heap_MouseLeftButtonDown" Content="Слова - карточки" Style="{StaticResource HeapTitle}"></Label>
         </Grid>
 
-        <Grid x:Name="G_WordCard" Visibility="Visible" Grid.Row="1">
+        <Grid x:Name="G_WordCard" Visibility="Collapsed" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -44,37 +44,23 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-
             <ProgressBar x:Name="PB_progress" Grid.Row="0" Grid.ColumnSpan="2" 
-                     Minimum="0" Maximum="100" Value="70" Height="50" Foreground="#5da7a8"/>            
+                     Minimum="0" Maximum="100" Value="70" Height="50" Foreground="{StaticResource DefaultBrush}"/>            
             
             <TextBlock x:Name="WordIndex" Visibility="Collapsed" Text="0"></TextBlock>
             <Grid Grid.Row="1" Grid.ColumnSpan="2">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1">
-                    <TextBlock x:Name="TB_WordName" FontSize="90" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Word name"></TextBlock>
-                    <TextBlock x:Name="TB_Transcription" FontSize="40" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Transcription"></TextBlock>
-                    <TextBlock x:Name="TB_TranslationNewWord" FontSize="60" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Translation new word" Visibility="Collapsed"></TextBlock>
+                    <TextBlock x:Name="TB_WordName" FontSize="90" Style="{StaticResource DefaultWhiteTextBold}" Text="Word name"></TextBlock>
+                    <TextBlock x:Name="TB_Transcription" FontSize="40" Style="{StaticResource DefaultWhiteTextBold}" Text="Transcription"></TextBlock>
+                    <TextBlock x:Name="TB_TranslationNewWord" FontSize="60" Style="{StaticResource DefaultWhiteTextBold}" Text="Translation new word" Visibility="Collapsed"></TextBlock>
                 </StackPanel>
-                <Grid Width="1200" Height="450" Panel.ZIndex="0">
-                    <TextBlock x:Name="TB_NewWord" FontSize="38" Panel.ZIndex="1" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Right" Text="Новое слово!" Visibility="Collapsed" Margin="0 10 50 0"></TextBlock>
-                    <Rectangle Name="R_WordBackground" Fill="#5da7a8" RadiusX="25" RadiusY="25"/>
-                    <Polygon Name="P_WordBackground_Line_1" Fill="#6cc3c4" Points="0, 264, 330, 0, 530, 0, 0, 424" />
-                    <Polygon Name="P_WordBackground_Line_2" Fill="#6cc3c4" Points="670, 450, 1200, 26, 1200, 186, 870, 450" />
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.2" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                    </Grid.Effect>
+                <Grid Width="1200" Height="450" Style="{StaticResource BaseBackground}">
+                    <TextBlock x:Name="TB_NewWord" FontSize="38" Panel.ZIndex="1" FontWeight="Bold" Foreground="{StaticResource DefaultTextBrush}" VerticalAlignment="Top" HorizontalAlignment="Right" Text="Новое слово!" Visibility="Collapsed" Margin="0 10 50 0"></TextBlock>
+                    <Rectangle Name="R_WordBackground" Style="{StaticResource DefaultBackground25}"/>
+                    <Polygon Name="P_WordBackground_Line_1" Style="{StaticResource DefaultLineBackground}" Points="0, 264, 330, 0, 530, 0, 0, 424" />
+                    <Polygon Name="P_WordBackground_Line_2" Style="{StaticResource DefaultLineBackground}" Points="670, 450, 1200, 26, 1200, 186, 870, 450" />                    
                 </Grid>
             </Grid>
-
-            <!--#5da7a8 - по умолчанию (основа)
-            #6cc3c4 - по умолчанию (полосы)
-        
-            #038424 - верный ответ (основа)
-            #35a251 - верный ответ (полосы)
-        
-            #6c2421 - неправильный ответ (основа)
-            #863a37 - неправильный ответ (полосы)            
-        -->
 
             <Grid Grid.Row="2" Grid.Column="0" x:Name="G_LeftTranslation" Visibility="Visible">
                 <Grid.ColumnDefinitions>
@@ -82,14 +68,13 @@
                     <ColumnDefinition Width="150"></ColumnDefinition>
                     <ColumnDefinition Width="500"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="TB_LeftTranslation" Grid.Column="2" FontSize="40" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="0 0 50 0" TextWrapping="Wrap" Text="Left word name"></TextBlock>
-                <TextBlock Grid.Column="1" FontSize="120" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Left" Panel.ZIndex="1" Margin="64,10,0,0" Text="&lt;"></TextBlock>
+                <TextBlock x:Name="TB_LeftTranslation" Grid.Column="2" Style="{StaticResource DefaultWhiteTextBold}" FontSize="40" FontWeight="Bold" Panel.ZIndex="1" Margin="0 0 50 0" Text="Left word name"></TextBlock>
+                <TextBlock Grid.Column="1" FontSize="120" Style="{StaticResource DefaultWhiteTextBold}" VerticalAlignment="Top" HorizontalAlignment="Left" Panel.ZIndex="1" Margin="64,10,0,0" Text="&lt;"></TextBlock>
 
-                <Grid Grid.Column="1" Grid.ColumnSpan="2" Width="600" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_LeftTranslation_MouseLeftButtonDown"  Cursor="Hand">
-                    <Rectangle Name="R_LeftTranslationBackbround" Fill="#5da7a8" RadiusX="25" RadiusY="25" />
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.2" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                    </Grid.Effect>
+                <Grid Grid.Column="1" Grid.ColumnSpan="2" Width="600" Height="170" 
+                      MouseLeftButtonDown="Grid_LeftTranslation_MouseLeftButtonDown" 
+                      Style="{StaticResource BaseBackground}"  Cursor="Hand">
+                    <Rectangle Name="R_LeftTranslationBackbround" Style="{StaticResource DefaultBackground25}" />
                 </Grid>
             </Grid>
 
@@ -99,14 +84,13 @@
                     <ColumnDefinition Width="150"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="TB_RightTranslation" Grid.Column="0" FontSize="40" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="50 0 0 0" TextWrapping="Wrap" Text="Right word name"></TextBlock>
-                <TextBlock Grid.Column="1" FontSize="120" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Margin="0,10,64,0" Text=">"></TextBlock>
+                <TextBlock x:Name="TB_RightTranslation" Grid.Column="0" FontSize="40" Style="{StaticResource DefaultWhiteTextBold}"  Panel.ZIndex="1" Margin="50 0 0 0" Text="Right word name"></TextBlock>
+                <TextBlock Grid.Column="1" FontSize="120" Style="{StaticResource DefaultWhiteTextBold}" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Margin="0,10,64,0" Text=">"></TextBlock>
 
-                <Grid Grid.Column="0" Grid.ColumnSpan="2" Width="600" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_RightTranslation_MouseLeftButtonDown"  Cursor="Hand">
-                    <Rectangle Name="R_RightTranslationBackbround" Fill="#5da7a8" RadiusX="25" RadiusY="25" />
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.2" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                    </Grid.Effect>
+                <Grid Grid.Column="0" Grid.ColumnSpan="2" Width="600" Height="170" 
+                      MouseLeftButtonDown="Grid_RightTranslation_MouseLeftButtonDown"  
+                      Style="{StaticResource BaseBackground}" Cursor="Hand">
+                    <Rectangle Name="R_RightTranslationBackbround" Style="{StaticResource DefaultBackground25}" />
                 </Grid>
             </Grid>
 
@@ -117,28 +101,34 @@
                     <ColumnDefinition Width="200"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock  Grid.Column="1" FontSize="60" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="200 0 0 0" TextWrapping="Wrap" Text="Понятно!"></TextBlock>
-                <TextBlock Grid.Column="2" FontSize="120" FontWeight="Bold" Foreground="#DDD" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Margin="0,10,100,0" Text=">"></TextBlock>
+                <TextBlock  Grid.Column="1" FontSize="60" Style="{StaticResource DefaultWhiteTextBold}" Panel.ZIndex="1" Margin="200 0 0 0" Text="Понятно!"></TextBlock>
+                <TextBlock Grid.Column="2" FontSize="120" Style="{StaticResource DefaultWhiteTextBold}" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Margin="0,10,100,0" Text=">"></TextBlock>
 
-                <Grid Grid.Column="1" Grid.ColumnSpan="2" Width="1200" Height="170" Panel.ZIndex="0" MouseLeftButtonDown="Grid_Understood_MouseLeftButtonDown" Cursor="Hand">
-                    <Rectangle Name="R_UnderstoodBackbround" Fill="#4d278b" RadiusX="25" RadiusY="25"/>
-                    <Polygon Name="P_UnderstoodBackbround_Line_1" Fill="#622cb9" Points="87, 170, 300, 0, 500, 0, 287, 170" />
-                    <Polygon Name="P_UnderstoodBackbround_Line_2" Fill="#622cb9" Points="700, 170, 913, 0, 1113, 0, 900, 170" />
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.2" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                    </Grid.Effect>
+                <Grid Grid.Column="1" Grid.ColumnSpan="2" Width="1200" Height="170" 
+                      MouseLeftButtonDown="Grid_Understood_MouseLeftButtonDown"
+                      Style="{StaticResource BaseBackground}" Cursor="Hand">
+                    <Rectangle Name="R_UnderstoodBackbround" Style="{StaticResource NewWordBackground25}"/>
+                    <Polygon Name="P_UnderstoodBackbround_Line_1" Style="{StaticResource NewWordLineBackground}" Points="87, 170, 300, 0, 500, 0, 287, 170" />
+                    <Polygon Name="P_UnderstoodBackbround_Line_2" Style="{StaticResource NewWordLineBackground}" Points="700, 170, 913, 0, 1113, 0, 900, 170" />
                 </Grid>
             </Grid>
 
             <ProgressBar x:Name="PB_timer" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
-                     Minimum="0" Maximum="500" Value="222" Height="50" Foreground="#4d278b"/>            
+                     Minimum="0" Maximum="500" Value="222" Height="50" Foreground="{StaticResource NewWordBrush}"/>            
         </Grid>
 
-        <Grid x:Name="G_Result" Visibility="Collapsed" Background="#4d278b" Grid.Row="1">
+        <Grid x:Name="G_Result" Visibility="Visible" Background="{StaticResource WordResultBackgroundBrush}" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="300"></RowDefinition>
-                <RowDefinition Height="120"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="90"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>                
+                <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition Height="100"></RowDefinition>
                 <RowDefinition Height="50"></RowDefinition>
@@ -147,58 +137,56 @@
                 <ColumnDefinition Width="50"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="30"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="50"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock x:Name="TB_ResultWordsCountTitle" FontSize="60" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Слов:"></TextBlock>
-                <TextBlock x:Name="TB_ResultWordsCount" FontSize="100" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="20"/>
-            </StackPanel>
+            <TextBlock x:Name="TB_ResultWordsCountTitle" Panel.ZIndex="1" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" FontSize="60" Style="{StaticResource DefaultWhiteTextBold}" Text="Слов:"></TextBlock>
+            <TextBlock x:Name="TB_ResultWordsCount" Panel.ZIndex="1" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" FontSize="100" Margin="0 0 0 0" Style="{StaticResource DefaultWhiteTextBold}" Text="20"/>
 
-            <StackPanel Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock x:Name="TB_ResultSequenceCountTitle" FontSize="30" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Максимальная последовательность:"></TextBlock>
-                <TextBlock x:Name="TB_ResultSequenceCount" FontSize="100" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="7"/>
-            </StackPanel>
+            <TextBlock x:Name="TB_ResultCorrectWordsCountTitle" Panel.ZIndex="1" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" FontSize="50" Style="{StaticResource DefaultWhiteTextBold}" Text="Правильных ответов:"></TextBlock>
+            <TextBlock x:Name="TB_ResultCorrectWordsCount" Panel.ZIndex="1" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" FontSize="100" Style="{StaticResource DefaultWhiteTextBold}" Text="11"/>
 
-            <StackPanel Grid.Row="2" Grid.Column="1" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock x:Name="TB_ResultNewWordsCountTitle" FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Новых слов:"></TextBlock>
-                <TextBlock x:Name="TB_ResultNewWordsCount" FontSize="40" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="5"/>
-            </StackPanel>
+            <TextBlock x:Name="TB_ResultNewWordsCountTitle" Panel.ZIndex="1" Grid.Row="7" Grid.Column="1" FontSize="24" Style="{StaticResource DefaultWhiteTextBold}" Text="Новых слов:"></TextBlock>
+            <TextBlock x:Name="TB_ResultNewWordsCount" Panel.ZIndex="1" Grid.Row="8" Grid.Column="1" FontSize="40" Style="{StaticResource DefaultWhiteTextBold}" Text="5"/>
+            
+            <TextBlock x:Name="TB_ResultSequenceCountTitle" Panel.ZIndex="1" Grid.Row="7" Grid.Column="2" FontSize="24" Style="{StaticResource DefaultWhiteTextBold}" Text="Максимальная последовательность:"></TextBlock>
+            <TextBlock x:Name="TB_ResultSequenceCount" Panel.ZIndex="1" Grid.Row="8" Grid.Column="2" FontSize="40" Style="{StaticResource DefaultWhiteTextBold}" Text="7"/>
 
-            <StackPanel Grid.Row="2" Grid.Column="2" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock x:Name="TB_ResultCorrectWordsCountTitle" FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Правильных ответов:"></TextBlock>
-                <TextBlock x:Name="TB_ResultCorrectWordsCount" FontSize="40" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="11"/>
-            </StackPanel>
+            <TextBlock x:Name="TB_ResultWrongWordsCountTitle" Panel.ZIndex="1" Grid.Row="7" Grid.Column="4" FontSize="24" Style="{StaticResource DefaultWhiteTextBold}" Text="Ошибок:"></TextBlock>
+            <TextBlock x:Name="TB_ResultWrongWordsCount" Panel.ZIndex="1" Grid.Row="8" Grid.Column="4" FontSize="40" Style="{StaticResource DefaultWhiteTextBold}" Text="4"/>
 
-            <StackPanel Grid.Row="2" Grid.Column="3" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock x:Name="TB_ResultWrongWordsCountTitle" FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Ошибок:"></TextBlock>
-                <TextBlock x:Name="TB_ResultWrongWordsCount" FontSize="40" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="4"/>
-            </StackPanel>
+            <TextBlock x:Name="TB_ResultTimeTitle" Panel.ZIndex="1" Grid.Row="7" Grid.Column="5" FontSize="24" Style="{StaticResource DefaultWhiteTextBold}" Text="Затраченное время:"></TextBlock>
+            <TextBlock x:Name="TB_ResultTime" Panel.ZIndex="1" Grid.Row="8" Grid.Column="5" FontSize="40" Style="{StaticResource DefaultWhiteTextBold}" Text="1 мин 20 с"/>
 
-            <StackPanel Grid.Row="2" Grid.Column="4" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock x:Name="TB_ResultTimeTitle" FontSize="24" FontWeight="Bold" Foreground="#DDD"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Затраченное время:"></TextBlock>
-                <TextBlock x:Name="TB_ResultTime" FontSize="40" FontWeight="Bold" Foreground="#DDD" HorizontalAlignment="Center" Text="1 мин 20 с"/>
-            </StackPanel>           
-
-            <Grid Name="G_Result_BackgroundInfo"  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="2" Panel.ZIndex="0" >
-                <Rectangle Fill="#622cb9" RadiusX="25" RadiusY="25"/>
+            <Grid Name="G_Result_BackgroundInfo"  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="4" Style="{StaticResource BaseBackground}">
+                <Rectangle Fill="{StaticResource WordResultBrush}" RadiusX="10" RadiusY="10" />
                 <Grid Name="G_Stars"></Grid>
-                <Grid.Effect>
-                    <DropShadowEffect Opacity="0.2" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                </Grid.Effect>
             </Grid>
 
-            <Grid Name="G_Result_Close" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Cursor="Hand" MouseLeftButtonDown="GridResultClose_MouseLeftButtonDown">
+            <Grid Name="G_Result_BackgroundInfo2"  Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="4" Style="{StaticResource BaseBackground}">
+                <Rectangle Fill="{StaticResource WordResultBrush}" RadiusX="10" RadiusY="10" />                
+                <Grid Name="G_Stars2"></Grid>
+            </Grid>
+
+            <Grid Name="G_Result_BackgroundInfo3"  Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="4" Style="{StaticResource BaseBackground}">
+                <Rectangle Fill="{StaticResource WordResultBrush}" RadiusX="10" RadiusY="10" />
+                <Grid Name="G_Stars3"></Grid>
+            </Grid>
+
+            <Grid Name="G_Result_BackgroundInfo4"  Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="4" Style="{StaticResource BaseBackground}">
+                <Rectangle Fill="{StaticResource WordResultBrush}" RadiusX="10" RadiusY="10"/>
+                <Grid Name="G_Stars4"></Grid>
+            </Grid>
+            
+            <Grid Name="G_Result_Close" Grid.Row="11" Grid.Column="2" Grid.ColumnSpan="3" Cursor="Hand" MouseLeftButtonDown="GridResultClose_MouseLeftButtonDown">
                 <StackPanel Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Name="TB_Result_Close" FontSize="30" FontWeight="Bold" Foreground="#DDD"  TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Закрыть"></TextBlock>                    
+                    <TextBlock Name="TB_Result_Close" FontSize="30" Style="{StaticResource DefaultWhiteTextBold}" Text="Закрыть"></TextBlock>                    
                 </StackPanel>
-                <Grid Panel.ZIndex="0">
-                    <Rectangle Fill="#622cb9" RadiusX="25" RadiusY="25"/>
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.2" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                    </Grid.Effect>
+                <Grid Style="{StaticResource BaseBackground}">
+                    <Rectangle Fill="{StaticResource WordResultBrush}" RadiusX="25" RadiusY="25"/>
                 </Grid>
                 <Grid Name="G_CloseStars"></Grid>
             </Grid>

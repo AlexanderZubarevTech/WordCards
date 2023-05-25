@@ -38,22 +38,22 @@
     
     
 
-    <Color x:Key="DefaultActiveColor" A="0xFF" R="0x4E" G="0x32" B="0x82"/>
-    <SolidColorBrush x:Key="DefaultActiveBrush" Color="{StaticResource DefaultActiveColor}"></SolidColorBrush>
+    <Color x:Key="ActiveColor" A="0xFF" R="0x4E" G="0x32" B="0x82"/>
+    <SolidColorBrush x:Key="ActiveBrush" Color="{StaticResource ActiveColor}"></SolidColorBrush>
 
-    <Color x:Key="DefaultActiveTextColor" A="0xFF" R="0xCC" G="0xCC" B="0xCC"/>
-    <SolidColorBrush x:Key="DefaultActiveTextBrush" Color="{StaticResource DefaultActiveTextColor}"></SolidColorBrush>
+    <Color x:Key="ActiveTextColor" A="0xFF" R="0xCC" G="0xCC" B="0xCC"/>
+    <SolidColorBrush x:Key="ActiveTextBrush" Color="{StaticResource ActiveTextColor}"></SolidColorBrush>
 
 
 
-    <Color x:Key="HoverColor" A="0xFF" R="0x00" G="0x97" B="0xD3"/>
-    <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}"></SolidColorBrush>
+    <Color x:Key="HoverDefaultColor" A="0xFF" R="0x00" G="0x97" B="0xD3"/>
+    <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverDefaultColor}"></SolidColorBrush>
 
-    <Color x:Key="HoverLineColor" A="0xFF" R="0x29" G="0xBA" B="0xF4"/>
-    <SolidColorBrush x:Key="HoverLineBrush" Color="{StaticResource HoverLineColor}"></SolidColorBrush>
+    <Color x:Key="HoverDefaultLineColor" A="0xFF" R="0x29" G="0xBA" B="0xF4"/>
+    <SolidColorBrush x:Key="HoverLineBrush" Color="{StaticResource HoverDefaultLineColor}"></SolidColorBrush>
 
-    <Color x:Key="HoverTextColor" A="0xFF" R="0xFF" G="0xFF" B="0xFF"/>
-    <SolidColorBrush x:Key="HoverTextBrush" Color="{StaticResource HoverTextColor}"></SolidColorBrush>
+    <Color x:Key="HoverDefaultTextColor" A="0xFF" R="0xFF" G="0xFF" B="0xFF"/>
+    <SolidColorBrush x:Key="HoverTextBrush" Color="{StaticResource HoverDefaultTextColor}"></SolidColorBrush>
 
 
 
@@ -104,15 +104,17 @@
     <Color x:Key="WordResultBackgroundColor" A="0xFF" R="0x00" G="0x65" B="0x8D"/>
     <SolidColorBrush x:Key="WordResultBackgroundBrush" Color="{StaticResource WordResultBackgroundColor}"></SolidColorBrush>
 
-    <Color x:Key="WordResultTextColor" A="0xFF" R="0xDD" G="0xDD" B="0xDD"/>
-    <SolidColorBrush x:Key="WordResultTextBrush" Color="{StaticResource WordResultTextColor}"></SolidColorBrush>
-
-
+    
 
     <Color x:Key="ValidationErrorFieldColor" A="0xFF" R="0x6C" G="0x24" B="0x21"/>
     <SolidColorBrush x:Key="ValidationErrorFieldBrush" Color="{StaticResource ValidationErrorFieldColor}"></SolidColorBrush>
 
     <Color x:Key="ValidationErrorTextColor" A="0xFF" R="0x6C" G="0x24" B="0x21"/>
     <SolidColorBrush x:Key="ValidationErrorTextBrush" Color="{StaticResource ValidationErrorTextColor}"></SolidColorBrush>
-    
+
+
+    <Color x:Key="LibraryHeapColor" A="0xFF" R="0x22" G="0x22" B="0x33"/>
+    <SolidColorBrush x:Key="LibraryHeapBrush" Color="{StaticResource LibraryHeapColor}"></SolidColorBrush>
+
+
 </ResourceDictionary>

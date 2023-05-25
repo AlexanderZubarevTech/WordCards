@@ -3,91 +3,94 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CardWords"
+        xmlns:local="clr-namespace:CardWords" xmlns:col="clr-namespace:System.Collections;assembly=System.Runtime.Extensions" xmlns:local1="clr-namespace:CardWords.Business.LanguageWords"
         mc:Ignorable="d"
-        Height="600" Width="1000" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True"
+        Height="600" Width="1100" WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True"
         WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Views/Common/CommonDictionary.xaml" />
                 <ResourceDictionary>
-                    <Style x:Key="TitleStyle">
-                        <Setter Property="TextBlock.FontSize" Value="22" />
-                        <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
-                        <Setter Property="TextBlock.Foreground" Value="#EEE" />
-                        <Setter Property="TextBlock.VerticalAlignment" Value="Center" />
-                        <Setter Property="TextBlock.HorizontalAlignment" Value="Right" />
-                        <Setter Property="Panel.ZIndex" Value="1" />
-                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                        <Setter Property="TextBlock.Margin" Value="0 0 10 0" />
-                    </Style>
-                    <Style x:Key="BacgroundTitle">
-                        <Setter Property="Control.Height" Value="60" />
-                        <Setter Property="Panel.ZIndex" Value="0" />
-                    </Style>
-                    <Style x:Key="BacgroundTitleFill">
-                        <Setter Property="Shape.Fill" Value="#5da7a8" />
-                    </Style>
-                    <Style x:Key="ComboBoxValueStyle">
-                        <Setter Property="ComboBox.Background" Value="#EEE" />
-                        <Setter Property="ComboBox.Height" Value="60" />
-                        <Setter Property="ComboBox.FontSize" Value="22" />
-                        <Setter Property="ComboBox.VerticalContentAlignment" Value="Center" />
-                    </Style>
-                    <Style x:Key="CheckBoxValueStyle">
-                        <Setter Property="CheckBox.VerticalAlignment" Value="Center" />
-                        <Setter Property="CheckBox.VerticalContentAlignment" Value="Center" />
-                        <Setter Property="CheckBox.HorizontalAlignment" Value="Left" />
-                        <Setter Property="TextBlock.Margin" Value="15 0 0 0" />
-                        <Setter Property="TextBlock.Width" Value="25" />
-                        <Setter Property="TextBlock.Height" Value="30" />
-                    </Style>
-                    <Style x:Key="ErrorMessage">
-                        <Setter Property="TextBlock.FontSize" Value="20" />
-                        <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
-                        <Setter Property="TextBlock.Foreground" Value="#6c2421" />
-                        <Setter Property="TextBlock.Margin" Value="0 0 0 10" />
-                    </Style>
-                    <Style x:Key="ValueStyle">
-                        <Setter Property="TextBox.Background" Value="#EEE" />
-                        <Setter Property="TextBox.Height" Value="60" />
-                        <Setter Property="Panel.ZIndex" Value="1" />
-                        <Setter Property="TextBox.Cursor" Value="IBeam" />
-                        <Setter Property="TextBox.FontSize" Value="26" />
-                        <Setter Property="TextBox.VerticalContentAlignment" Value="Center" />
-                    </Style>
                     <Style x:Key="LibraryWordStatusShape" TargetType="Rectangle">
                         <Style.Setters>
                             <Setter Property="Shape.Width" Value="30" />
                             <Setter Property="Shape.Height" Value="30" />
-                            <Setter Property="Shape.Fill" Value="#5da7a8" />
-                        </Style.Setters>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=IsNewWord}" Value="True">
-                                <Setter Property="Shape.Fill" Value="#4d278b" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                    <Style x:Key="LibraryWordStatusBorder" TargetType="Border">
-                        <Style.Setters>
-                            <Setter Property="Border.BorderBrush" Value="#223" />
-                            <Setter Property="Border.BorderThickness" Value="0, 0, 1, 1" />
+                            <Setter Property="Shape.Fill" Value="{StaticResource DefaultBrush}" />
                             <Setter Property="Border.ToolTip" Value="Изученное слово" />
                         </Style.Setters>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Path=IsNewWord}" Value="True">
+                                <Setter Property="Shape.Fill" Value="{StaticResource NewWordBrush}" />
                                 <Setter Property="Border.ToolTip" Value="Новое слово" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
+                    <Style x:Key="CellTextStyle" TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="20" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Setter Property="Margin" Value="5 0 0 0" />
+                    </Style>
+                    <Style x:Key="DataRowStyle" TargetType="DataGridRow" >
+                        <Style.Setters>
+                            <Setter Property="Foreground" Value="{StaticResource LibraryHeapBrush}"></Setter>
+                            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                        </Style.Setters>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#CCC"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true" />
+                                    <Condition Property="Selector.IsSelectionActive" Value="true" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Foreground" Value="{StaticResource DefaultTextBrush}" />
+                                <Setter Property="Background" Value="{StaticResource DefaultLineBrush}"/>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="DataColumnStyle" TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="{StaticResource LibraryHeapBrush}"></Setter>
+                        <Setter Property="Foreground" Value="#CCC"></Setter>
+                        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                    </Style>
+                    <Style x:Key="DataGridReadOnly" TargetType="DataGrid">
+                        <Setter Property="AutoGenerateColumns" Value="False" />
+                        <Setter Property="ColumnWidth" Value="*" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="BorderBrush" Value="{StaticResource LibraryHeapBrush}" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="IsReadOnly" Value="True" />
+                        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource LibraryHeapBrush}" />
+                        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource LibraryHeapBrush}" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="CanUserReorderColumns" Value="False" />
+                        <Setter Property="CanUserAddRows" Value="False" />
+                        <Setter Property="CanUserDeleteRows" Value="False" />
+                        <Setter Property="CanUserResizeColumns" Value="False" />
+                        <Setter Property="CanUserResizeRows" Value="False" />
+                        <Setter Property="CanUserSortColumns" Value="False" />
+                        <Setter Property="RowBackground" Value="#EEE" />
+                        <Setter Property="HeadersVisibility" Value="Column" />
+                        <Setter Property="SelectionMode" Value="Single" />
+                        <Setter Property="FontSize" Value="20" />
+                        <Setter Property="ColumnHeaderHeight" Value="50" />
+                        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+                    </Style>
+                    
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        
-        
     </Window.Resources>
-    <Grid Background="#e9e9e9">
+
+    <Grid Style="{StaticResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -121,36 +124,39 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Grid x:Name="G_Menu_Main" Grid.Row="0" Cursor="Hand"
-                  MouseLeftButtonDown="G_Menu_Main_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Главная"></TextBlock>
-                <Grid Width="200" Height="75" Panel.ZIndex="0">
-                    <Rectangle Fill="#4d278b"/>
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                    </Grid.Effect>
+            <Grid x:Name="G_Menu_Main" Grid.Row="0" Cursor="Hand" 
+                  MouseLeftButtonDown="G_Menu_Main_MouseLeftButtonDown" 
+                  MouseEnter="G_Button_MouseEnter" 
+                  MouseLeave="G_Button_MouseLeave">
+                <TextBlock Foreground="{StaticResource ActiveTextBrush}" 
+                           Style="{StaticResource DefaultTextLight}" Panel.ZIndex="1" 
+                           Text="Главная"></TextBlock>
+                <Grid Width="200" Height="75" Style="{StaticResource BaseBackground}">
+                    <Rectangle Fill="{StaticResource ActiveBrush}"/>
                 </Grid>
             </Grid>
 
             <Grid x:Name="G_Menu_Library" Grid.Row="2" Cursor="Hand"
-                  MouseLeftButtonDown="G_Menu_Library_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Библиотека"></TextBlock>
-                <Grid Width="200" Height="75" Panel.ZIndex="0">
-                    <Rectangle Fill="#5da7a8"/>
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                    </Grid.Effect>
+                  MouseLeftButtonDown="G_Menu_Library_MouseLeftButtonDown" 
+                  MouseEnter="G_Button_MouseEnter" 
+                  MouseLeave="G_Button_MouseLeave">
+                <TextBlock Foreground="{StaticResource DefaultTextBrush}" 
+                           Style="{StaticResource DefaultTextLight}" Panel.ZIndex="1"
+                           Text="Библиотека"></TextBlock>
+                <Grid Width="200" Height="75" Style="{StaticResource BaseBackground}">
+                    <Rectangle Fill="{StaticResource DefaultBrush}"/>
                 </Grid>
             </Grid>
 
             <Grid x:Name="G_Menu_Settings" Grid.Row="4" Cursor="Hand"
-                  MouseLeftButtonDown="G_Menu_Settings_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Настройки"></TextBlock>
-                <Grid Width="200" Height="75" Panel.ZIndex="0">
-                    <Rectangle Fill="#5da7a8"/>
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                    </Grid.Effect>
+                  MouseLeftButtonDown="G_Menu_Settings_MouseLeftButtonDown" 
+                  MouseEnter="G_Button_MouseEnter" 
+                  MouseLeave="G_Button_MouseLeave">
+                <TextBlock Foreground="{StaticResource DefaultTextBrush}" 
+                           Style="{StaticResource DefaultTextLight}" Panel.ZIndex="1"
+                           Text="Настройки"></TextBlock>
+                <Grid Width="200" Height="75" Style="{StaticResource BaseBackground}">
+                    <Rectangle Fill="{StaticResource DefaultBrush}"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -158,15 +164,16 @@
         <Grid x:Name="G_Main" Grid.Row="1" Grid.Column="1" Visibility="Collapsed">
 
             <Grid x:Name="G_Start" Grid.Row="1" Grid.ColumnSpan="2" Cursor="Hand" Visibility="Visible"
-                  MouseLeftButtonDown="G_Start_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                <TextBlock FontSize="60" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Начать"></TextBlock>
-                <Grid Width="600" Height="200" Panel.ZIndex="0">
-                    <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
-                    <Polygon Fill="#6cc3c4" Points="0, 100, 125, 0, 205, 0, 0, 164" />
-                    <Polygon Fill="#6cc3c4" Points="600, 100, 477, 200, 397, 200, 600, 36" />
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                    </Grid.Effect>
+                  MouseLeftButtonDown="G_Start_MouseLeftButtonDown" 
+                  MouseEnter="G_Button_MouseEnter" 
+                  MouseLeave="G_Button_MouseLeave">
+                <TextBlock FontSize="60" Foreground="{StaticResource DefaultTextBrush}" 
+                           Style="{StaticResource DefaultTextLight}" Panel.ZIndex="1" 
+                           Text="Начать"></TextBlock>
+                <Grid Width="600" Height="200" Style="{StaticResource BaseBackground}">
+                    <Rectangle Fill="{StaticResource DefaultBrush}" RadiusX="10" RadiusY="10"/>
+                    <Polygon Fill="{StaticResource DefaultLineBrush}" Points="0, 100, 125, 0, 205, 0, 0, 164" />
+                    <Polygon Fill="{StaticResource DefaultLineBrush}" Points="600, 100, 477, 200, 397, 200, 600, 36" />
                 </Grid>
             </Grid>
 
@@ -181,69 +188,75 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0" Grid.Column="0" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="10"></TextBlock>
-                    <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                        </Grid.Effect>
+                <Grid Grid.Row="0" Grid.Column="0" Cursor="Hand" 
+                      MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" 
+                      MouseEnter="G_Button_MouseEnter" 
+                      MouseLeave="G_Button_MouseLeave">
+                    <TextBlock FontSize="80" Foreground="{StaticResource DefaultTextBrush}" 
+                               Style="{StaticResource DefaultTextBold}" Panel.ZIndex="1"
+                               Text="10"></TextBlock>
+                    <Grid Width="250" Height="150" Style="{StaticResource BaseBackground}">
+                        <Rectangle Style="{StaticResource DefaultBackground10}"/>
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="0" Grid.Column="1" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="20"></TextBlock>
-                    <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                        </Grid.Effect>
+                <Grid Grid.Row="0" Grid.Column="1" Cursor="Hand" 
+                      MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" 
+                      MouseEnter="G_Button_MouseEnter" 
+                      MouseLeave="G_Button_MouseLeave">
+                    <TextBlock FontSize="80" Foreground="{StaticResource DefaultTextBrush}" 
+                               Style="{StaticResource DefaultTextBold}" Panel.ZIndex="1"
+                               Text="20"></TextBlock>
+                    <Grid Width="250" Height="150" Style="{StaticResource BaseBackground}">
+                        <Rectangle Style="{StaticResource DefaultBackground10}"/>
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="1" Grid.Column="0" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="25"></TextBlock>
-                    <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                        </Grid.Effect>
+                <Grid Grid.Row="1" Grid.Column="0" Cursor="Hand" 
+                      MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" 
+                      MouseEnter="G_Button_MouseEnter" 
+                      MouseLeave="G_Button_MouseLeave">
+                    <TextBlock FontSize="80" Foreground="{StaticResource DefaultTextBrush}" 
+                               Style="{StaticResource DefaultTextBold}" Panel.ZIndex="1"
+                               Text="25"></TextBlock>
+                    <Grid Width="250" Height="150" Style="{StaticResource BaseBackground}">
+                        <Rectangle Style="{StaticResource DefaultBackground10}"/>
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="1" Grid.Column="1" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="50"></TextBlock>
-                    <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                        </Grid.Effect>
+                <Grid Grid.Row="1" Grid.Column="1" Cursor="Hand" 
+                      MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" 
+                      MouseEnter="G_Button_MouseEnter" 
+                      MouseLeave="G_Button_MouseLeave">
+                    <TextBlock FontSize="80" Foreground="{StaticResource DefaultTextBrush}" 
+                               Style="{StaticResource DefaultTextBold}" Panel.ZIndex="1"
+                               Text="50"></TextBlock>
+                    <Grid Width="250" Height="150" Style="{StaticResource BaseBackground}">
+                        <Rectangle Style="{StaticResource DefaultBackground10}"/>
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="2" Grid.Column="0" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="75"></TextBlock>
-                    <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                        </Grid.Effect>
+                <Grid Grid.Row="2" Grid.Column="0" Cursor="Hand" 
+                      MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" 
+                      MouseEnter="G_Button_MouseEnter" 
+                      MouseLeave="G_Button_MouseLeave">
+                    <TextBlock FontSize="80" Foreground="{StaticResource DefaultTextBrush}" 
+                               Style="{StaticResource DefaultTextBold}" Panel.ZIndex="1"
+                               Text="75"></TextBlock>
+                    <Grid Width="250" Height="150" Style="{StaticResource BaseBackground}">
+                        <Rectangle Style="{StaticResource DefaultBackground10}"/>
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="2" Grid.Column="1" Cursor="Hand"
-                  MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave">
-                    <TextBlock FontSize="80" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="100"></TextBlock>
-                    <Grid Width="250" Height="150" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                        </Grid.Effect>
+                <Grid Grid.Row="2" Grid.Column="1" Cursor="Hand" 
+                      MouseLeftButtonDown="G_Start_Count_MouseLeftButtonDown" 
+                      MouseEnter="G_Button_MouseEnter" 
+                      MouseLeave="G_Button_MouseLeave">
+                    <TextBlock FontSize="80" Foreground="{StaticResource DefaultTextBrush}" 
+                               Style="{StaticResource DefaultTextBold}" Panel.ZIndex="1"
+                               Text="100"></TextBlock>
+                    <Grid Width="250" Height="150" Style="{StaticResource BaseBackground}">
+                        <Rectangle Style="{StaticResource DefaultBackground10}"/>
                     </Grid>
                 </Grid>
             </Grid>
@@ -257,32 +270,29 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="220"></ColumnDefinition>                
+                <ColumnDefinition Width="220"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Grid x:Name="G_Library_Language" Grid.Row="0" Grid.Column="0">
                 <WrapPanel Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="{Binding Path=CurrentLanguage.Name}" FontSize="26" FontWeight="DemiBold" Foreground="#DDD"></TextBlock>
-                    <TextBlock Text=" - " FontSize="26" FontWeight="DemiBold" Foreground="#DDD"></TextBlock>
-                    <TextBlock Text="{Binding Path=TranslationLanguage.Name}" FontSize="26" FontWeight="DemiBold" Foreground="#DDD"></TextBlock>
-                </WrapPanel>                
-                <Grid Width="400" Height="60" Panel.ZIndex="0">
-                    <Rectangle Fill="#4d278b" />
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                    </Grid.Effect>
+                    <TextBlock Text="{Binding Path=CurrentLanguage.Name}" FontSize="26" FontWeight="DemiBold" Foreground="{StaticResource ActiveTextBrush}"></TextBlock>
+                    <TextBlock Text=" - " FontSize="26" FontWeight="DemiBold" Foreground="{StaticResource ActiveTextBrush}"></TextBlock>
+                    <TextBlock Text="{Binding Path=TranslationLanguage.Name}" FontSize="26" FontWeight="DemiBold" Foreground="{StaticResource ActiveTextBrush}"></TextBlock>
+                </WrapPanel>
+                <Grid Width="400" Height="60" Style="{StaticResource BaseBackground}">
+                    <Rectangle Fill="{StaticResource ActiveBrush}" />
                 </Grid>
             </Grid>
 
             <Grid x:Name="G_Library_Add" Grid.Row="0" Grid.Column="1" Cursor="Hand" 
-                  MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave" MouseLeftButtonDown="AddWord">
-                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" 
-                           HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Добавить"></TextBlock>
-                <Grid Height="60" Panel.ZIndex="0">
-                    <Rectangle Fill="#5da7a8" />
-                    <Grid.Effect>
-                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                    </Grid.Effect>
+                  MouseEnter="G_Button_MouseEnter" 
+                  MouseLeave="G_Button_MouseLeave" 
+                  MouseLeftButtonDown="AddWord">
+                <TextBlock Foreground="{StaticResource DefaultTextBrush}" 
+                           Style="{StaticResource DefaultTextLight}" Panel.ZIndex="1"
+                           Text="Добавить"></TextBlock>
+                <Grid Height="60" Style="{StaticResource BaseBackground}">
+                    <Rectangle Fill="{StaticResource DefaultBrush}" />
                 </Grid>
             </Grid>
 
@@ -297,20 +307,20 @@
                     <ColumnDefinition Width="105"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="TBx_Library_Search" Grid.Row="0" Grid.Column="0" Height="60" Margin="0 0 5 0" Cursor="IBeam" FontSize="26" VerticalContentAlignment="Center">
-                    <TextBox.Effect>
-                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                    </TextBox.Effect>
-                </TextBox>
+                <Grid Grid.Row="0" Grid.Column="0" Height="60" Margin="0 0 5 0" Style="{StaticResource BaseBackground}">
+                    <TextBox x:Name="TBx_Library_Search" Style="{StaticResource TextBoxValueStyle}" Text="{Binding Name}"></TextBox>
+                </Grid>
 
-                <Grid x:Name="G_Library_Search" Grid.Row="0" Grid.Column="1" Cursor="Hand" Width="100" Height="60" VerticalAlignment="Center" HorizontalAlignment="Center"
-                      MouseEnter="G_Button_MouseEnter" MouseLeave="G_Button_MouseLeave" MouseLeftButtonDown="G_Library_Search_MouseLeftButtonDown">
-                    <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Поиск"></TextBlock>
-                    <Grid Width="100" Height="60" Panel.ZIndex="0">
-                        <Rectangle Fill="#5da7a8" />
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                        </Grid.Effect>
+                <Grid x:Name="G_Library_Search" Grid.Row="0" Grid.Column="1" Cursor="Hand" Width="100" 
+                      Height="60" VerticalAlignment="Center" HorizontalAlignment="Center"
+                      MouseEnter="G_Button_MouseEnter" 
+                      MouseLeave="G_Button_MouseLeave" 
+                      MouseLeftButtonDown="G_Library_Search_MouseLeftButtonDown">
+                    <TextBlock Foreground="{StaticResource DefaultTextBrush}" 
+                               Style="{StaticResource DefaultTextLight}" Panel.ZIndex="1" 
+                               Text="Поиск"></TextBlock>
+                    <Grid Width="100" Height="60" Style="{StaticResource BaseBackground}">
+                        <Rectangle Fill="{StaticResource DefaultBrush}" />
                     </Grid>
                 </Grid>
 
@@ -323,8 +333,8 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    
-                    <CheckBox x:Name="ChBx_Library_Search_WithoutTranscription"  FontSize="16" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center" >Без транскрипции</CheckBox>
+
+                    <CheckBox x:Name="ChBx_Library_Search_WithoutTranscription" FontSize="16" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center" >Без транскрипции</CheckBox>
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 5">
                         <TextBlock FontSize="16" VerticalAlignment="Center">Статус слова:</TextBlock>
@@ -332,118 +342,90 @@
                     </StackPanel>
                 </Grid>
 
-                
-
                 <TextBlock x:Name="TB_Library_Search_Result" Grid.Row="2" FontSize="16" VerticalAlignment="Bottom" Visibility="Collapsed">
                     <TextBlock Text="Найдено: " FontWeight="DemiBold"></TextBlock>
                     <TextBlock x:Name="TB_Library_Search_ResultCount" FontWeight="DemiBold" Text="8000"></TextBlock>
                 </TextBlock>
 
-            </Grid>
+            </Grid>            
 
-            <Grid Name="G_Library_Result" Grid.Row="2" Grid.ColumnSpan="3" Margin="0 0 0 10" Background="#EEE">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"></RowDefinition>                    
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition MinWidth="200" SharedSizeGroup="Word"></ColumnDefinition>
-                    <ColumnDefinition MinWidth="300" SharedSizeGroup="Translation"></ColumnDefinition>
-                    <ColumnDefinition MinWidth="140" SharedSizeGroup="Transcription"></ColumnDefinition>
-                    <ColumnDefinition Width="70"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="20"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.Effect>
-                    <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                </Grid.Effect>
+            <Grid Name="G_Library_Result" 
+                  Grid.Row="2" Grid.ColumnSpan="3" 
+                  Margin="0 10 0 10" Background="#EEE" 
+                  Style="{StaticResource BaseBackground}">
+                <TextBlock x:Name="G_Library_NoResult" Visibility="Collapsed" 
+                           FontSize="40" Style="{StaticResource DefaultTextBold}" Panel.ZIndex="1"
+                           Text="Ничего не найдено"></TextBlock>
 
-                <TextBlock x:Name="G_Library_NoResult" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="5" FontSize="40" FontWeight="DemiBold" Foreground="#555" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Ничего не найдено"></TextBlock>
-
-                <Grid Grid.Row="0" Grid.Column="0">
-                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Слово"></TextBlock>
-                    <Grid Height="50" Panel.ZIndex="0">
-                        <Rectangle Fill="#223" />
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Перевод"></TextBlock>
-                    <Grid Height="50" Panel.ZIndex="0">
-                        <Rectangle Fill="#223" />
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="0" Grid.Column="2">
-                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Транскрипция"></TextBlock>
-                    <Grid Height="50" Panel.ZIndex="0">
-                        <Rectangle Fill="#223" />
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="0" Grid.Column="3">
-                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Статус"></TextBlock>
-                    <Grid Height="50" Panel.ZIndex="0">
-                        <Rectangle Fill="#223" />
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2">
-                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="-"></TextBlock>
-                    <Grid Height="50" Panel.ZIndex="0">
-                        <Rectangle Fill="#223" />
-                    </Grid>
-                </Grid>
-                <Grid Height="50" Grid.Row="0" Grid.Column="6" Panel.ZIndex="0">
-                    <Rectangle Fill="#223" />
-                </Grid>
-
-                <ListBox x:Name="LBx_Word" Visibility="Visible" Grid.Row="1" Grid.ColumnSpan="7"
-                         AlternationCount="2" HorizontalContentAlignment="Stretch" 
-                         VirtualizingPanel.IsVirtualizing="True" >
-                    
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition MinWidth="200" SharedSizeGroup="Word"></ColumnDefinition>
-                                    <ColumnDefinition MinWidth="300" SharedSizeGroup="Translation"></ColumnDefinition>
-                                    <ColumnDefinition MinWidth="140" SharedSizeGroup="Transcription"></ColumnDefinition>
-                                    <ColumnDefinition Width="70"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.Effect>
-                                    <DropShadowEffect Opacity="0" Color="#223" RenderingBias="Performance" Direction="315" BlurRadius="30"></DropShadowEffect>
-                                </Grid.Effect>                               
-
-                                <Border Grid.Column="0" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
-                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 0 0 0" Text="{Binding Path=LanguageWordName}"></TextBlock>
-                                </Border>
-                                <Border Grid.Column="1" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
-                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 0 0 0" Text="{Binding Path=Translation}"></TextBlock>
-                                </Border>
-                                <Border Grid.Column="2" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
-                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 0 0 0" Text="{Binding Path=Transcription}"></TextBlock>
-                                </Border>
-                                <Border Grid.Column="3" Style="{StaticResource LibraryWordStatusBorder}" >
+                <DataGrid x:Name="DG_Word" Style="{StaticResource DataGridReadOnly}">
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                    </DataGrid.Resources>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataColumnStyle}"/>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.RowStyle>
+                        <Style BasedOn="{StaticResource DataRowStyle}" TargetType="DataGridRow" />
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Слово" Width="1*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource CellTextStyle}" Text="{Binding Path=LanguageWordName}"></TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Перевод" Width="1.5*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource CellTextStyle}" Text="{Binding Path=Translation}"></TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Транскрипция">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource CellTextStyle}" Text="{Binding Path=Transcription}"></TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Статус" Width="70">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
                                     <Rectangle Style="{StaticResource LibraryWordStatusShape}" />
-                                </Border>
-                                <Border Grid.Column="4" BorderBrush="#223" BorderThickness="0, 0, 0, 1" >
-                                    <Image Source="/Source/Images/edit.png" Tag="{Binding Path=Id}" Width="30" Height="30" 
-                                           VerticalAlignment="Center" HorizontalAlignment="Center" Cursor="Hand" 
-                                           ToolTip="Редактировать" MouseLeftButtonDown="EditWord"></Image>
-                                </Border>
-                                <Border Grid.Column="5" BorderBrush="#223" BorderThickness="0, 0, 0, 1" >
-                                    <Grid Cursor="Hand" ToolTip="Удалить" MouseLeftButtonDown="DeleteWord" Tag="{Binding Path=Id}">                                       
-                                        <TextBlock Foreground="#A00" Panel.ZIndex="1" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="X"></TextBlock>
-                                        <Grid Panel.ZIndex="0">
-                                            <Rectangle Fill="#00ffffff"></Rectangle>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="-" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.Column="0" Source="/Source/Images/edit.png" Tag="{Binding Path=Id}" 
+                                               Width="30" Height="30" VerticalAlignment="Center" 
+                                               HorizontalAlignment="Center" Cursor="Hand" ToolTip="Редактировать" 
+                                               MouseLeftButtonDown="EditWord" 
+                                               RenderOptions.BitmapScalingMode="HighQuality">
+                                        </Image>
+
+                                        <Grid Grid.Column="1" Cursor="Hand" ToolTip="Удалить" MouseLeftButtonDown="DeleteWord" Tag="{Binding Path=Id}">
+                                            <TextBlock Foreground="#A00" Panel.ZIndex="1" 
+                                                       FontSize="30" VerticalAlignment="Center" 
+                                                       HorizontalAlignment="Center" 
+                                                       Text="X"></TextBlock>
+                                            <Grid Panel.ZIndex="0">
+                                                <Rectangle Fill="#00000000"></Rectangle>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
-                                </Border>
-                            </Grid>
-
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Grid>
 
@@ -451,7 +433,7 @@
             <TabControl Background="#F5F5F5">
                 <TabItem Width="200" Name="TI_Settings_Genaral" >
                     <TabItem.Header>
-                        <TextBlock FontSize="26">Общие</TextBlock>
+                        <TextBlock Style="{StaticResource DefaultTextLight}">Общие</TextBlock>
                     </TabItem.Header>
                     <TabItem.Content>
                         <Grid Margin="10 30 10 10">
@@ -471,22 +453,19 @@
                                             <ColumnDefinition></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="0">
-                                            <DockPanel Style="{StaticResource TitleStyle}">
+                                            <DockPanel Style="{StaticResource DefaultFieldTitle}">
                                                 <TextBlock Tag="FieldName">Язык изучения</TextBlock>
                                                 <TextBlock>:</TextBlock>
                                             </DockPanel>
-                                            <Grid Style="{StaticResource BacgroundTitle}">
-                                                <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
-                                                <Grid.Effect>
-                                                    <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                                </Grid.Effect>
+                                            <Grid Style="{StaticResource DefaultFieldTitleBacground}">
+                                                <Rectangle Style="{StaticResource DefaultBackground}" Tag="FieldBackground" />
                                             </Grid>
                                         </Grid>
-                                        <Grid Grid.Column="1">
-                                            <ComboBox Name="Cbx_Settings_CurrentLanguage" Tag="FieldValue" Style="{StaticResource ComboBoxValueStyle}" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage}"></ComboBox>
-                                            <Grid.Effect>
-                                                <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                            </Grid.Effect>
+                                        <Grid Grid.Column="1" Style="{StaticResource BaseBackground}">
+                                            <ComboBox Name="Cbx_Settings_CurrentLanguage" Tag="FieldValue" 
+                                                      Style="{StaticResource ComboBoxValueStyle}" 
+                                                      ItemsSource="{Binding Languages}" 
+                                                      SelectedItem="{Binding CurrentLanguage}"></ComboBox>
                                         </Grid>
                                     </Grid>
                                     <Grid x:Name="G_Settings_TranslationLanguage" Tag="FieldPropertyName=TranslationLanguage"  Margin="0 0 0 10">
@@ -495,22 +474,19 @@
                                             <ColumnDefinition></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="0">
-                                            <DockPanel Style="{StaticResource TitleStyle}">
+                                            <DockPanel Style="{StaticResource DefaultFieldTitle}">
                                                 <TextBlock Tag="FieldName">Язык перевода</TextBlock>
                                                 <TextBlock>:</TextBlock>
                                             </DockPanel>
-                                            <Grid Style="{StaticResource BacgroundTitle}">
-                                                <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
-                                                <Grid.Effect>
-                                                    <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                                </Grid.Effect>
+                                            <Grid Style="{StaticResource DefaultFieldTitleBacground}">
+                                                <Rectangle Style="{StaticResource DefaultBackground}" Tag="FieldBackground" />
                                             </Grid>
                                         </Grid>
-                                        <Grid Grid.Column="1">
-                                            <ComboBox Name="CbBx_Settings_TranslationLanguage" Tag="FieldValue" Style="{StaticResource ComboBoxValueStyle}" ItemsSource="{Binding Languages}" SelectedItem="{Binding TranslationLanguage}"></ComboBox>
-                                            <Grid.Effect>
-                                                <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                            </Grid.Effect>
+                                        <Grid Grid.Column="1" Style="{StaticResource BaseBackground}">
+                                            <ComboBox Name="CbBx_Settings_TranslationLanguage" Tag="FieldValue" 
+                                                      Style="{StaticResource ComboBoxValueStyle}" 
+                                                      ItemsSource="{Binding Languages}" 
+                                                      SelectedItem="{Binding TranslationLanguage}"></ComboBox>
                                         </Grid>
                                     </Grid>
                                     <Grid x:Name="G_Settings_WordCard_Timer" Tag="FieldPropertyName=WordCardHasTimer" Margin="0 0 0 10">
@@ -519,54 +495,42 @@
                                             <ColumnDefinition></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="0">
-                                            <DockPanel Style="{StaticResource TitleStyle}">
+                                            <DockPanel Style="{StaticResource DefaultFieldTitle}">
                                                 <TextBlock Tag="FieldName">Таймер в карточках</TextBlock>
                                                 <TextBlock>:</TextBlock>
                                             </DockPanel>
-                                            <Grid Style="{StaticResource BacgroundTitle}">
-                                                <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
-                                                <Grid.Effect>
-                                                    <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                                </Grid.Effect>
+                                            <Grid Style="{StaticResource DefaultFieldTitleBacground}">
+                                                <Rectangle Style="{StaticResource DefaultBackground}" Tag="FieldBackground" />
                                             </Grid>
                                         </Grid>
-                                        <Grid  Grid.Column="1">
-                                            <CheckBox x:Name="ChBx_Settings_WordCard_Timer" Tag="FieldValue" IsChecked="{Binding WordCardHasTimer}" Style="{StaticResource CheckBoxValueStyle}" 
+                                        <Grid  Grid.Column="1" Style="{StaticResource BaseBackground}">
+                                            <CheckBox x:Name="ChBx_Settings_WordCard_Timer" Tag="FieldValue" 
+                                                      IsChecked="{Binding WordCardHasTimer}" 
+                                                      Style="{StaticResource CheckBoxValueStyle}" 
                                                       Checked="ChBx_Settings_WordCard_Timer_Checked"
                                                       Unchecked="ChBx_Settings_WordCard_Timer_Unchecked">
-                                                <CheckBox.LayoutTransform>
-                                                    <ScaleTransform ScaleX="2" ScaleY="2"></ScaleTransform>
-                                                </CheckBox.LayoutTransform>
                                             </CheckBox>
-                                            <Grid.Effect>
-                                                <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                            </Grid.Effect>
                                         </Grid>
                                     </Grid>
-                                    <Grid x:Name="G_Settings_WordCard_Timer_Dutation" Tag="FieldPropertyName=WordCardTimerDurationInSeconds"  Margin="0 0 0 10" Visibility="Collapsed">
+                                    <Grid x:Name="G_Settings_WordCard_Timer_Dutation" Tag="FieldPropertyName=WordCardTimerDurationInSeconds"  
+                                          Margin="0 0 0 10" Visibility="Collapsed">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="0.7*"></ColumnDefinition>
                                             <ColumnDefinition></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="0">
-                                            <TextBlock Style="{StaticResource TitleStyle}">Продолжительность таймера, с:</TextBlock>
+                                            <TextBlock Style="{StaticResource DefaultFieldTitle}">Продолжительность таймера, с:</TextBlock>
                                             <TextBlock Tag="FieldName" Visibility="Collapsed">Продолжительность таймера</TextBlock>
-                                            <Grid Style="{StaticResource BacgroundTitle}">
-                                                <Rectangle Style="{StaticResource BacgroundTitleFill}" Tag="FieldBackground" />
-                                                <Grid.Effect>
-                                                    <DropShadowEffect Opacity="0.5" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                                </Grid.Effect>
+                                            <Grid Style="{StaticResource DefaultFieldTitleBacground}">
+                                                <Rectangle Style="{StaticResource DefaultBackground}" Tag="FieldBackground" />
                                             </Grid>
                                         </Grid>
-                                        <Grid Grid.Column="1">
+                                        <Grid Grid.Column="1" Style="{StaticResource BaseBackground}">
                                             <TextBox x:Name="TBx_Settings_WordCard_Timer_Duration" Tag="FieldValue" 
-                                                     Style="{StaticResource ValueStyle}" 
+                                                     Style="{StaticResource TextBoxValueStyle}" 
                                                      Text="{Binding WordCardTimerDurationInSeconds}" 
                                                      PreviewTextInput="TBx_Settings_WordCard_Timer_Duration_PreviewTextInput"
                                                      PreviewKeyDown="TBx_Settings_WordCard_Timer_Duration_PreviewKeyDown"></TextBox>
-                                            <Grid.Effect>
-                                                <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                            </Grid.Effect>
                                         </Grid>
                                     </Grid>
                                 </StackPanel>
@@ -577,160 +541,130 @@
                                   MouseEnter="G_Button_MouseEnter" 
                                   MouseLeave="G_Button_MouseLeave" 
                                   MouseLeftButtonDown="G_Settings_General_Save_MouseLeftButtonDown">
-                                <TextBlock FontSize="24" FontWeight="Bold" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Сохранить"></TextBlock>
-                                <Grid Panel.ZIndex="0">
-                                    <Rectangle Fill="#5da7a8" RadiusX="10" RadiusY="10"/>                                    
-                                    <Grid.Effect>
-                                        <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                                    </Grid.Effect>
+                                <TextBlock Style="{StaticResource DefaultWhiteTextLight}" Panel.ZIndex="1" Text="Сохранить"></TextBlock>
+                                <Grid Style="{StaticResource BaseBackground}">
+                                    <Rectangle Fill="{StaticResource ActiveBrush}" 
+                                               Tag="BackgroundColor.ActionType=Active" RadiusX="10" RadiusY="10"/>
                                 </Grid>
                             </Grid>
 
-                            <Grid x:Name="G_Settings_Save_Message" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Visibility="Collapsed">
-                                <TextBlock FontSize="24" FontWeight="Normal" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Настройки сохранены"></TextBlock>
-                                <Grid Panel.ZIndex="0">
-                                    <Rectangle Fill="#038424" Width="400" />
-                                    <Grid.Effect>
-                                        <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                                    </Grid.Effect>
+                            <Grid x:Name="G_Settings_Save_Message" Grid.Row="1" Grid.Column="0" 
+                                  HorizontalAlignment="Left" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource DefaultWhiteTextLight}" 
+                                           Foreground="{StaticResource CorrectTextBrush}" Panel.ZIndex="1" 
+                                           Text="Настройки сохранены"></TextBlock>
+                                <Grid Style="{StaticResource BaseBackground}">
+                                    <Rectangle Fill="{StaticResource CorrectBrush}" Width="400" />
                                 </Grid>
                             </Grid>
 
                         </Grid>
-                        
+
                     </TabItem.Content>
                 </TabItem>
                 <TabItem Width="200" Name="TI_Settings_Languages">
                     <TabItem.Header>
-                        <TextBlock FontSize="26">Языки</TextBlock>
+                        <TextBlock Style="{StaticResource DefaultText}">Языки</TextBlock>
                     </TabItem.Header>
                     <TabItem.Content>
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="60"></RowDefinition>
-                                <RowDefinition Height="40"></RowDefinition>                               
+                                <RowDefinition Height="40"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition Width="220"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>                            
+                            </Grid.ColumnDefinitions>
 
                             <Grid x:Name="G_Settings_Languages_Add" Grid.Row="0" Grid.Column="1" Cursor="Hand" 
                                   MouseEnter="G_Button_MouseEnter" 
                                   MouseLeave="G_Button_MouseLeave" 
                                   MouseLeftButtonDown="AddLanguage">
-                                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" 
-                                           HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Добавить"></TextBlock>
-                                <Grid Height="60" Panel.ZIndex="0">
-                                    <Rectangle Fill="#5da7a8" />
-                                    <Grid.Effect>
-                                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                    </Grid.Effect>
+                                <TextBlock Style="{StaticResource DefaultWhiteTextLight}" Panel.ZIndex="1" Text="Добавить"></TextBlock>
+                                <Grid Height="60" Style="{StaticResource BaseBackground}">
+                                    <Rectangle Fill="{StaticResource DefaultBrush}" />
                                 </Grid>
                             </Grid>
                             <Grid x:Name="G_Settings_Languages_Search" Grid.Row="0" Grid.Column="0" Cursor="Hand" Height="60" Margin="0 0 20 0"
                                   MouseEnter="G_Button_MouseEnter" 
                                   MouseLeave="G_Button_MouseLeave" 
                                   MouseLeftButtonDown="G_Settings_Languages_Search_MouseLeftButtonDown">
-                                <TextBlock FontSize="26" FontWeight="DemiBold" Foreground="#DDD" VerticalAlignment="Center" 
-                                           HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Поиск"></TextBlock>
-                                <Grid Height="60" Panel.ZIndex="0">
-                                    <Rectangle Fill="#5da7a8" />
-                                    <Grid.Effect>
-                                        <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                    </Grid.Effect>
+                                <TextBlock Style="{StaticResource DefaultWhiteTextLight}" Panel.ZIndex="1" Text="Поиск"></TextBlock>
+                                <Grid Height="60" Style="{StaticResource BaseBackground}">
+                                    <Rectangle Fill="{StaticResource DefaultBrush}" />
                                 </Grid>
                             </Grid>
-                            
+
                             <WrapPanel x:Name="WP_Settings_Languages_Search_Result" Grid.Row="1" Margin="0 15 0 5"  VerticalAlignment="Bottom" Visibility="Collapsed">
                                 <TextBlock FontSize="16" Text="Найдено: " FontWeight="DemiBold"></TextBlock>
                                 <TextBlock x:Name="TB_Settings_Languages_Search_ResultCount" FontSize="16" FontWeight="DemiBold"></TextBlock>
-                            </WrapPanel>                           
+                            </WrapPanel>
 
-                            <Grid Name="G_Settings_Languages_Result" Grid.Row="2" Grid.ColumnSpan="2" Background="#EEE">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="50"></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition MinWidth="200"></ColumnDefinition>                                    
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.Effect>
-                                    <DropShadowEffect Opacity="0.3" Color="#000" RenderingBias="Performance" Direction="315" ShadowDepth="4" BlurRadius="10" />
-                                </Grid.Effect>
+                            <Grid Name="G_Settings_Languages_Result" Grid.Row="2" Grid.ColumnSpan="2" 
+                                  Background="#EEE" 
+                                  Style="{StaticResource BaseBackground}">
 
                                 <TextBlock x:Name="G_Settings_Languages_NoResult" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="4" 
-                                           FontSize="40" FontWeight="DemiBold" Foreground="#555" VerticalAlignment="Center" 
-                                           HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" 
+                                           FontSize="40" Style="{StaticResource DefaultTextBold}" Panel.ZIndex="1"  
                                            Text="Ничего не найдено"></TextBlock>
 
-                                <Grid Grid.Row="0" Grid.Column="0">
-                                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" 
-                                               HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Название"></TextBlock>
-                                    <Grid Height="50" Panel.ZIndex="0">
-                                        <Rectangle Fill="#223" />
-                                    </Grid>
-                                </Grid>                                
-                                <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
-                                    <TextBlock FontSize="20" FontWeight="DemiBold" Foreground="#CCC" VerticalAlignment="Center" 
-                                               HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="-"></TextBlock>
-                                    <Grid Height="50" Panel.ZIndex="0">
-                                        <Rectangle Fill="#223" />
-                                    </Grid>
-                                </Grid>
-                                <Grid Height="50" Grid.Row="0" Grid.Column="5" Panel.ZIndex="0">
-                                    <Rectangle Fill="#223" />
-                                </Grid>
-                                <ListBox x:Name="LBx_Settings_Languages" Visibility="Visible" Grid.Row="1" Grid.ColumnSpan="4" 
-                                         AlternationCount="2" HorizontalContentAlignment="Stretch" 
-                                         VirtualizingPanel.IsVirtualizing="True" >
+                                <DataGrid x:Name="DG_Language" Style="{StaticResource DataGridReadOnly}">
 
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition MinWidth="200"></ColumnDefinition>
-                                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                                    <ColumnDefinition Width="50"></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.Effect>
-                                                    <DropShadowEffect Opacity="0" Color="#223" RenderingBias="Performance" Direction="315" BlurRadius="30"></DropShadowEffect>
-                                                </Grid.Effect>
+                                    <DataGrid.ColumnHeaderStyle>
+                                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataColumnStyle}"/>
+                                    </DataGrid.ColumnHeaderStyle>
+                                    <DataGrid.RowStyle>
+                                        <Style BasedOn="{StaticResource DataRowStyle}" TargetType="DataGridRow" />
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Название" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Style="{StaticResource CellTextStyle}" Text="{Binding Path=Name}"></TextBlock>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="-" Width="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image Grid.Column="0" Source="/Source/Images/edit.png" Tag="{Binding Path=Id}" 
+                                                               Width="30" Height="30" VerticalAlignment="Center" 
+                                                               HorizontalAlignment="Center" Cursor="Hand" ToolTip="Редактировать" 
+                                                               MouseLeftButtonDown="EditLanguage" 
+                                                               RenderOptions.BitmapScalingMode="HighQuality">
+                                                        </Image>
 
-                                                <Border Grid.Column="0" BorderBrush="#223" BorderThickness="0, 0, 1, 1" >
-                                                    <TextBlock FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10 0 0 0" Text="{Binding Path=Name}"></TextBlock>
-                                                </Border>
-                                                <Border Grid.Column="1" BorderBrush="#223" BorderThickness="0, 0, 0, 1" >
-                                                    <Image Source="/Source/Images/edit.png" Tag="{Binding Path=Id}" Width="30" Height="30" 
-                                                           VerticalAlignment="Center" HorizontalAlignment="Center" Cursor="Hand" 
-                                                           ToolTip="Редактировать" MouseLeftButtonDown="EditLanguage"></Image>
-                                                </Border>
-                                                <Border Grid.Column="2" BorderBrush="#223" BorderThickness="0, 0, 0, 1" >
-                                                    <Grid Cursor="Hand" ToolTip="Удалить" MouseLeftButtonDown="DeleteLanguage" Tag="{Binding Path=Id}">
-                                                        <TextBlock Foreground="#A00" Panel.ZIndex="1" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="X"></TextBlock>
-                                                        <Grid Panel.ZIndex="0">
-                                                            <Rectangle Fill="#00ffffff"></Rectangle>
+                                                        <Grid Grid.Column="1" Cursor="Hand" ToolTip="Удалить" MouseLeftButtonDown="DeleteLanguage" Tag="{Binding Path=Id}">
+                                                            <TextBlock Foreground="#A00" Panel.ZIndex="1" 
+                                                                       FontSize="30" VerticalAlignment="Center" 
+                                                                       HorizontalAlignment="Center" 
+                                                                       Text="X"></TextBlock>
+                                                            <Grid Panel.ZIndex="0">
+                                                                <Rectangle Fill="#00000000"></Rectangle>
+                                                            </Grid>
                                                         </Grid>
                                                     </Grid>
-                                                </Border>
-                                            </Grid>
-
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
                             </Grid>
 
-                            <Grid x:Name="G_Settings_Language_Save_Message" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Collapsed">
-                                <TextBlock FontSize="24" FontWeight="Normal" Foreground="#EEE" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="1" TextWrapping="Wrap" Text="Успешно сохранено"></TextBlock>
-                                <Grid Panel.ZIndex="0">
-                                    <Rectangle Fill="#038424" Width="300" Height="75" />
-                                    <Grid.Effect>
-                                        <DropShadowEffect Opacity="0.3" Color="#0d5758" RenderingBias="Performance" Direction="315" ShadowDepth="7" BlurRadius="10" />
-                                    </Grid.Effect>
+                            <Grid x:Name="G_Settings_Language_Save_Message" Grid.RowSpan="3" Grid.ColumnSpan="2" 
+                                  VerticalAlignment="Bottom" HorizontalAlignment="Left" Visibility="Collapsed">
+                                <TextBlock Style="{StaticResource DefaultWhiteTextLight}" 
+                                           Foreground="{StaticResource CorrectTextBrush}" Panel.ZIndex="1" 
+                                           Text="Успешно сохранено"></TextBlock>
+                                <Grid Style="{StaticResource BaseBackground}">
+                                    <Rectangle Fill="{StaticResource CorrectBrush}"  Width="300" Height="75" />
                                 </Grid>
                             </Grid>
                         </Grid>

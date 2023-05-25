@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Shapes;
 
 namespace CardWords.Views.Cards
@@ -10,62 +11,81 @@ namespace CardWords.Views.Cards
             public enum ColorType
             {
                 Default = 1,
-                Correct = 2,
-                Wrong = 3,
-                NewWord = 4
+                Correct,
+                Wrong,
+                NewWord
             }
 
-            private static Color defaultColor = Color.FromRgb(93, 167, 168); // #5da7a8
-            private static Color defaultLineColor = Color.FromRgb(108, 195, 196); // #6cc3c4
-            private static Color correctColor = Color.FromRgb(3, 132, 36); // #038424
-            private static Color correctLineColor = Color.FromRgb(53, 162, 81); //#35a251
-            private static Color wrongColor = Color.FromRgb(108, 36, 33); // #6c2421
-            private static Color wrongLineColor = Color.FromRgb(134, 58, 55); // #863a37
-            private static Color newWordColor = Color.FromRgb(77, 39, 139);
-            private static Color newWordLineColor = Color.FromRgb(98, 44, 185);
-
-            public static void SetColor(Rectangle rectangle, ColorType type)
+            public enum ElementType
             {
-                rectangle.Fill = GetBrush(type);
+                Background = 1,
+                Line
             }
 
-            public static void SetLineColor(Polygon polygon, ColorType type)
+            private readonly struct TypePair
             {
-                polygon.Fill = GetBrush(type, true);
-            }
-
-            private static Brush GetBrush(ColorType type, bool isLine = false)
-            {
-                var color = GetColor(type, isLine);
-
-                return new SolidColorBrush(color);
-            }
-
-            private static Color GetColor(ColorType type, bool isLine)
-            {
-                switch (type)
+                public static TypePair Create(ColorType cType, ElementType eType)
                 {
-                    case ColorType.Default:
-                        {
-                            return isLine ? defaultLineColor : defaultColor;
-                        }
-                    case ColorType.Correct:
-                        {
-                            return isLine ? correctLineColor : correctColor;
-                        }
-                    case ColorType.Wrong:
-                        {
-                            return isLine ? wrongLineColor : wrongColor;
-                        }
-                    case ColorType.NewWord:
-                        {
-                            return isLine ? newWordLineColor : newWordColor;
-                        }
-                    default:
-                        {
-                            return Color.FromRgb(0, 0, 0);
-                        }
+                    return new TypePair(cType, eType);
                 }
+
+                private TypePair(ColorType cType, ElementType eType)
+                {
+                    ColorType = cType;
+                    ElementType = eType;
+                }
+
+                public ColorType ColorType { get; }
+
+                public ElementType ElementType { get; }
+
+                public static bool operator ==(TypePair left, TypePair right)
+                {
+                    return left.ColorType == right.ColorType && left.ElementType == right.ElementType;
+                }
+
+                public static bool operator !=(TypePair left, TypePair right)
+                {
+                    return !(left == right);
+                }
+
+                public override bool Equals(object? obj)
+                {
+                    if (obj == null || obj is not TypePair)
+                    {
+                        return false;
+                    }
+
+                    var pair = (TypePair)obj;
+
+                    return this == pair;
+                }
+
+                public override int GetHashCode()
+                {
+                    return ColorType.GetHashCode() ^ ElementType.GetHashCode();
+                }
+            }
+
+            private static readonly IReadOnlyDictionary<TypePair, string> styles = new Dictionary<TypePair, string>
+            {
+                {TypePair.Create(ColorType.Default, ElementType.Background), "DefaultBackground25"},
+                {TypePair.Create(ColorType.Default, ElementType.Line), "DefaultLineBackground"},
+                {TypePair.Create(ColorType.Correct, ElementType.Background), "CorrectBackground25"},
+                {TypePair.Create(ColorType.Correct, ElementType.Line), "CorrectLineBackground"},
+                {TypePair.Create(ColorType.Wrong, ElementType.Background), "WrongBackground25"},
+                {TypePair.Create(ColorType.Wrong, ElementType.Line), "WrongLineBackground"},
+                {TypePair.Create(ColorType.NewWord, ElementType.Background), "NewWordBackground25"},
+                {TypePair.Create(ColorType.NewWord, ElementType.Line), "NewWordLineBackground"},
+            };
+
+            public static void SetStyle(Shape shape, ResourceDictionary resources, ColorType colorType, ElementType elementType)
+            {
+                var pair = TypePair.Create(colorType, elementType);
+
+                var style = resources[styles[pair]] as Style;
+
+                shape.Style = style;
             }
         }
     }

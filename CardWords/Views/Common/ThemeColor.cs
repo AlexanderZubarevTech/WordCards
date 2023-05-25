@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using CardWords.Extensions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CardWords.Views.Common
@@ -8,15 +11,16 @@ namespace CardWords.Views.Common
         public enum ColorType
         {
             Default = 1,
-            Active,
-            Hover,
-            HoverActive,
+            NotEnabledButton,
+            CancelButton,            
+            Active,            
             Correct,
             Wrong,
             NewWord,
             WordResult,
             ValidationErrorField,
-            ValidationError
+            ValidationError,
+            LibraryHeap
         }
 
         public enum ElementType
@@ -27,138 +31,176 @@ namespace CardWords.Views.Common
             Background
         }
 
-        private readonly struct TypePair
+        public enum ResourceType
         {
-            public static TypePair Create(ColorType cType, ElementType eType)
+            Color = 1,
+            Brush
+        }
+
+        public enum HoverType
+        {
+            None = 1,
+            Hover
+        }
+
+        private readonly struct ColorTypeInfo
+        {
+            public static ColorTypeInfo Create(ColorType cType, ElementType eType, ResourceType rType, HoverType hType)
             {
-                return new TypePair(cType, eType);
+                return new ColorTypeInfo(cType, eType, rType, hType);
             }
 
-            private TypePair(ColorType cType, ElementType eType)
+            private ColorTypeInfo(ColorType cType, ElementType eType, ResourceType rType, HoverType hType)
             {
                 ColorType = cType;
                 ElementType = eType;
+                ResourceType = rType;
+                HoverType = hType;
             }
 
             public ColorType ColorType { get; }
 
             public ElementType ElementType { get; }
 
-            public static bool operator ==(TypePair left, TypePair right)
+            public ResourceType ResourceType { get; }
+
+            public HoverType HoverType { get; }
+
+            public static bool operator ==(ColorTypeInfo left, ColorTypeInfo right)
             {
-                return left.ColorType == right.ColorType && left.ElementType == right.ElementType;
+                return left.ColorType == right.ColorType 
+                    && left.ElementType == right.ElementType 
+                    && left.ResourceType == right.ResourceType 
+                    && left.HoverType == right.HoverType;
             }
 
-            public static bool operator !=(TypePair left, TypePair right)
+            public static bool operator !=(ColorTypeInfo left, ColorTypeInfo right)
             {
                 return !(left == right);
             }
 
             public override bool Equals(object? obj)
             {
-                if (obj == null || obj is not TypePair)
+                if (obj == null || obj is not ColorTypeInfo)
                 {
                     return false;
                 }
 
-                var pair = (TypePair)obj;
+                var pair = (ColorTypeInfo)obj;
 
                 return this == pair;
             }
 
             public override int GetHashCode()
             {
-                return ColorType.GetHashCode() ^ ElementType.GetHashCode();
+                return ColorType.GetHashCode() ^ ElementType.GetHashCode() ^ ResourceType.GetHashCode();
+            }
+
+            public override string ToString()
+            {
+                var hoverName = HoverType == HoverType.None ? string.Empty : HoverType.ToString();
+
+                var elementName = ElementType == ElementType.Default ? string.Empty : ElementType.ToString();
+
+                return $"{hoverName}{ColorType}{elementName}{ResourceType}";
             }
         }
 
-        private static Color defaultBacgroundColor = Color.FromRgb(233, 233, 233); // #e9e9e9
+        private static readonly IReadOnlyDictionary<ColorTypeInfo, string> colors = GetColorDictionary();
 
-        private static Color defaultColor = Color.FromRgb(0, 121, 169); // #0079a9
-        private static Color defaultLineColor = Color.FromRgb(0, 151, 211); // #0097d3
-        private static Color defaultTextColor = Color.FromRgb(238, 238, 238); // #DDD
-
-        private static Color defaultActiveColor = Color.FromRgb(78, 49, 130); //#4e3182
-        private static Color defaultActiveLineColor = Color.FromRgb(106, 68, 174); //#6a44ae
-        private static Color defaultActiveTextColor = Color.FromRgb(204, 204, 204); //#CCC
-
-        private static Color hoverColor = Color.FromRgb(0, 151, 211); // #0097d3
-        private static Color hoverLineColor = Color.FromRgb(41, 186, 244); // #29baf4
-        private static Color hoverTextColor = Color.FromRgb(255, 255, 255); // #FFF
-
-        private static Color hoverActiveColor = Color.FromRgb(106, 68, 174); //#6a44ae
-        private static Color hoverActiveLineColor = Color.FromRgb(132, 83, 220); //#8453dc
-        private static Color hoverActiveTextColor = Color.FromRgb(221, 221, 221); //#DDD
-
-        private static Color correctColor = Color.FromRgb(3, 132, 36); // #038424
-        private static Color correctLineColor = Color.FromRgb(53, 162, 81); //#35a251
-        private static Color correctTextColor = Color.FromRgb(221, 221, 221); // #DDD
-
-        private static Color wrongtColor = Color.FromRgb(108, 36, 33); // #6c2421
-        private static Color wrongLineColor = Color.FromRgb(134, 58, 55); // #863a37
-        private static Color wrongTextColor = Color.FromRgb(221, 221, 221); // #DDD
-
-        private static Color newWordColor = Color.FromRgb(78, 49, 130); // #4e3182
-        private static Color newWordLineColor = Color.FromRgb(106, 68, 174); // #6a44ae
-        private static Color newWordTextColor = Color.FromRgb(221, 221, 221); // #DDD
-
-        private static Color wordResultColor = Color.FromRgb(0, 136, 189); // #0088bd
-        private static Color wordResultBacgroundColor = Color.FromRgb(0, 101, 141); // #00658d
-        private static Color wordResultTextColor = Color.FromRgb(221, 221, 221); // #DDD
-
-        private static Color validationErrorFieldColor = Color.FromRgb(108, 36, 33); // #6c2421
-        private static Color validationErrorFieldTextColor = Color.FromRgb(238, 238, 238); // #EEE
-
-        private static Color validationErrorTextColor = Color.FromRgb(108, 36, 33); // #6c2421
-
-
-        private static IReadOnlyDictionary<TypePair, Color> colors = new Dictionary<TypePair, Color>
+        private static IReadOnlyDictionary<ColorTypeInfo, string> GetColorDictionary()
         {
-            {TypePair.Create(ColorType.Default, ElementType.Background), defaultBacgroundColor},
+            var dictionary = new Dictionary<ColorTypeInfo, string>();
 
-            {TypePair.Create(ColorType.Default, ElementType.Default), defaultColor},
-            {TypePair.Create(ColorType.Default, ElementType.Line), defaultLineColor},
-            {TypePair.Create(ColorType.Default, ElementType.Text), defaultTextColor},
+            Add(dictionary, ColorType.Default, ElementType.Default);
+            Add(dictionary, ColorType.Default, ElementType.Line);
+            Add(dictionary, ColorType.Default, ElementType.Text);
+            Add(dictionary, ColorType.Default, ElementType.Background);
 
-            {TypePair.Create(ColorType.Active, ElementType.Default), defaultActiveColor},
-            {TypePair.Create(ColorType.Active, ElementType.Line), defaultActiveLineColor},
-            {TypePair.Create(ColorType.Active, ElementType.Text), defaultActiveTextColor},
+            Add(dictionary, ColorType.Default, ElementType.Default, HoverType.Hover);
+            Add(dictionary, ColorType.Default, ElementType.Line, HoverType.Hover);
+            Add(dictionary, ColorType.Default, ElementType.Text, HoverType.Hover);
 
-            {TypePair.Create(ColorType.Hover, ElementType.Default), hoverColor},
-            {TypePair.Create(ColorType.Hover, ElementType.Line), hoverLineColor},
-            {TypePair.Create(ColorType.Hover, ElementType.Text), hoverTextColor},
+            Add(dictionary, ColorType.NotEnabledButton, ElementType.Default);
+            Add(dictionary, ColorType.NotEnabledButton, ElementType.Text);
 
-            {TypePair.Create(ColorType.HoverActive, ElementType.Default), hoverActiveColor},
-            {TypePair.Create(ColorType.HoverActive, ElementType.Line), hoverActiveLineColor},
-            {TypePair.Create(ColorType.HoverActive, ElementType.Text), hoverActiveTextColor},
+            Add(dictionary, ColorType.CancelButton, ElementType.Default);
+            Add(dictionary, ColorType.CancelButton, ElementType.Text);
 
-            {TypePair.Create(ColorType.Correct, ElementType.Default), correctColor},
-            {TypePair.Create(ColorType.Correct, ElementType.Line), correctLineColor},
-            {TypePair.Create(ColorType.Correct, ElementType.Text), correctTextColor},
+            Add(dictionary, ColorType.CancelButton, ElementType.Default, HoverType.Hover);
 
-            {TypePair.Create(ColorType.Wrong, ElementType.Default), wrongtColor},
-            {TypePair.Create(ColorType.Wrong, ElementType.Line), wrongLineColor},
-            {TypePair.Create(ColorType.Wrong, ElementType.Text), wrongTextColor},
+            Add(dictionary, ColorType.Active, ElementType.Default);
+            Add(dictionary, ColorType.Active, ElementType.Text);
 
-            {TypePair.Create(ColorType.NewWord, ElementType.Default), newWordColor},
-            {TypePair.Create(ColorType.NewWord, ElementType.Line), newWordLineColor},
-            {TypePair.Create(ColorType.NewWord, ElementType.Text), newWordTextColor},
+            Add(dictionary, ColorType.Active, ElementType.Default, HoverType.Hover);
+            Add(dictionary, ColorType.Active, ElementType.Text, HoverType.Hover);            
 
-            {TypePair.Create(ColorType.WordResult, ElementType.Default), wordResultColor},
-            {TypePair.Create(ColorType.WordResult, ElementType.Background), wordResultBacgroundColor},
-            {TypePair.Create(ColorType.WordResult, ElementType.Text), wordResultTextColor},
+            Add(dictionary, ColorType.Correct, ElementType.Default);
+            Add(dictionary, ColorType.Correct, ElementType.Line);
+            Add(dictionary, ColorType.Correct, ElementType.Text);
 
-            {TypePair.Create(ColorType.ValidationErrorField, ElementType.Default), validationErrorFieldColor},
-            {TypePair.Create(ColorType.ValidationErrorField, ElementType.Text), validationErrorFieldTextColor},
+            Add(dictionary, ColorType.Wrong, ElementType.Default);
+            Add(dictionary, ColorType.Wrong, ElementType.Line);
+            Add(dictionary, ColorType.Wrong, ElementType.Text);
 
-            {TypePair.Create(ColorType.ValidationError, ElementType.Text), validationErrorTextColor},
-        };
+            Add(dictionary, ColorType.NewWord, ElementType.Default);
+            Add(dictionary, ColorType.NewWord, ElementType.Line);
+            Add(dictionary, ColorType.NewWord, ElementType.Text);
 
-        public static Color GetColor(ColorType colorType, ElementType elementType)
+            Add(dictionary, ColorType.WordResult, ElementType.Default);
+            Add(dictionary, ColorType.WordResult, ElementType.Background);
+
+            Add(dictionary, ColorType.ValidationErrorField, ElementType.Default);
+
+            Add(dictionary, ColorType.ValidationError, ElementType.Text);
+
+            Add(dictionary, ColorType.LibraryHeap, ElementType.Default);
+
+            return dictionary;
+        }
+
+        private static void Add(Dictionary<ColorTypeInfo, string> dictionary, ColorType colorType, ElementType elementType, HoverType hoverType = HoverType.None)
         {
-            var pair = TypePair.Create(colorType, elementType);
+            var colorKey = ColorTypeInfo.Create(colorType, elementType, ResourceType.Color, hoverType);
+            var brushKey = ColorTypeInfo.Create(colorType, elementType, ResourceType.Brush, hoverType);
 
-            return colors[pair];
+            dictionary.Add(colorKey, colorKey.ToString());
+            dictionary.Add(brushKey, brushKey.ToString());
+        }        
+
+        public static Color GetColor(ResourceDictionary resources, ColorType colorType, ElementType elementType, 
+            HoverType hoverType = HoverType.None)
+        {
+            var pair = ColorTypeInfo.Create(colorType, elementType, ResourceType.Color, hoverType);
+
+            return (Color) resources[colors[pair]];
+        }
+
+        public static SolidColorBrush GetBrush(ResourceDictionary resources, ColorType colorType, ElementType elementType, 
+            HoverType hoverType = HoverType.None)
+        {
+            var pair = ColorTypeInfo.Create(colorType, elementType, ResourceType.Brush, hoverType);
+
+            return resources[colors[pair]] as SolidColorBrush;
+        }
+
+        public static Color? GetHoverColorByResourceName(ResourceDictionary resources, string resourceBrushName)
+        {
+            var pair = colors.FirstOrDefault(x => x.Value == resourceBrushName);
+
+            if(pair.Value.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var hoverPair = ColorTypeInfo.Create(pair.Key.ColorType, pair.Key.ElementType, ResourceType.Color, HoverType.Hover);
+
+            if(!colors.ContainsKey(hoverPair))
+            {
+                return null;
+            }
+
+            return (Color)resources[colors[hoverPair]];
         }
     }
 }

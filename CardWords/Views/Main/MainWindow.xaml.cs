@@ -223,7 +223,7 @@ namespace CardWords
 
             SetEnabledWindow(false);
 
-            if (editWindow.ShowDialog() == true && LBx_Word.ItemsSource != null)
+            if (editWindow.ShowDialog() == true && DG_Word.ItemsSource != null)
             {
                 LibrarySearch();
             }
@@ -336,7 +336,7 @@ namespace CardWords
             {
                 ReloadSettings();
 
-                if (LBx_Settings_Languages.ItemsSource != null)
+                if (DG_Language.ItemsSource != null)
                 {
                     LanguageSearch();
                 }
@@ -388,11 +388,11 @@ namespace CardWords
 
             foreach (var item in menu)
             {
-                var typeColor = item.Key == activeMenu ? BackgroundColor.ColorType.Active : BackgroundColor.ColorType.Default;
+                var actionType = item.Key == activeMenu ? BackgroundColor.ActionType.Active : BackgroundColor.ActionType.Default;
                 var visibility = item.Key == activeMenu ? Visibility.Visible : Visibility.Collapsed;
 
                 item.Value.Visibility = visibility;
-                BackgroundColor.SetMenuColor(item.Key, typeColor);
+                BackgroundColor.SetMenuColor(item.Key, Resources, actionType);
             }
         }
 
@@ -408,7 +408,7 @@ namespace CardWords
 
                 if (item is TextBlock)
                 {
-                    BackgroundColor.BeginAnimation(item, isHover, actionType, (item as TextBlock).Foreground.BeginAnimation);
+                    BackgroundColor.BeginAnimation((item as TextBlock), Resources, isHover, actionType);
                 }
 
                 if (item is Grid)
@@ -417,9 +417,9 @@ namespace CardWords
 
                     for (int k = 0; k < backgroundGrid.Children.Count; k++)
                     {
-                        var backgroundItem = backgroundGrid.Children[k];
+                        var backgroundItem = backgroundGrid.Children[k] as Shape;
 
-                        BackgroundColor.BeginAnimation(backgroundItem, isHover, actionType, (backgroundItem as Shape).Fill.BeginAnimation);
+                        BackgroundColor.BeginAnimation(backgroundItem, Resources, isHover, actionType);
                     }
                 }
             }
@@ -430,14 +430,6 @@ namespace CardWords
             if (grid == activeMenu)
             {
                 return BackgroundColor.ActionType.Active;
-            }
-
-            if (grid.Tag != null && grid.Tag is string)
-            {
-                if (BackgroundColor.ActionByTags.ContainsKey(grid.Tag.ToString()))
-                {
-                    return BackgroundColor.ActionByTags[grid.Tag.ToString()];
-                }
             }
 
             return BackgroundColor.ActionType.Default;
@@ -508,7 +500,7 @@ namespace CardWords
         {
             LanguageWords = CommandHelper.GetCommand<IGetLanguageWordsCommand>().Execute(TBx_Library_Search.Text, ChBx_Library_Search_WithoutTranscription.IsChecked ?? false, CbBx_Library_Search_WordStatus.SelectedItem as WordStatus);
 
-            LBx_Word.ItemsSource = LanguageWords;
+            DG_Word.ItemsSource = LanguageWords;
 
             if (LanguageWords.Count == 0)
             {
@@ -552,7 +544,7 @@ namespace CardWords
         {
             Languages = CommandHelper.GetCommand<IGetLanguagesCommand>().Execute();
 
-            LBx_Settings_Languages.ItemsSource = Languages;
+            DG_Language.ItemsSource = Languages;
 
             if (Languages.Count == 0)
             {

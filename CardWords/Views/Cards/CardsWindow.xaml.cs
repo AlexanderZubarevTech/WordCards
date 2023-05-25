@@ -226,9 +226,9 @@ namespace CardWords.Views.Cards
 
         private void SetWordBackgroundColor(BackgroundColor.ColorType type)
         {
-            BackgroundColor.SetColor(R_WordBackground, type);
-            BackgroundColor.SetLineColor(P_WordBackground_Line_1, type);
-            BackgroundColor.SetLineColor(P_WordBackground_Line_2, type);
+            BackgroundColor.SetStyle(R_WordBackground, Resources, type, BackgroundColor.ElementType.Background);
+            BackgroundColor.SetStyle(P_WordBackground_Line_1, Resources, type, BackgroundColor.ElementType.Line);
+            BackgroundColor.SetStyle(P_WordBackground_Line_2, Resources, type, BackgroundColor.ElementType.Line);
         }
 
         private void SetTranslationBackgroundColor(BackgroundColor.ColorType type, WordActionData.Side side)
@@ -246,19 +246,19 @@ namespace CardWords.Views.Cards
 
         private void SetLeftTranslationBackgroundColor(BackgroundColor.ColorType type)
         {
-            BackgroundColor.SetColor(R_LeftTranslationBackbround, type);
+            BackgroundColor.SetStyle(R_LeftTranslationBackbround, Resources, type, BackgroundColor.ElementType.Background);
         }
 
         private void SetRightTranslationBackgroundColor(BackgroundColor.ColorType type)
         {
-            BackgroundColor.SetColor(R_RightTranslationBackbround, type);            
+            BackgroundColor.SetStyle(R_RightTranslationBackbround, Resources, type, BackgroundColor.ElementType.Background);
         }
 
         private void SetUnderstoodBackgroundColor(BackgroundColor.ColorType type)
         {
-            BackgroundColor.SetColor(R_UnderstoodBackbround, type);
-            BackgroundColor.SetLineColor(P_UnderstoodBackbround_Line_1, type);
-            BackgroundColor.SetLineColor(P_UnderstoodBackbround_Line_2, type);
+            BackgroundColor.SetStyle(R_UnderstoodBackbround, Resources, type, BackgroundColor.ElementType.Background);
+            BackgroundColor.SetStyle(P_UnderstoodBackbround_Line_1, Resources, type, BackgroundColor.ElementType.Line);
+            BackgroundColor.SetStyle(P_UnderstoodBackbround_Line_2, Resources, type, BackgroundColor.ElementType.Line);
         }
 
         #endregion
@@ -495,29 +495,47 @@ namespace CardWords.Views.Cards
         {
             var random = new Random((int)info.Duration.TotalSeconds);
 
-            var stars = new ResultStars(mainDispatcher, G_Stars, random, 0.3);
+            var stars = new ResultStars(mainDispatcher, G_Stars, random, 0.5);
 
             stars.SetProhibitedArea(TB_ResultWordsCountTitle);
             stars.SetProhibitedArea(TB_ResultWordsCount);
 
-            stars.SetProhibitedArea(TB_ResultSequenceCountTitle);
-            stars.SetProhibitedArea(TB_ResultSequenceCount);
-
-            stars.SetProhibitedArea(TB_ResultNewWordsCountTitle);
-            stars.SetProhibitedArea(TB_ResultNewWordsCount);
-
-            stars.SetProhibitedArea(TB_ResultCorrectWordsCountTitle);
-            stars.SetProhibitedArea(TB_ResultCorrectWordsCount);
-
-            stars.SetProhibitedArea(TB_ResultWrongWordsCountTitle);
-            stars.SetProhibitedArea(TB_ResultWrongWordsCount);
-
-            stars.SetProhibitedArea(TB_ResultTimeTitle);
-            stars.SetProhibitedArea(TB_ResultTime);
-
             stars.StartDraw();
 
             resultStars.Add(stars);
+
+            var stars2 = new ResultStars(mainDispatcher, G_Stars2, random, 0.5);
+
+            stars2.SetProhibitedArea(TB_ResultCorrectWordsCountTitle);
+            stars2.SetProhibitedArea(TB_ResultCorrectWordsCount);
+
+            stars2.StartDraw();
+
+            resultStars.Add(stars2);
+
+            var stars3 = new ResultStars(mainDispatcher, G_Stars3, random, 0.5);
+
+            stars3.SetProhibitedArea(TB_ResultNewWordsCountTitle);
+            stars3.SetProhibitedArea(TB_ResultNewWordsCount);
+
+            stars3.SetProhibitedArea(TB_ResultSequenceCountTitle);
+            stars3.SetProhibitedArea(TB_ResultSequenceCount);
+
+            stars3.StartDraw();
+
+            resultStars.Add(stars3);
+
+            var stars4 = new ResultStars(mainDispatcher, G_Stars4, random, 0.5);
+
+            stars4.SetProhibitedArea(TB_ResultWrongWordsCountTitle);
+            stars4.SetProhibitedArea(TB_ResultWrongWordsCount);
+
+            stars4.SetProhibitedArea(TB_ResultTimeTitle);
+            stars4.SetProhibitedArea(TB_ResultTime);
+
+            stars4.StartDraw();
+
+            resultStars.Add(stars4);
 
             var closeStars = new ResultStars(mainDispatcher, G_CloseStars, random, 0.6);
 

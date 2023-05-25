@@ -57,7 +57,7 @@
                                   Color="#000" 
                                   RenderingBias="Performance" 
                                   Direction="315" 
-                                  ShadowDepth="4" 
+                                  ShadowDepth="7" 
                                   BlurRadius="10" />
                     </Setter.Value>
                 </Setter>
@@ -65,19 +65,8 @@
             <Style x:Key="DefaultBackground">
                 <Setter Property="Shape.Fill" Value="{StaticResource DefaultBrush}" />
             </Style>
-            <Style x:Key="DefaultProgress">
-                <Setter Property="ProgressBar.Foreground" Value="{StaticResource HoverBrush}" />
-            </Style>
-            <Style x:Key="DefaultText">
-                <Setter Property="TextBlock.Foreground" Value="#223" />
-                <Setter Property="TextBlock.FontSize" Value="26" />
-                <Setter Property="TextBlock.FontWeight" Value="SemiBold" />
-                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                <Setter Property="TextBlock.VerticalAlignment" Value="Center" />
-                <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
-            </Style>
-            <Style x:Key="DefaultWhiteText" BasedOn="{StaticResource DefaultText}">
-                <Setter Property="TextBlock.Foreground" Value="#DDD" />
+            <Style x:Key="DefaultLineBackground">
+                <Setter Property="Shape.Fill" Value="{StaticResource DefaultLineBrush}" />
             </Style>
             <Style x:Key="DefaultBackground10" BasedOn="{StaticResource DefaultBackground}">
                 <Setter Property="Rectangle.RadiusX" Value="10" />
@@ -86,6 +75,78 @@
             <Style x:Key="DefaultBackground25" BasedOn="{StaticResource DefaultBackground}">
                 <Setter Property="Rectangle.RadiusX" Value="25" />
                 <Setter Property="Rectangle.RadiusY" Value="25" />
+            </Style>
+            
+            <Style x:Key="CorrectBackground">
+                <Setter Property="Shape.Fill" Value="{StaticResource CorrectBrush}" />
+            </Style>
+            <Style x:Key="CorrectLineBackground">
+                <Setter Property="Shape.Fill" Value="{StaticResource CorrectLineBrush}" />
+            </Style>
+            <Style x:Key="CorrectBackground10" BasedOn="{StaticResource CorrectBackground}">
+                <Setter Property="Rectangle.RadiusX" Value="10" />
+                <Setter Property="Rectangle.RadiusY" Value="10" />
+            </Style>
+            <Style x:Key="CorrectBackground25" BasedOn="{StaticResource CorrectBackground}">
+                <Setter Property="Rectangle.RadiusX" Value="25" />
+                <Setter Property="Rectangle.RadiusY" Value="25" />
+            </Style>
+            
+            <Style x:Key="WrongBackground">
+                <Setter Property="Shape.Fill" Value="{StaticResource WrongBrush}" />
+            </Style>
+            <Style x:Key="WrongLineBackground">
+                <Setter Property="Shape.Fill" Value="{StaticResource WrongLineBrush}" />
+            </Style>
+            <Style x:Key="WrongBackground10" BasedOn="{StaticResource WrongBackground}">
+                <Setter Property="Rectangle.RadiusX" Value="10" />
+                <Setter Property="Rectangle.RadiusY" Value="10" />
+            </Style>
+            <Style x:Key="WrongBackground25" BasedOn="{StaticResource WrongBackground}">
+                <Setter Property="Rectangle.RadiusX" Value="25" />
+                <Setter Property="Rectangle.RadiusY" Value="25" />
+            </Style>
+            
+            <Style x:Key="NewWordBackground">
+                <Setter Property="Shape.Fill" Value="{StaticResource NewWordBrush}" />
+            </Style>
+            <Style x:Key="NewWordLineBackground">
+                <Setter Property="Shape.Fill" Value="{StaticResource NewWordLineBrush}" />
+            </Style>
+            <Style x:Key="NewWordBackground10" BasedOn="{StaticResource NewWordBackground}">
+                <Setter Property="Rectangle.RadiusX" Value="10" />
+                <Setter Property="Rectangle.RadiusY" Value="10" />
+            </Style>
+            <Style x:Key="NewWordBackground25" BasedOn="{StaticResource NewWordBackground}">
+                <Setter Property="Rectangle.RadiusX" Value="25" />
+                <Setter Property="Rectangle.RadiusY" Value="25" />
+            </Style>
+            
+            <Style x:Key="DefaultProgress">
+                <Setter Property="ProgressBar.Foreground" Value="{StaticResource HoverBrush}" />
+            </Style>
+            <Style x:Key="DefaultText">
+                <Setter Property="TextBlock.Foreground" Value="#223" />
+                <Setter Property="TextBlock.FontSize" Value="26" />
+                <Setter Property="TextBlock.FontWeight" Value="Normal" />
+                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                <Setter Property="TextBlock.VerticalAlignment" Value="Center" />
+                <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="DefaultTextBold" BasedOn="{StaticResource DefaultText}">
+                <Setter Property="TextBlock.FontWeight" Value="Bold" />
+            </Style>
+            <Style x:Key="DefaultTextLight" BasedOn="{StaticResource DefaultText}">
+                <Setter Property="TextBlock.FontWeight" Value="Light" />
+            </Style>
+            <Style x:Key="DefaultWhiteText" BasedOn="{StaticResource DefaultText}">
+                <Setter Property="TextBlock.Foreground" Value="#DDD" />
+            </Style>
+            <Style x:Key="DefaultWhiteTextBold" BasedOn="{StaticResource DefaultTextBold}">
+                <Setter Property="TextBlock.Foreground" Value="#DDD" />
+            </Style>
+            <Style x:Key="DefaultWhiteTextLight" BasedOn="{StaticResource DefaultTextLight}">
+                <Setter Property="TextBlock.Foreground" Value="#DDD" />
             </Style>
             <Style x:Key="MainAction" TargetType="Button">
                 <Setter Property="Template">
@@ -114,11 +175,11 @@
                                                 <ColorAnimation 
                                                     Storyboard.TargetProperty="Foreground.Color" 
                                                     Duration="0:0:0.3"
-                                                    To="{StaticResource HoverTextColor}"/>
+                                                    To="{StaticResource HoverDefaultTextColor}"/>
                                                 <ColorAnimation 
                                                     Storyboard.TargetProperty="Background.Color" 
                                                     Duration="0:0:0.3"
-                                                    To="{StaticResource HoverColor}"/>
+                                                    To="{StaticResource HoverDefaultColor}"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -144,7 +205,7 @@
                     </Setter.Value>
                 </Setter>
                 <Setter Property="FontSize" Value="26" />
-                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="FontWeight" Value="Light" />
                 <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
                 <Setter Property="Foreground" Value="{StaticResource DefaultTextBrush}" />
                 <Setter Property="Cursor" Value="Hand" />
@@ -207,7 +268,8 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="FontSize" Value="26" />                
+                <Setter Property="FontSize" Value="26" />
+                <Setter Property="FontWeight" Value="Light" />                
                 <Setter Property="Background" Value="{StaticResource CancelButtonBrush}" />
                 <Setter Property="Foreground" Value="{StaticResource CancelButtonTextBrush}" />
                 <Setter Property="Cursor" Value="Hand" />
@@ -228,15 +290,12 @@
                 <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
                 <Setter Property="TextBlock.Margin" Value="0 0 0 10" />
                 <Setter Property="TextBlock.Foreground" Value="{StaticResource ValidationErrorTextBrush}" />
-            </Style>            
-            <Style x:Key="DefaultFieldTitle">
-                <Setter Property="TextBlock.FontSize" Value="26" />
-                <Setter Property="TextBlock.FontWeight" Value="DemiBold" />
-                <Setter Property="TextBlock.Foreground" Value="{StaticResource DefaultTextBrush}" />
-                <Setter Property="TextBlock.VerticalAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="DefaultFieldTitle" BasedOn="{StaticResource DefaultText}">                
+                <Setter Property="TextBlock.FontWeight" Value="Light" />
+                <Setter Property="TextBlock.Foreground" Value="{StaticResource DefaultTextBrush}" />                
                 <Setter Property="TextBlock.HorizontalAlignment" Value="Right" />
-                <Setter Property="Panel.ZIndex" Value="1" />
-                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                <Setter Property="Panel.ZIndex" Value="1" />                
                 <Setter Property="TextBlock.Margin" Value="0 0 10 0" />
             </Style>
             <Style x:Key="DefaultFieldTitleBacground" TargetType="Grid" BasedOn="{StaticResource BaseBackground}">
@@ -250,9 +309,25 @@
                 <Setter Property="TextBox.Cursor" Value="IBeam" />
                 <Setter Property="TextBox.FontSize" Value="26" />
                 <Setter Property="TextBox.VerticalContentAlignment" Value="Center" />
+            </Style>           
+            <Style x:Key="ComboBoxValueStyle">
+                <Setter Property="ComboBox.Background" Value="#EEE" />
+                <Setter Property="ComboBox.Height" Value="60" />
+                <Setter Property="ComboBox.FontSize" Value="22" />
+                <Setter Property="ComboBox.VerticalContentAlignment" Value="Center" />
             </Style>
-            <Style x:Key="ErrorFieldTitle" BasedOn="{StaticResource DefaultFieldTitle}">                
-                <Setter Property="TextBlock.Foreground" Value="{StaticResource ValidationErrorFieldTextBrush}" />                
+            <Style x:Key="CheckBoxValueStyle">
+                <Setter Property="CheckBox.VerticalAlignment" Value="Center" />
+                <Setter Property="CheckBox.VerticalContentAlignment" Value="Center" />
+                <Setter Property="CheckBox.HorizontalAlignment" Value="Left" />
+                <Setter Property="TextBlock.Margin" Value="15 0 0 0" />
+                <Setter Property="TextBlock.Width" Value="25" />
+                <Setter Property="TextBlock.Height" Value="30" />
+                <Setter Property="CheckBox.LayoutTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="2" ScaleY="2"></ScaleTransform>
+                    </Setter.Value>
+                </Setter>
             </Style>
             <Style x:Key="ErrorFieldTitleBacground">
                 <Setter Property="Shape.Fill" Value="{StaticResource ValidationErrorFieldBrush}" />
