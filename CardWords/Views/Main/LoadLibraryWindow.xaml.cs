@@ -5,6 +5,8 @@ using CardWords.Core.Validations;
 using CardWords.Extensions;
 using CardWords.Views.Common;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -37,6 +39,8 @@ namespace CardWords.Views.Main
 
             WP_FoundWords.Visibility = Visibility.Collapsed;
             WP_NewWords.Visibility = Visibility.Collapsed;
+            WP_WordsWithoutTranslation.Visibility = Visibility.Collapsed;
+            WP_DuplicateWords.Visibility = Visibility.Collapsed;
             WP_Progress_Percent.Visibility = Visibility.Collapsed;
 
             Btn_Save.IsEnabled = false;
@@ -58,14 +62,14 @@ namespace CardWords.Views.Main
             Close();
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            validationManager.Execute(Save);
+            await validationManager.ExecuteAsync(Save);
         }
 
-        private void Load_Click(object sender, RoutedEventArgs e)
+        private async void Load_Click(object sender, RoutedEventArgs e)
         {
-            var isValid = validationManager.Execute(Load);
+            var isValid = await validationManager.ExecuteAsync(Load);
 
             if(!isValid)
             {
@@ -82,7 +86,7 @@ namespace CardWords.Views.Main
             TB_Progress_Percent.Text = percent.ToString();
         }
 
-        private async void Load()
+        private async Task Load()
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
 
@@ -97,6 +101,8 @@ namespace CardWords.Views.Main
 
                 WP_FoundWords.Visibility = Visibility.Collapsed;
                 WP_NewWords.Visibility = Visibility.Collapsed;
+                WP_WordsWithoutTranslation.Visibility = Visibility.Collapsed;
+                WP_DuplicateWords.Visibility = Visibility.Collapsed;
                 WP_Progress_Percent.Visibility = Visibility.Visible;
 
                 PB_Progress.Value = 0;
@@ -109,6 +115,18 @@ namespace CardWords.Views.Main
                 WP_FoundWords.Visibility = Visibility.Visible;
                 WP_NewWords.Visibility = Visibility.Visible;
 
+                if(info.WordsWithoutTranslation > 0)
+                {
+                    TB_WordsWithoutTranslation.Text = info.WordsWithoutTranslation.ToString();
+                    WP_WordsWithoutTranslation.Visibility = Visibility.Visible;
+                }
+
+                if(info.DuplicateWordCount > 0)
+                {
+                    TB_DuplicateWords.Text = info.DuplicateWordCount.ToString();
+                    WP_DuplicateWords.Visibility = Visibility.Visible;
+                }
+
                 WP_Progress_Percent.Visibility = Visibility.Collapsed;
 
                 Btn_Save.IsEnabled = true;
@@ -119,26 +137,41 @@ namespace CardWords.Views.Main
             }
         }
 
-        private async void Save()
+        private async Task Save()
         {
             Btn_Save.IsEnabled = false;
 
             WP_FoundWords.Visibility = Visibility.Collapsed;
             WP_NewWords.Visibility = Visibility.Collapsed;
+            WP_WordsWithoutTranslation.Visibility = Visibility.Collapsed;
+            WP_DuplicateWords.Visibility = Visibility.Collapsed;
             WP_Progress_Percent.Visibility = Visibility.Visible;
 
             PB_Progress.Value = 0;
 
             var info = await CommandHelper.GetCommand<ILoadFileToLibraryCommand>().Execute(fullFileName, mainDispatcher, PB_Progress);
 
-            var messages = new string[]
-            {
+            var messages = new List<string>
+            {                
                 $"В библиотеку ",
                 $"{settings.CurrentLanguage.Name} - {settings.TranslationLanguage.Name}",
-                $"было добавлено слов: {info.NewWordsCount}"
+                $"Из {info.WordsCount} обнаруженных слов:",
+                
             };
 
-            var messageWindow = new MessageWindow(messages);
+            if(info.WordsWithoutTranslation > 0)
+            {
+                messages.Add($"Без перевода: {info.WordsWithoutTranslation}");
+            }
+
+            if (info.DuplicateWordCount > 0)
+            {
+                messages.Add($"Дубликаты: {info.DuplicateWordCount}");
+            }
+
+            messages.Add($"Добавлено: {info.NewWordsCount}");
+
+            var messageWindow = new MessageWindow(messages.ToArray());
 
             SetEnabledWindow(false);
 

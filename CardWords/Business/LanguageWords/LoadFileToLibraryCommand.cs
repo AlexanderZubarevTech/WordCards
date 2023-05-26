@@ -39,13 +39,16 @@ namespace CardWords.Business.LanguageWords
                 ValidationResult.ThrowError($"Таблица не найдена. Тег {tableNode} не найден.");                
             }
 
+            var info = new LibraryFileInfo();
+
             var wordCount = GetRowCount(tableNode);
 
             progress.Maximum = wordCount;
+            info.WordsCount = wordCount;
 
-            var newVords = await SaveWords(tableNode);
+            await SaveWords(tableNode, info);
 
-            return new LibraryFileInfo(wordCount, newVords);
+            return info;
         }
 
         private XmlNode? FindNode(XmlNode? node, string nodeName)
@@ -82,12 +85,18 @@ namespace CardWords.Business.LanguageWords
         {
             var count = 0;
 
-            foreach(XmlNode childNode in tableNode.ChildNodes)
+            foreach (XmlNode childNode in tableNode.ChildNodes)
             {
-                if(IsNode(childNode, rowNodeName) && !childNode.ChildNodes[0].ChildNodes[0].InnerText.IsNullOrEmptyOrWhiteSpace())
+                if (!IsNode(childNode, rowNodeName)
+                    || childNode.FirstChild == null
+                    || childNode.FirstChild.FirstChild == null
+                    || childNode.FirstChild.FirstChild.FirstChild == null
+                    || childNode.FirstChild.FirstChild.FirstChild.Value.IsNullOrEmptyOrWhiteSpace())
                 {
-                    count++;
+                    continue;
                 }
+
+                count++;
             }
 
             return count;
@@ -98,23 +107,23 @@ namespace CardWords.Business.LanguageWords
             await Task.Run(() => mainDispatcher.Invoke(() => progress.Value++));
         }
 
-        private async Task<int> SaveWords(XmlNode tableNode)
+        private async Task SaveWords(XmlNode tableNode, LibraryFileInfo info)
         {
-            int newWordsCount = 0;
-
             using (var db = new LanguageWordContext())
             {
                 var wordList = new List<LanguageWord>(200);
 
                 var timestamp = TimeHelper.GetCurrentDate();
 
+                var words = new HashSet<string>(info.WordsCount);
+
                 foreach (XmlNode rowNode in tableNode.ChildNodes)
                 {
                     if(wordList.Count == 200)
                     {
-                        newWordsCount += SaveNewWordCountByList(db, wordList);
+                        info.NewWordsCount += SaveNewWordCountByList(db, wordList);
 
-                        wordList.Clear();                                
+                        wordList.Clear();
                     }
 
                     if(!IsNode(rowNode, rowNodeName))
@@ -123,8 +132,8 @@ namespace CardWords.Business.LanguageWords
                     }
 
                     var wordNode = rowNode.ChildNodes[0];
-                    var transcriptionNode = rowNode.ChildNodes[1];
-                    var translationNode = rowNode.ChildNodes[2];
+                    var translationNode = rowNode.ChildNodes[1];
+                    var transcriptionNode = rowNode.ChildNodes[2];
 
                     var dataWordNode = FindNode(wordNode, dataNodeName);
 
@@ -135,49 +144,58 @@ namespace CardWords.Business.LanguageWords
                         continue;
                     }
 
+                    await ChangeProgress();
+
+                    var wordName = dataWordNode.FirstChild.Value.Trim().ToLower();
+
+                    if(words.Contains(wordName))
+                    {
+                        info.DuplicateWordCount++;
+
+                        continue;
+                    } 
+                    else
+                    {
+                        words.Add(wordName);
+                    }
+
                     var dataTranslationNode = FindNode(translationNode, dataNodeName);
 
                     if (dataTranslationNode == null 
                         || dataTranslationNode.FirstChild == null 
                         || dataTranslationNode.FirstChild.Value.IsNullOrEmptyOrWhiteSpace())
                     {
+                        info.WordsWithoutTranslation++;
+
                         continue;
                     }
-
-                    var wordName = dataWordNode.FirstChild.Value;
-                    var translationName = dataTranslationNode.FirstChild.Value;
+                    
+                    var translationName = dataTranslationNode.FirstChild.Value.Trim().ToLower();
 
                     var transcriptionDataNode = FindNode(transcriptionNode, dataNodeName);
 
                     var transcription = transcriptionDataNode != null && transcriptionDataNode.FirstChild != null 
-                        ? transcriptionDataNode.FirstChild.Value 
+                        ? transcriptionDataNode.FirstChild.Value.Trim()
                         : string.Empty;
 
-                    if (!wordName.IsNullOrEmptyOrWhiteSpace())
+                    var word = new LanguageWord()
                     {
-                        var word = new LanguageWord()
-                        {
-                            Timestamp = timestamp,
-                            LanguageId = AppConfiguration.Instance.CurrentLanguage,
-                            TranslationLanguageId = AppConfiguration.Instance.CurrentTranslationLanguage,
-                            LanguageWordName = wordName.Trim().ToLower(),
-                            Transcription = transcription.Trim(),
-                            Translation = translationName.Trim().ToLower()
-                        };
+                        Timestamp = timestamp,
+                        LanguageId = AppConfiguration.Instance.CurrentLanguage,
+                        TranslationLanguageId = AppConfiguration.Instance.CurrentTranslationLanguage,
+                        LanguageWordName = wordName,
+                        Transcription = transcription,
+                        Translation = translationName
+                    };
 
-                        wordList.Add(word);
-
-                        await ChangeProgress();
-                    }
+                    wordList.Add(word);                    
                 }
 
                 if(wordList.Count > 0)
                 {
-                    newWordsCount += SaveNewWordCountByList(db, wordList);
-                }
-            }
-
-            return newWordsCount;
+                    info.NewWordsCount += SaveNewWordCountByList(db, wordList);
+                }                
+            }            
         }        
 
         private static int SaveNewWordCountByList(LanguageWordContext db, List<LanguageWord> list)

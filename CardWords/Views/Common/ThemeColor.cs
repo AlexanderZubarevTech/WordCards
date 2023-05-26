@@ -182,25 +182,6 @@ namespace CardWords.Views.Common
             var pair = ColorTypeInfo.Create(colorType, elementType, ResourceType.Brush, hoverType);
 
             return resources[colors[pair]] as SolidColorBrush;
-        }
-
-        public static Color? GetHoverColorByResourceName(ResourceDictionary resources, string resourceBrushName)
-        {
-            var pair = colors.FirstOrDefault(x => x.Value == resourceBrushName);
-
-            if(pair.Value.IsNullOrEmpty())
-            {
-                return null;
-            }
-
-            var hoverPair = ColorTypeInfo.Create(pair.Key.ColorType, pair.Key.ElementType, ResourceType.Color, HoverType.Hover);
-
-            if(!colors.ContainsKey(hoverPair))
-            {
-                return null;
-            }
-
-            return (Color)resources[colors[hoverPair]];
-        }
+        }        
     }
 }

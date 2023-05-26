@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -16,9 +17,7 @@ namespace CardWords.Business.LanguageWords
     public sealed class CheckLibraryFileCommand : EntityCommand, ICheckLibraryFileCommand
     {
         private const string tableNodeName = "table";
-        private const string rowNodeName = "row";
-        private const string cellNodeName = "cell";
-        private const string dataNodeName = "data";
+        private const string rowNodeName = "row";        
 
         private ProgressBar progress;
         private Dispatcher mainDispatcher;
@@ -31,22 +30,35 @@ namespace CardWords.Business.LanguageWords
             var file = new FileInfo(fullFileName);
 
             var doc = new XmlDocument();
-            doc.Load(file.OpenText());
+
+            try
+            {
+                doc.Load(file.OpenText());
+            }
+            catch (IOException ex)
+            {
+                ValidationResult.ThrowError($"Ошибка открытия файла: {ex.Message}");
+
+                return null;
+            }
 
             var tableNode = GetTableNodeRecursive(doc);
 
             if(tableNode == null)
             {
-                ValidationResult.ThrowError($"Таблица не найдена. Тег {tableNode} не найден.");                
+                ValidationResult.ThrowError($"Таблица не найдена. Тег {tableNode} не найден.");
             }
+
+            var info = new LibraryFileInfo();
 
             var wordCount = GetRowCount(tableNode);
 
             progress.Maximum = wordCount;
+            info.WordsCount = wordCount;
 
-            var newVords = await CheckWords(tableNode);
+            await CheckWords(tableNode, info);
 
-            return new LibraryFileInfo(wordCount, newVords);
+            return info;
         }
 
         private XmlNode? GetTableNodeRecursive(XmlNode node)
@@ -105,21 +117,21 @@ namespace CardWords.Business.LanguageWords
             await Task.Run(() => mainDispatcher.Invoke(() => progress.Value++));
         }
 
-        private async Task<int> CheckWords(XmlNode tableNode)
+        private async Task CheckWords(XmlNode tableNode, LibraryFileInfo info)
         {
-            int newWordsCount = 0;
-
             using (var db = new LanguageWordContext())
             {
-                var wordList = new List<string>(200);                
+                var wordList = new List<string>(200);
+
+                var words = new HashSet<string>(info.WordsCount);
 
                 foreach(XmlNode rowNode in tableNode.ChildNodes)
                 {
                     if(wordList.Count == 200)
                     {
-                        newWordsCount += GetNewWordCountByList(db.LanguageWords, wordList);
+                        info.NewWordsCount += GetNewWordCountByList(db.LanguageWords, wordList);
 
-                        wordList.Clear();                                
+                        wordList.Clear();                              
                     }
 
                     if(!IsNode(rowNode, rowNodeName))
@@ -127,30 +139,51 @@ namespace CardWords.Business.LanguageWords
                         continue;
                     }
 
-                    if(rowNode.FirstChild == null 
-                        || rowNode.FirstChild.FirstChild == null 
-                        || rowNode.FirstChild.FirstChild.FirstChild == null)
+                    var wordNode = rowNode.ChildNodes[0];
+
+                    if (wordNode == null 
+                        || wordNode.FirstChild == null
+                        || wordNode.FirstChild.FirstChild == null 
+                        || wordNode.FirstChild.FirstChild.Value.IsNullOrEmptyOrWhiteSpace())
                     {
                         continue;
                     }
 
-                    var wordName = rowNode.FirstChild.FirstChild.FirstChild.Value;
+                    await ChangeProgress();
 
-                    if(!wordName.IsNullOrEmptyOrWhiteSpace())
+                    var wordName = wordNode.FirstChild.FirstChild.Value.Trim().ToLower();
+
+                    if (words.Contains(wordName))
                     {
-                        wordList.Add(wordName.Trim().ToLower());
+                        info.DuplicateWordCount++;
 
-                        await ChangeProgress();
+                        continue;
                     }
+                    else
+                    {
+                        words.Add(wordName);
+                    }
+
+                    var translationNode = rowNode.ChildNodes[1];
+
+                    if (translationNode == null
+                        || translationNode.FirstChild == null
+                        || translationNode.FirstChild.FirstChild == null
+                        || translationNode.FirstChild.FirstChild.Value.IsNullOrEmptyOrWhiteSpace())
+                    {
+                        info.WordsWithoutTranslation++;
+
+                        continue;
+                    }
+
+                    wordList.Add(wordName);                    
                 }
 
                 if(wordList.Count > 0)
                 {
-                    newWordsCount += GetNewWordCountByList(db.LanguageWords, wordList);
+                    info.NewWordsCount += GetNewWordCountByList(db.LanguageWords, wordList);
                 }
-            }
-
-            return newWordsCount;
+            }            
         }
 
         private static int GetNewWordCountByList(DbSet<LanguageWord> languageWords, List<string> list)

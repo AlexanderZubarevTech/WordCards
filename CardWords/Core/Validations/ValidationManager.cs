@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using CardWords.Core.Exceptions;
 using CardWords.Core.Helpers;
+using System.Threading.Tasks;
 
 namespace CardWords.Core.Validations
 {
@@ -190,14 +191,27 @@ namespace CardWords.Core.Validations
             }
             catch (ValidationResultException ex)
             {
-                if(ex.ValidationResult != null)
-                {
-                    Validate(ex.ValidationResult);
-                }
-                else
-                {
-                    AddErrorMessage(ex.Message);
-                }
+                Validate(ex);
+
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        public async Task<bool> ExecuteAsync(Func<Task> executeAction)
+        {
+            SetDefault();
+
+            bool isValid = true;
+
+            try
+            {
+                await executeAction.Invoke();
+            }
+            catch (ValidationResultException ex)
+            {
+                Validate(ex);
 
                 isValid = false;
             }
@@ -215,9 +229,16 @@ namespace CardWords.Core.Validations
             errorMessagePanel.Children.Clear();
         }
 
-        private void Validate(ValidationResult validationResult)
+        private void Validate(ValidationResultException ex)
         {
-            foreach(var error in validationResult)
+            if (ex.ValidationResult == null)
+            {
+                AddErrorMessage(ex.Message);
+
+                return;
+            }
+
+            foreach (ErrorMessage error in ex.ValidationResult)
             {
                 if(error.HasField)
                 {

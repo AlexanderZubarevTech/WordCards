@@ -43,8 +43,7 @@
                     <RowDefinition Height="100" />
                     <RowDefinition />
                     <RowDefinition Height="50" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -116,15 +115,29 @@
                                  ValueChanged="PB_Progress_ValueChanged" Style="{StaticResource DefaultProgress}"></ProgressBar>
                 </Grid>
 
-                <WrapPanel Name="WP_FoundWords" Grid.Row="5" Grid.Column="0" Margin="10 0 0 0">
-                    <TextBlock FontSize="18" FontWeight="SemiBold">Найдено слов:</TextBlock>
-                    <TextBlock x:Name="TB_FoundWordsCount" FontSize="18" FontWeight="SemiBold" Margin="5 0 0 0" Text="8000"></TextBlock>
-                </WrapPanel>
+                <StackPanel Grid.Row="5" Grid.Column="0" Margin="10 0 0 0">
+                    <WrapPanel Name="WP_FoundWords">
+                        <TextBlock FontSize="18" FontWeight="SemiBold">Найдено слов:</TextBlock>
+                        <TextBlock x:Name="TB_FoundWordsCount" FontSize="18" FontWeight="SemiBold" Margin="5 0 0 0" Text="8000"></TextBlock>
+                    </WrapPanel>
 
-                <WrapPanel Name="WP_NewWords" Grid.Row="6" Grid.Column="0" Margin="10 0 0 0">
-                    <TextBlock FontSize="18" FontWeight="SemiBold">Новых слов:</TextBlock>
-                    <TextBlock x:Name="TB_NewWordsCount" FontSize="18" FontWeight="SemiBold" Margin="5 0 0 0" Text="123"></TextBlock>
-                </WrapPanel>
+                    <WrapPanel Name="WP_NewWords">
+                        <TextBlock FontSize="18" FontWeight="SemiBold">Новых слов:</TextBlock>
+                        <TextBlock x:Name="TB_NewWordsCount" FontSize="18" FontWeight="SemiBold" Margin="5 0 0 0" Text="123"></TextBlock>
+                    </WrapPanel>
+
+                    <WrapPanel Name="WP_WordsWithoutTranslation">
+                        <TextBlock FontSize="18" FontWeight="SemiBold">Слов без перевода:</TextBlock>
+                        <TextBlock x:Name="TB_WordsWithoutTranslation" FontSize="18" FontWeight="SemiBold" Margin="5 0 0 0" Text="123"></TextBlock>
+                    </WrapPanel>
+
+                    <WrapPanel Name="WP_DuplicateWords">
+                        <TextBlock FontSize="18" FontWeight="SemiBold">Дубликатов:</TextBlock>
+                        <TextBlock x:Name="TB_DuplicateWords" FontSize="18" FontWeight="SemiBold" Margin="5 0 0 0" Text="123"></TextBlock>
+                    </WrapPanel>
+                </StackPanel>
+
+                
             </Grid>
 
             <StackPanel x:Name="SP_ErrorMessages" Tag="Validation"></StackPanel>
