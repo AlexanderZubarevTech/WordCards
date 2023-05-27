@@ -1,6 +1,4 @@
-﻿using CardWords.Core.Ids;
-using Microsoft.EntityFrameworkCore;
-
+﻿
 namespace CardWords.Core.Contexts
 {
     public class EntityContext : BaseContext
@@ -8,13 +6,6 @@ namespace CardWords.Core.Contexts
         public EntityContext() : base()
         {
             Database.CanConnect();
-        }
-
-        //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-        //{
-        //    configurationBuilder
-        //        .Properties<Id>()
-        //        .HaveConversion<Id.IdConverter>();
-        //}
+        }        
     }
 }

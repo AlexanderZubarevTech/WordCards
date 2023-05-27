@@ -25,7 +25,19 @@ namespace CardWords.Configurations
         private AppConfiguration(IReadOnlyDictionary<string, Configuration> data) 
         {
             SetProperties(data);
-        }        
+        }
+
+        [ConfigurationId("current_language")]
+        public int CurrentLanguage { get; private set; }
+
+        [ConfigurationId("current_translation_language")]
+        public int CurrentTranslationLanguage { get; private set; }
+
+        [ConfigurationId("word_card_has_timer")]
+        public bool WordCardHasTimer { get; private set; }
+
+        [ConfigurationId("word_card_timer_duration_in_seconds")]
+        public int WordCardTimerDurationInSeconds { get; private set; }
 
         public static void Refresh()
         {
@@ -52,18 +64,6 @@ namespace CardWords.Configurations
         {
             return CommandHelper.GetCommand<ILoadConfigurationCommand>().Execute();
         }
-
-        [ConfigurationId("current_language")]
-        public int CurrentLanguage { get; private set; }
-
-        [ConfigurationId("current_translation_language")]
-        public int CurrentTranslationLanguage { get; private set; }
-
-        [ConfigurationId("word_card_has_timer")]
-        public bool WordCardHasTimer { get; private set; }
-
-        [ConfigurationId("word_card_timer_duration_in_seconds")]
-        public int WordCardTimerDurationInSeconds { get; private set; }
 
         private void SetProperties(IReadOnlyDictionary<string, Configuration> data)
         {
