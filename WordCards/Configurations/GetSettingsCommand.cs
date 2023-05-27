@@ -1,5 +1,4 @@
-﻿using WordCards.Configurations.Contexts;
-using WordCards.Core.Commands;
+﻿using WordCards.Core.Commands;
 using System.Linq;
 
 namespace WordCards.Configurations
