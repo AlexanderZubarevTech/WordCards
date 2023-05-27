@@ -1,9 +1,9 @@
-﻿using CardWords.Core.Commands;
-using CardWords.Core.Validations;
-using CardWords.Extensions;
+﻿using WordCards.Core.Commands;
+using WordCards.Core.Validations;
+using WordCards.Extensions;
 using System.Linq;
 
-namespace CardWords.Business.Languages
+namespace WordCards.Business.Languages
 {
     public sealed class SaveLanguageCommand : EntityCommand, ISaveLanguageCommand
     {

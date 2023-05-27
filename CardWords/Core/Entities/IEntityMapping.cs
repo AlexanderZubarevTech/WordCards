@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CardWords.Core.Entities
+namespace WordCards.Core.Entities
 {
     public interface IEntityMapping<TEntity>
         where TEntity : Entity

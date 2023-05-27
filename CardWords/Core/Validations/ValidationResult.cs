@@ -1,13 +1,13 @@
-﻿using CardWords.Core.Entities;
-using CardWords.Core.Exceptions;
-using CardWords.Extensions;
+﻿using WordCards.Core.Entities;
+using WordCards.Core.Exceptions;
+using WordCards.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CardWords.Core.Validations
+namespace WordCards.Core.Validations
 {
 
     public sealed class ValidationResult : IEnumerable

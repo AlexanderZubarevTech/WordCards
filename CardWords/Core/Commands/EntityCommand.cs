@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardWords.Core.Commands
+namespace WordCards.Core.Commands
 {
     public abstract class EntityCommand : IEntityCommand
     {

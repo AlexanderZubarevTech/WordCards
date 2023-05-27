@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using CardWords.Core.Commands;
+using WordCards.Core.Commands;
 
-namespace CardWords.Core.Helpers
+namespace WordCards.Core.Helpers
 {
     public sealed class CommandHelper
     {

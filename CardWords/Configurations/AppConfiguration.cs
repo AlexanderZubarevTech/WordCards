@@ -1,9 +1,9 @@
-﻿using CardWords.Core.Helpers;
+﻿using WordCards.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     public sealed class AppConfiguration
     {

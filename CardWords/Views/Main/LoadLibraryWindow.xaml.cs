@@ -1,9 +1,9 @@
-﻿using CardWords.Business.LanguageWords;
-using CardWords.Configurations;
-using CardWords.Core.Helpers;
-using CardWords.Core.Validations;
-using CardWords.Extensions;
-using CardWords.Views.Common;
+﻿using WordCards.Business.LanguageWords;
+using WordCards.Configurations;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
+using WordCards.Extensions;
+using WordCards.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace CardWords.Views.Main
+namespace WordCards.Views.Main
 {
     /// <summary>
     /// Логика взаимодействия для LoadLibraryWindow.xaml

@@ -1,9 +1,9 @@
-﻿using CardWords.Core.Helpers;
-using CardWords.Extensions;
+﻿using WordCards.Core.Helpers;
+using WordCards.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CardWords.Core.Tags
+namespace WordCards.Core.Tags
 {
     public sealed class ElementTag
     {

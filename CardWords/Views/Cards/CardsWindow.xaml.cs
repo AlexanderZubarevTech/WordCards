@@ -1,7 +1,7 @@
-﻿using CardWords.Business.WordAction;
-using CardWords.Business.WordActivities;
-using CardWords.Configurations;
-using CardWords.Core.Helpers;
+﻿using WordCards.Business.WordAction;
+using WordCards.Business.WordActivities;
+using WordCards.Configurations;
+using WordCards.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace CardWords.Views.Cards
+namespace WordCards.Views.Cards
 {
     /// <summary>
     /// Логика взаимодействия для CardsWindow.xaml

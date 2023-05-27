@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using CardWords.Extensions;
+using WordCards.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace CardWords.Core.Entities
+namespace WordCards.Core.Entities
 {
     public sealed class EntityMappingBuilder<TEntity>
         where TEntity : Entity

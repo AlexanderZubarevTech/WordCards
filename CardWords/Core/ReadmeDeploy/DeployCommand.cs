@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CardWords.Core.Commands;
-using CardWords.Core.Contexts;
-using CardWords.Core.Helpers;
-using CardWords.Extensions;
+using WordCards.Core.Commands;
+using WordCards.Core.Contexts;
+using WordCards.Core.Helpers;
+using WordCards.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 
-namespace CardWords.Core.ReadmeDeploy
+namespace WordCards.Core.ReadmeDeploy
 {
     public sealed partial class DeployCommand : EntityCommand, IDeployCommand
     {

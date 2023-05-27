@@ -1,10 +1,10 @@
-﻿using CardWords.Business.WordActivities;
-using CardWords.Core.Entities;
+﻿using WordCards.Business.WordActivities;
+using WordCards.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 
-namespace CardWords.Business.WordAction
+namespace WordCards.Business.WordAction
 {
     public sealed class WordActionInfo : Entity, IEntityMapping<WordActionInfo>
     {

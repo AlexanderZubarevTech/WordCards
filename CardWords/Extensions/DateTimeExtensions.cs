@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardWords.Extensions
+namespace WordCards.Extensions
 {
     public static class DateTimeExtensions
     {

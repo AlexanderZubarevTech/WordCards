@@ -1,6 +1,6 @@
-﻿using CardWords.Core.Commands;
+﻿using WordCards.Core.Commands;
 
-namespace CardWords.Business.WordAction
+namespace WordCards.Business.WordAction
 {
     interface ISaveWordActionDataCommand : IEntityCommand
     {

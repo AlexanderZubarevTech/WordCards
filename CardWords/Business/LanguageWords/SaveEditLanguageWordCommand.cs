@@ -1,10 +1,10 @@
-﻿using CardWords.Core.Commands;
-using CardWords.Core.Helpers;
-using CardWords.Core.Validations;
-using CardWords.Extensions;
+﻿using WordCards.Core.Commands;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
+using WordCards.Extensions;
 using System.Linq;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     public sealed class SaveEditLanguageWordsCommand : EntityCommand, ISaveEditLanguageWordCommand
     {

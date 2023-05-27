@@ -1,8 +1,8 @@
-﻿using CardWords.Business.Languages;
-using CardWords.Core.Contexts;
+﻿using WordCards.Business.Languages;
+using WordCards.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace CardWords.Configurations.Contexts
+namespace WordCards.Configurations.Contexts
 {
     public sealed class ConfigurationContext : EntityContext
     {

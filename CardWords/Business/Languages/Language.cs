@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using CardWords.Core.Entities;
+using WordCards.Core.Entities;
 
-namespace CardWords.Business.Languages
+namespace WordCards.Business.Languages
 {
     public sealed class Language : Entity, IEntityMapping<Language>
     {

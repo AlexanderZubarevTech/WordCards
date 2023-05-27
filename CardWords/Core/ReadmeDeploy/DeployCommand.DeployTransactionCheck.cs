@@ -1,4 +1,4 @@
-﻿namespace CardWords.Core.ReadmeDeploy
+﻿namespace WordCards.Core.ReadmeDeploy
 {
     public sealed partial class DeployCommand
     {

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Shapes;
 
-namespace CardWords.Views.Cards
+namespace WordCards.Views.Cards
 {
     public partial class CardsWindow
     {

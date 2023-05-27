@@ -1,13 +1,13 @@
-﻿using CardWords.Configurations.Contexts;
-using CardWords.Core.Commands;
+﻿using WordCards.Configurations.Contexts;
+using WordCards.Core.Commands;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Collections.Generic;
-using CardWords.Core.Validations;
-using CardWords.Business.Languages;
+using WordCards.Core.Validations;
+using WordCards.Business.Languages;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     public sealed class SaveSettingsCommand : EntityCommand, ISaveSettingsCommand
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardWords.Core.Exceptions
+namespace WordCards.Core.Exceptions
 {
     [Serializable]
     public class UnknownTypeException : Exception

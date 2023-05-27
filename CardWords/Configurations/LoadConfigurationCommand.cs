@@ -1,9 +1,9 @@
-﻿using CardWords.Configurations.Contexts;
-using CardWords.Core.Commands;
+﻿using WordCards.Configurations.Contexts;
+using WordCards.Core.Commands;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     public class LoadConfigurationCommand : EntityCommand, ILoadConfigurationCommand
     {

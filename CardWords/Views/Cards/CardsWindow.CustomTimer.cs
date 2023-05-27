@@ -1,10 +1,10 @@
-﻿using CardWords.Business.WordAction;
-using CardWords.Configurations;
+﻿using WordCards.Business.WordAction;
+using WordCards.Configurations;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CardWords.Views.Cards
+namespace WordCards.Views.Cards
 {
     public partial class CardsWindow
     {

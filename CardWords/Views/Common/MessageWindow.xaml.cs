@@ -1,9 +1,9 @@
-﻿using CardWords.Extensions;
+﻿using WordCards.Extensions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace CardWords.Views.Common
+namespace WordCards.Views.Common
 {
     /// <summary>
     /// Логика взаимодействия для MessageWindow.xaml

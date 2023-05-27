@@ -1,10 +1,10 @@
-﻿using CardWords.Business.LanguageWords;
-using CardWords.Business.WordActivities;
-using CardWords.Core.Entities;
-using CardWords.Core.Helpers;
+﻿using WordCards.Business.LanguageWords;
+using WordCards.Business.WordActivities;
+using WordCards.Core.Entities;
+using WordCards.Core.Helpers;
 using System;
 
-namespace CardWords.Business.WordAction
+namespace WordCards.Business.WordAction
 {
     public sealed class WordActionData : Entity
     {

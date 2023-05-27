@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CardWords.Core.Entities;
+using WordCards.Core.Entities;
 using System.Configuration;
 
-namespace CardWords.Core.Contexts
+namespace WordCards.Core.Contexts
 {
     public class BaseContext : DbContext
     {

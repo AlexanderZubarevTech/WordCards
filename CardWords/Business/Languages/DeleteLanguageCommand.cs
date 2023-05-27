@@ -1,12 +1,12 @@
-﻿using CardWords.Configurations;
-using CardWords.Core.Commands;
-using CardWords.Core.Helpers;
-using CardWords.Core.Validations;
+﻿using WordCards.Configurations;
+using WordCards.Core.Commands;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Linq;
 
-namespace CardWords.Business.Languages
+namespace WordCards.Business.Languages
 {
     public sealed class DeleteLanguageCommand : EntityCommand, IDeleteLanguageCommand
     {

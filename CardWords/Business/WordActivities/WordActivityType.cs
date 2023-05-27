@@ -1,4 +1,4 @@
-﻿namespace CardWords.Business.WordActivities
+﻿namespace WordCards.Business.WordActivities
 {
     public enum WordActivityType
     {

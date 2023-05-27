@@ -1,9 +1,9 @@
-﻿using CardWords.Business.LanguageWords;
-using CardWords.Business.WordAction;
-using CardWords.Core.Entities;
+﻿using WordCards.Business.LanguageWords;
+using WordCards.Business.WordAction;
+using WordCards.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CardWords.Business.WordActivities
+namespace WordCards.Business.WordActivities
 {
     public sealed class ErrorWordActivity : Entity, IEntityMapping<ErrorWordActivity>
     {

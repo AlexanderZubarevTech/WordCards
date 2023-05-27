@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace CardWords.Views.Cards
+namespace WordCards.Views.Cards
 {
     public partial class CardsWindow
     {

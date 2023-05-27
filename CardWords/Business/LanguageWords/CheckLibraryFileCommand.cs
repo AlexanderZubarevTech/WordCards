@@ -1,6 +1,6 @@
-﻿using CardWords.Configurations;
-using CardWords.Core.Commands;
-using CardWords.Extensions;
+﻿using WordCards.Configurations;
+using WordCards.Core.Commands;
+using WordCards.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Xml;
-using ValidationResult = CardWords.Core.Validations.ValidationResult;
+using ValidationResult = WordCards.Core.Validations.ValidationResult;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     public sealed class CheckLibraryFileCommand : EntityCommand, ICheckLibraryFileCommand
     {

@@ -1,8 +1,8 @@
-﻿using CardWords.Core.Helpers;
-using CardWords.Core.ReadmeDeploy;
+﻿using WordCards.Core.Helpers;
+using WordCards.Core.ReadmeDeploy;
 using System.Windows;
 
-namespace CardWords
+namespace WordCards
 {
     /// <summary>
     /// Interaction logic for App.xaml

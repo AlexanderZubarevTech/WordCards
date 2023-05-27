@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class ConfigurationIdAttribute : Attribute

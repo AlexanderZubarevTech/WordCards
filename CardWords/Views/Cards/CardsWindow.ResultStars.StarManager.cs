@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace CardWords.Views.Cards
+namespace WordCards.Views.Cards
 {
     public partial class CardsWindow
     {

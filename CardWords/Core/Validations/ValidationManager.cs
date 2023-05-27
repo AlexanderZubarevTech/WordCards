@@ -1,15 +1,15 @@
-﻿using CardWords.Core.Tags;
+﻿using WordCards.Core.Tags;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
-using CardWords.Core.Exceptions;
-using CardWords.Core.Helpers;
+using WordCards.Core.Exceptions;
+using WordCards.Core.Helpers;
 using System.Threading.Tasks;
 
-namespace CardWords.Core.Validations
+namespace WordCards.Core.Validations
 {
     public sealed partial class ValidationManager
     {

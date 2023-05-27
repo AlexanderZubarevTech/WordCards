@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardWords", "CardWords\CardWords.csproj", "{AD8C647D-7789-4537-B951-A382262E3025}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordCards", "CardWords\WordCards.csproj", "{AD8C647D-7789-4537-B951-A382262E3025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

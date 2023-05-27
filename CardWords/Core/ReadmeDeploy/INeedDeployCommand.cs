@@ -1,6 +1,6 @@
-﻿using CardWords.Core.Commands;
+﻿using WordCards.Core.Commands;
 
-namespace CardWords.Core.ReadmeDeploy
+namespace WordCards.Core.ReadmeDeploy
 {
     internal interface INeedDeployCommand : IEntityCommand
     {

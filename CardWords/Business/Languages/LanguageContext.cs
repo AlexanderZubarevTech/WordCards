@@ -1,10 +1,10 @@
-﻿using CardWords.Business.LanguageWords;
-using CardWords.Business.WordAction;
-using CardWords.Business.WordActivities;
-using CardWords.Core.Contexts;
+﻿using WordCards.Business.LanguageWords;
+using WordCards.Business.WordAction;
+using WordCards.Business.WordActivities;
+using WordCards.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace CardWords.Business.Languages
+namespace WordCards.Business.Languages
 {
     public sealed class LanguageContext : EntityContext
     {

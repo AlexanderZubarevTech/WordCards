@@ -1,12 +1,12 @@
-﻿using CardWords.Business.Languages;
-using CardWords.Core.Helpers;
-using CardWords.Core.Validations;
-using CardWords.Extensions;
+﻿using WordCards.Business.Languages;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
+using WordCards.Extensions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace CardWords.Views.Main
+namespace WordCards.Views.Main
 {
     /// <summary>
     /// Логика взаимодействия для AddOrUpdateLanguageWindow.xaml

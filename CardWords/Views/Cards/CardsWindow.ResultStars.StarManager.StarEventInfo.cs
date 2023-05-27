@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardWords.Views.Cards
+namespace WordCards.Views.Cards
 {
     public partial class CardsWindow
     {

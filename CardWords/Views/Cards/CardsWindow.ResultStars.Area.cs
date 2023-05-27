@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace CardWords.Views.Cards
+namespace WordCards.Views.Cards
 {
     public partial class CardsWindow
     {

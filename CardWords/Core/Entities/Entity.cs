@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardWords.Core.Entities
+namespace WordCards.Core.Entities
 {
     public abstract class Entity : IEntity
     {

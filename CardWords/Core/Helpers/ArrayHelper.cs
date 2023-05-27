@@ -1,5 +1,5 @@
 ﻿
-namespace CardWords.Core.Helpers
+namespace WordCards.Core.Helpers
 {
     public static class ArrayHelper
     {

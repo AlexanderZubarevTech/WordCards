@@ -1,10 +1,10 @@
-﻿using CardWords.Business.WordActivities;
-using CardWords.Core.Commands;
+﻿using WordCards.Business.WordActivities;
+using WordCards.Core.Commands;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CardWords.Business.WordAction
+namespace WordCards.Business.WordAction
 {
     public sealed class SaveWordActionDataCommand : EntityCommand, ISaveWordActionDataCommand
     {

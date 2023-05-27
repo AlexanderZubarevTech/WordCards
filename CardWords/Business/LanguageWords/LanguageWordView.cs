@@ -1,6 +1,6 @@
-﻿using CardWords.Core.Entities;
+﻿using WordCards.Core.Entities;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     public sealed class LanguageWordView : Entity
     {

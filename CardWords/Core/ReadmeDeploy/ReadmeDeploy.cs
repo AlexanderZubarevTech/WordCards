@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using CardWords.Core.Entities;
+using WordCards.Core.Entities;
 using System;
 
-namespace CardWords.Core.ReadmeDeploy
+namespace WordCards.Core.ReadmeDeploy
 {
     public sealed class ReadmeDeploy : Entity, IEntityMapping<ReadmeDeploy>
     {

@@ -1,9 +1,9 @@
-﻿<Window x:Class="CardWords.Views.Common.MessageWindow"
+﻿<Window x:Class="WordCards.Views.Common.MessageWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CardWords.Views.Common"
+        xmlns:local="clr-namespace:WordCards.Views.Common"
         mc:Ignorable="d"
        Title="Сообщение" SizeToContent="Height"  MinHeight="250"  Width="500" WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">

@@ -1,10 +1,10 @@
-﻿using CardWords.Business.Languages;
-using CardWords.Business.LanguageWords;
-using CardWords.Configurations;
-using CardWords.Core.Helpers;
-using CardWords.Core.Validations;
-using CardWords.Views.Cards;
-using CardWords.Views.Main;
+﻿using WordCards.Business.Languages;
+using WordCards.Business.LanguageWords;
+using WordCards.Configurations;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
+using WordCards.Views.Cards;
+using WordCards.Views.Main;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace CardWords
+namespace WordCards
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

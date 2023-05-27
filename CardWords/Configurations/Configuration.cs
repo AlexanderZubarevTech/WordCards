@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using CardWords.Core.Entities;
+using WordCards.Core.Entities;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     public sealed class Configuration : Entity, IEntityMapping<Configuration>
     {

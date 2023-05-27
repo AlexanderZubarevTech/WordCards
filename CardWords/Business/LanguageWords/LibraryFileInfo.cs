@@ -1,4 +1,4 @@
-﻿namespace CardWords.Business.LanguageWords
+﻿namespace WordCards.Business.LanguageWords
 {
     public sealed class LibraryFileInfo
     {

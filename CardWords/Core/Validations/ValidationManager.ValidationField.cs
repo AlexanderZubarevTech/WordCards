@@ -3,7 +3,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows;
 
-namespace CardWords.Core.Validations
+namespace WordCards.Core.Validations
 {
     public sealed partial class ValidationManager
     {

@@ -1,8 +1,8 @@
-﻿using CardWords.Core.Commands;
+﻿using WordCards.Core.Commands;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace CardWords.Business.Languages
+namespace WordCards.Business.Languages
 {
     public sealed class GetLanguagesCommand : EntityCommand, IGetLanguagesCommand
     {

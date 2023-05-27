@@ -1,11 +1,11 @@
-﻿using CardWords.Configurations;
-using CardWords.Core.Commands;
-using CardWords.Extensions;
+﻿using WordCards.Configurations;
+using WordCards.Core.Commands;
+using WordCards.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     public sealed class GetLanguageWordsCommand : EntityCommand, IGetLanguageWordsCommand
     {

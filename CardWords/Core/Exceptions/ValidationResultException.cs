@@ -1,7 +1,7 @@
-﻿using CardWords.Core.Validations;
+﻿using WordCards.Core.Validations;
 using System;
 
-namespace CardWords.Core.Exceptions
+namespace WordCards.Core.Exceptions
 {
     [Serializable]
     public class ValidationResultException : Exception

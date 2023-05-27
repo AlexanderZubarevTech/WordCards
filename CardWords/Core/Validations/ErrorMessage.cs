@@ -1,8 +1,8 @@
-﻿using CardWords.Core.Entities;
+﻿using WordCards.Core.Entities;
 using System.Linq.Expressions;
 using System;
 
-namespace CardWords.Core.Validations
+namespace WordCards.Core.Validations
 {
     public sealed class ErrorMessage
     {

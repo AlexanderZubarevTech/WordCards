@@ -1,5 +1,5 @@
 ﻿
-namespace CardWords.Core.Contexts
+namespace WordCards.Core.Contexts
 {
     public class EntityContext : BaseContext
     {

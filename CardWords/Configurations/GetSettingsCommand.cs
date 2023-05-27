@@ -1,8 +1,8 @@
-﻿using CardWords.Configurations.Contexts;
-using CardWords.Core.Commands;
+﻿using WordCards.Configurations.Contexts;
+using WordCards.Core.Commands;
 using System.Linq;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     public sealed class GetSettingsCommand : EntityCommand, IGetSettingsCommand
     {        

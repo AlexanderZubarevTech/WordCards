@@ -1,10 +1,10 @@
-﻿using CardWords.Extensions;
+﻿using WordCards.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
-namespace CardWords.Views.Common
+namespace WordCards.Views.Common
 {
     public static class ThemeColor
     {

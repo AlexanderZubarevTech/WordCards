@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CardWords.Core.Contexts
+namespace WordCards.Core.Contexts
 {
     public sealed class StartContext : BaseContext
     {

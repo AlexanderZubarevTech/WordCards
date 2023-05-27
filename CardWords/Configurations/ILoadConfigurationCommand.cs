@@ -1,7 +1,7 @@
-﻿using CardWords.Core.Commands;
+﻿using WordCards.Core.Commands;
 using System.Collections.Generic;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     internal interface ILoadConfigurationCommand : IEntityCommand
     {

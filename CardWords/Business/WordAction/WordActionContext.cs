@@ -1,9 +1,9 @@
-﻿using CardWords.Business.LanguageWords;
-using CardWords.Business.WordActivities;
-using CardWords.Core.Contexts;
+﻿using WordCards.Business.LanguageWords;
+using WordCards.Business.WordActivities;
+using WordCards.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace CardWords.Business.WordAction
+namespace WordCards.Business.WordAction
 {
     public sealed class WordActionContext : EntityContext
     {

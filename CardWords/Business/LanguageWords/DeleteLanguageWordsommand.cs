@@ -1,8 +1,8 @@
-﻿using CardWords.Business.LanguageWords;
-using CardWords.Core.Commands;
+﻿using WordCards.Business.LanguageWords;
+using WordCards.Core.Commands;
 using System.Linq;
 
-namespace CardWords.Business.WordAction
+namespace WordCards.Business.WordAction
 {
     public sealed class DeleteLanguageWordCommand : EntityCommand, IDeleteLanguageWordCommand
     {

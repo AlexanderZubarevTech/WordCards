@@ -1,9 +1,9 @@
-﻿using CardWords.Core.Commands;
+﻿using WordCards.Core.Commands;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     interface ICheckLibraryFileCommand : IEntityCommand
     {

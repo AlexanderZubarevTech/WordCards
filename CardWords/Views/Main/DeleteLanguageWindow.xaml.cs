@@ -1,11 +1,11 @@
-﻿using CardWords.Business.Languages;
-using CardWords.Core.Helpers;
-using CardWords.Core.Validations;
+﻿using WordCards.Business.Languages;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace CardWords.Views.Main
+namespace WordCards.Views.Main
 {
     /// <summary>
     /// Логика взаимодействия для DeleteLanguageWindow.xaml

@@ -1,7 +1,7 @@
-﻿using CardWords.Business.Languages;
-using CardWords.Core.Entities;
+﻿using WordCards.Business.Languages;
+using WordCards.Core.Entities;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     public sealed class EditLanguageWord : Entity
     {

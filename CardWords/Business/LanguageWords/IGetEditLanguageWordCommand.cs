@@ -1,6 +1,6 @@
-﻿using CardWords.Core.Commands;
+﻿using WordCards.Core.Commands;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     interface IGetEditLanguageWordCommand : IEntityCommand
     {

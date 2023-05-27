@@ -1,5 +1,5 @@
-﻿using CardWords.Core.Tags;
-using CardWords.Views.Common;
+﻿using WordCards.Core.Tags;
+using WordCards.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace CardWords
+namespace WordCards
 {
     public partial class MainWindow
     {

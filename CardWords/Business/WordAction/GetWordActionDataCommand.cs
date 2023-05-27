@@ -1,14 +1,14 @@
-﻿using CardWords.Business.LanguageWords;
-using CardWords.Configurations;
-using CardWords.Core.Commands;
-using CardWords.Core.Helpers;
-using CardWords.Extensions;
+﻿using WordCards.Business.LanguageWords;
+using WordCards.Configurations;
+using WordCards.Core.Commands;
+using WordCards.Core.Helpers;
+using WordCards.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CardWords.Business.WordAction
+namespace WordCards.Business.WordAction
 {
     public sealed class GetWordActionDataCommand : EntityCommand, IGetWordActionDataCommand
     {

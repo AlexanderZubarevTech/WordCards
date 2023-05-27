@@ -1,10 +1,10 @@
-﻿using CardWords.Business.WordActivities;
-using CardWords.Core.Entities;
+﻿using WordCards.Business.WordActivities;
+using WordCards.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     public sealed class LanguageWord : Entity, IEntityMapping<LanguageWord>
     {

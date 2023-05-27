@@ -1,7 +1,7 @@
-﻿using CardWords.Core.Commands;
-using CardWords.Core.Contexts;
+﻿using WordCards.Core.Commands;
+using WordCards.Core.Contexts;
 
-namespace CardWords.Core.ReadmeDeploy
+namespace WordCards.Core.ReadmeDeploy
 {
     public class NeedDeployCommand : EntityCommand, INeedDeployCommand
     {

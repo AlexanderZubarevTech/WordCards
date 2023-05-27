@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace CardWords.Core.Commands
+namespace WordCards.Core.Commands
 {
     public interface IEntityCommand : ICommand
     {

@@ -1,8 +1,8 @@
-﻿using CardWords.Business.LanguageWords;
+﻿using WordCards.Business.LanguageWords;
 using System.Windows;
 using System.Windows.Input;
 
-namespace CardWords.Views.Main
+namespace WordCards.Views.Main
 {
     /// <summary>
     /// Логика взаимодействия для DeleteWordWindow.xaml

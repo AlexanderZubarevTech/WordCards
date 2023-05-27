@@ -1,6 +1,6 @@
-﻿using CardWords.Core.Commands;
+﻿using WordCards.Core.Commands;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     interface IGetSettingsCommand : IEntityCommand
     {

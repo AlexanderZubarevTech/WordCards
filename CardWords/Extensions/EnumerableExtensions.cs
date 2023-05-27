@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CardWords.Extensions
+namespace WordCards.Extensions
 {
     public static class EnumerableExtensions
     {

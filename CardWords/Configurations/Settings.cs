@@ -1,9 +1,9 @@
-﻿using CardWords.Business.Languages;
-using CardWords.Core.Entities;
+﻿using WordCards.Business.Languages;
+using WordCards.Core.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CardWords.Configurations
+namespace WordCards.Configurations
 {
     public sealed class Settings : Entity
     {

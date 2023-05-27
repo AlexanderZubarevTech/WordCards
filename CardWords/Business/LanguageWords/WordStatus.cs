@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CardWords.Business.LanguageWords
+namespace WordCards.Business.LanguageWords
 {
     public sealed class WordStatus
     {

@@ -1,4 +1,4 @@
-﻿namespace CardWords.Extensions
+﻿namespace WordCards.Extensions
 {
     public static class StringExtensions
     {
