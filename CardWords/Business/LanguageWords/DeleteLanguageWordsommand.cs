@@ -1,8 +1,8 @@
-﻿using WordCards.Business.LanguageWords;
-using WordCards.Core.Commands;
+﻿using WordCards.Core.Commands;
 using System.Linq;
+using WordCards.Business.WordAction;
 
-namespace WordCards.Business.WordAction
+namespace WordCards.Business.LanguageWords
 {
     public sealed class DeleteLanguageWordCommand : EntityCommand, IDeleteLanguageWordCommand
     {
@@ -13,14 +13,14 @@ namespace WordCards.Business.WordAction
             var item = db.LanguageWords.First(x => x.Id == id);
 
             var errorActivities = db.ErrorWordActivities.Where(x => x.LanguageWordId == id).ToList();
-            var activities = db.WordActivities.Where(x => x.LanguageWordId == id).ToList();            
+            var activities = db.WordActivities.Where(x => x.LanguageWordId == id).ToList();
 
-            if(errorActivities.Count > 0)
+            if (errorActivities.Count > 0)
             {
                 db.RemoveRange(errorActivities);
             }
 
-            if(activities.Count > 0)
+            if (activities.Count > 0)
             {
                 db.RemoveRange(activities);
             }

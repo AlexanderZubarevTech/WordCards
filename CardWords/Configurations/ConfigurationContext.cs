@@ -2,11 +2,11 @@
 using WordCards.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace WordCards.Configurations.Contexts
+namespace WordCards.Configurations
 {
     public sealed class ConfigurationContext : EntityContext
     {
-        public ConfigurationContext() : base() 
+        public ConfigurationContext() : base()
         {
         }
 
