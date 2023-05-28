@@ -39,7 +39,7 @@
     <None Update="ReadmeDeploy\2023.05.06.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Source\Words\EnglishWordsXml.xml">
+    <None Update="Source\Words\en_ru_words.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

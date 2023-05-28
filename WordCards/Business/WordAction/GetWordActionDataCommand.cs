@@ -260,8 +260,8 @@ namespace WordCards.Business.WordAction
                 }
             }
 
-            // 30% вероятность отклонения запроса новых слов
-            if(GetRandom(0, 10) < 4)
+            // 60% вероятность отклонения запроса новых слов
+            if(GetRandom(0, 10) < 7)
             {
                 return 0;
             }
