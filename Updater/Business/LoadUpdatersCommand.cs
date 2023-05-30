@@ -35,6 +35,18 @@ namespace Updater.Business
 
         private HttpClient httpClient;
 
+        private static string GetApiUrl()
+        {
+            var url = ConfigurationManager.AppSettings.Get(SettingsKeys.ApiUrl);
+            var owner = ConfigurationManager.AppSettings.Get(SettingsKeys.Owner);
+            var repo = ConfigurationManager.AppSettings.Get(SettingsKeys.Repo);
+
+            url = url.Replace("{" + SettingsKeys.Owner + "}", owner);
+            url = url.Replace("{" + SettingsKeys.Repo + "}", repo);
+
+            return url;
+        }
+
         public async Task<string> Execute()
         {
             Initialize();
@@ -89,57 +101,48 @@ namespace Updater.Business
 
         private async Task<bool> CkeckOrUpdateAuthorizationToken()
         {
+            var defaultToken = ConfigurationManager.AppSettings.Get(SettingsKeys.Token) ?? string.Empty;
+
+            if(await IsValidToken(defaultToken))
+            {
+                return true;
+            }
+
+            var token = await GetRemoteToken();
+
+            if(await IsValidToken(token))
+            {
+                ConfigurationManager.AppSettings.Set(SettingsKeys.Token, token);
+
+                return true;
+            }
+
+            return false;
+        }        
+
+        private async Task<bool> IsValidToken(string token)
+        {
+            var checkStatus = await CheckAvailable(token);
+
+            return IsValidStatus(checkStatus);
+        }
+
+        private static bool IsValidStatus(System.Net.HttpStatusCode status)
+        {
+            return status != System.Net.HttpStatusCode.Forbidden
+                && status != System.Net.HttpStatusCode.NotFound
+                && status != System.Net.HttpStatusCode.Unauthorized;
+        }
+
+        private async Task<System.Net.HttpStatusCode> CheckAvailable(string token)
+        {
             using HttpRequestMessage checkRequest = new HttpRequestMessage(HttpMethod.Get, GetTagsUrl());
 
-            AddHeaders(checkRequest.Headers);            
+            AddHeaders(checkRequest.Headers, token);
 
             using var checkResponse = await httpClient.SendAsync(checkRequest);
 
-            if (checkResponse.StatusCode == System.Net.HttpStatusCode.Forbidden 
-                || checkResponse.StatusCode ==System.Net.HttpStatusCode.NotFound)
-            {
-                using var configRequest = new HttpRequestMessage(HttpMethod.Get, ConfigurationManager.AppSettings.Get(SettingsKeys.RawConfigUrl));
-
-                using var configResponse = await httpClient.SendAsync(configRequest);
-
-                var content = await configResponse.Content.ReadAsStringAsync();
-
-                var token = GetToken(content);
-
-                checkRequest.Headers.Remove(Headers.Authorization);
-                checkRequest.Headers.Add(Headers.Authorization, GetAuthoruzation(token));
-
-                using var secondCkeckResponse = await httpClient.SendAsync(checkRequest);
-
-                if (secondCkeckResponse.StatusCode == System.Net.HttpStatusCode.Forbidden
-                || secondCkeckResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    return false;
-                }
-
-                ConfigurationManager.AppSettings.Set(SettingsKeys.Token, token);
-            }
-
-            return true;
-        }
-
-        private static void AddHeaders(HttpRequestHeaders requestHeaders)
-        {
-            requestHeaders.Add(Headers.UserAgent, ConfigurationManager.AppSettings.Get(SettingsKeys.Owner));
-            requestHeaders.Add(Headers.Accept, "application/vnd.github+json");
-            requestHeaders.Add(Headers.Authorization, GetAuthoruzation());
-        }
-
-        private static string GetApiUrl()
-        {
-            var url = ConfigurationManager.AppSettings.Get(SettingsKeys.ApiUrl);
-            var owner = ConfigurationManager.AppSettings.Get(SettingsKeys.Owner);
-            var repo = ConfigurationManager.AppSettings.Get(SettingsKeys.Repo);
-
-            url = url.Replace("{" + SettingsKeys.Owner + "}", owner);
-            url = url.Replace("{" + SettingsKeys.Repo + "}", repo);
-
-            return url;
+            return checkResponse.StatusCode;
         }
 
         private static string GetTagsUrl()
@@ -149,17 +152,34 @@ namespace Updater.Business
             return apiUrl + tags;
         }
 
-        private static string GetAuthoruzation()
+        private static void AddHeaders(HttpRequestHeaders requestHeaders, string? token = null)
         {
-            return GetAuthoruzation(ConfigurationManager.AppSettings.Get(SettingsKeys.Token) ?? string.Empty);            
+            requestHeaders.Add(Headers.UserAgent, ConfigurationManager.AppSettings.Get(SettingsKeys.Owner));
+            requestHeaders.Add(Headers.Accept, "application/vnd.github+json");
+            requestHeaders.Add(Headers.Authorization, GetAuthoruzation(token));
         }
 
-        private static string GetAuthoruzation(string token)
+        private static string GetAuthoruzation(string? otherToken)
         {
+            var token = otherToken != null
+                ? otherToken
+                : ConfigurationManager.AppSettings.Get(SettingsKeys.Token) ?? string.Empty;
+
             return $"token {token}";
+        }        
+
+        private async Task<string> GetRemoteToken()
+        {
+            using var configRequest = new HttpRequestMessage(HttpMethod.Get, ConfigurationManager.AppSettings.Get(SettingsKeys.RawConfigUrl));
+
+            using var configResponse = await httpClient.SendAsync(configRequest);
+
+            var content = await configResponse.Content.ReadAsStringAsync();
+
+            return GetTokenFromXml(content);
         }
 
-        private static string GetToken(string xmlString)
+        private static string GetTokenFromXml(string xmlString)
         {
             var doc = XDocument.Parse(xmlString);
 
