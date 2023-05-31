@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq.Expressions;
 
 namespace WordCards.Configurations
 {
@@ -22,6 +23,26 @@ namespace WordCards.Configurations
             } 
         }
 
+        public static string GetConfigurationId<TProperty>(Expression<Func<AppConfiguration, TProperty>> expr)
+        {
+            var type = typeof(AppConfiguration);
+            var name = (expr.Body as MemberExpression).Member.Name;
+
+            var property = type.GetProperty(name);
+
+            var attributes = property.GetCustomAttributes(false);
+
+            foreach (var attr in attributes)
+            {
+                if (attr is ConfigurationIdAttribute idAttr)
+                {
+                    return idAttr.Id;
+                }
+            }
+
+            return string.Empty;
+        }
+
         private AppConfiguration(IReadOnlyDictionary<string, Configuration> data) 
         {
             SetProperties(data);
@@ -38,6 +59,12 @@ namespace WordCards.Configurations
 
         [ConfigurationId("word_card_timer_duration_in_seconds")]
         public int WordCardTimerDurationInSeconds { get; private set; }
+
+        [ConfigurationId("github_api_token")]
+        public string GitHubApiToken { get; private set; }
+
+        [ConfigurationId("auto_check_app_updates")]
+        public bool AutoCheckAppUpdates { get; private set; }
 
         public static void Refresh()
         {
@@ -98,6 +125,6 @@ namespace WordCards.Configurations
                     }
                 }
             }
-        }
+        }        
     }
 }

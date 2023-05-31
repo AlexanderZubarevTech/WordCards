@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="Source\Images\edit.png" />
     <None Remove="Source\Images\template.png" />
+    <None Remove="Source\Images\update.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Source\Images\template.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\Images\update.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

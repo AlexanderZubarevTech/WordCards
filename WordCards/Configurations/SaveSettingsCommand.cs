@@ -24,6 +24,7 @@ namespace WordCards.Configurations
                 UpdateProperty(db, configurations, x => x.CurrentTranslationLanguage, settings.TranslationLanguage.Id);
                 UpdateProperty(db, configurations, x => x.WordCardHasTimer, settings.WordCardHasTimer);
                 UpdateProperty(db, configurations, x => x.WordCardTimerDurationInSeconds, settings.WordCardTimerDurationInSeconds);
+                UpdateProperty(db, configurations, x => x.AutoCheckAppUpdates, settings.AutoCheckAppUpdates);
 
                 db.SaveChanges();
             }
@@ -80,7 +81,7 @@ namespace WordCards.Configurations
         private static void UpdateProperty<TProperty>(ConfigurationContext db, Dictionary<string, Configuration> configurations, 
             Expression<Func<AppConfiguration, TProperty>> expr, object newValue)
         {
-            var configId = GetConfigurationId(expr);
+            var configId = AppConfiguration.GetConfigurationId(expr);
 
             var configuration = configurations[configId];
 
@@ -92,26 +93,6 @@ namespace WordCards.Configurations
 
                 db.Update(configuration);
             }
-        }
-
-        private static string GetConfigurationId<TProperty>(Expression<Func<AppConfiguration, TProperty>> expr)
-        {
-            var type = typeof(AppConfiguration);
-            var name = (expr.Body as MemberExpression).Member.Name;
-
-            var property = type.GetProperty(name);
-
-            var attributes = property.GetCustomAttributes(false);
-
-            foreach (var attr in attributes)
-            {
-                if (attr is ConfigurationIdAttribute idAttr)
-                {
-                    return idAttr.Id;
-                }
-            }
-
-            return string.Empty;
         }
     }
 }

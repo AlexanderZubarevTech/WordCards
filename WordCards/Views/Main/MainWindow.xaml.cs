@@ -15,6 +15,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using WordCards.Updater;
+using System.Windows.Media.Animation;
+using System.Diagnostics;
 
 namespace WordCards
 {
@@ -52,6 +55,11 @@ namespace WordCards
             
             G_Start.Visibility = Visibility.Visible;
             G_Start_Count.Visibility = Visibility.Collapsed;
+            TB_Updater_NewVersion.Visibility = Visibility.Collapsed;
+            G_Settings_Updater_Update.Visibility = Visibility.Collapsed;
+            IMG_Updater_Available.Visibility = Visibility.Collapsed;
+            IMG_Updater_Process.Visibility = Visibility.Collapsed;
+            TB_Updater_ErrorMessage.Visibility = Visibility.Collapsed;
 
             IsRunCards = false;
 
@@ -64,7 +72,12 @@ namespace WordCards
 
             var errorStyle = Resources["ErrorMessage"] as Style;
 
-            validationManager = new ValidationManager(SP_Settings_FieldsAndValidation, errorStyle, errorColor);            
+            validationManager = new ValidationManager(SP_Settings_FieldsAndValidation, errorStyle, errorColor);
+
+            if(AppConfiguration.Instance.AutoCheckAppUpdates)
+            {
+                CheckUpdates();
+            }
         }
 
         public bool IsRunCards { get; set; }
@@ -371,6 +384,63 @@ namespace WordCards
 
         #endregion
 
+        #region
+
+        private void IMG_Updater_Available_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SetActiveMenu(G_Menu_Settings);
+
+            TC_Settings.SelectedItem = TI_Settings_Updater;
+        }
+
+        private async void Btn_Settings_Updater_Check_Click(object sender, RoutedEventArgs e)
+        {
+            Btn_Settings_Updater_Check.IsEnabled = false;
+
+            TB_Updater_NewVersion.Visibility = Visibility.Collapsed;
+            G_Settings_Updater_Update.Visibility = Visibility.Collapsed;
+            TB_Updater_LastVersion.Visibility = Visibility.Collapsed;
+            TB_Updater_ErrorMessage.Visibility = Visibility.Collapsed;
+
+            IMG_Updater_Process.Visibility = Visibility.Visible;
+
+            StartUpdaterProcessAnimation();
+
+            await CheckUpdatesAsync();
+
+            Btn_Settings_Updater_Check.IsEnabled = true;
+
+            IMG_Updater_Process.Visibility = Visibility.Collapsed;
+        }
+
+        private void StartUpdaterProcessAnimation()
+        {
+            var animation = new DoubleAnimation
+            {
+                From = 0,
+                To = -180,
+                Duration = TimeSpan.FromSeconds(1),
+                RepeatBehavior = new RepeatBehavior(4),
+                AutoReverse = false,
+            };
+
+            animation.Completed += UpdaterProcessCompleted;
+
+            IMG_Updater_Process.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, animation);
+        }
+
+        private void UpdaterProcessCompleted(object? sender, EventArgs e)
+        {
+            if (Btn_Settings_Updater_Check.IsEnabled)
+            {
+                return;
+            }
+
+            StartUpdaterProcessAnimation();
+        }
+
+        #endregion
+
         #endregion
 
         #endregion
@@ -566,6 +636,56 @@ namespace WordCards
             DataContext = settings;
         }
 
-        #endregion        
+        private async void CheckUpdates()
+        {
+            await CheckUpdatesAsync();
+        }
+
+        private async Task CheckUpdatesAsync()
+        {
+            var info = await Task.Run(() => { return CommandHelper.GetCommand<IGetUpdaterAppInfoCommand>().Execute(); });
+
+            SetVersionInfo(info);
+        }
+
+        private void SetVersionInfo(UpdaterAppInfo info)
+        {
+            TB_Updater_CurrentVersion.Text = info.CurrentVersion.ToString();
+
+            if(info.HasError)
+            {
+                TB_Updater_ErrorMessage.Text = info.ErrorMessage;
+                TB_Updater_ErrorMessage.Visibility = Visibility.Visible;
+
+                return;
+            }
+
+            TB_Updater_ErrorMessage.Visibility = Visibility.Collapsed;
+
+            if (info.HasNewVersion)
+            {
+                TB_Updater_NewVersion_Value.Text = info.NewVersion?.ToString();
+
+                TB_Updater_NewVersion.Visibility = Visibility.Visible;
+                G_Settings_Updater_Update.Visibility = Visibility.Visible;
+                IMG_Updater_Available.Visibility = Visibility.Visible;
+
+                TB_Updater_LastVersion.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                TB_Updater_LastVersion.Visibility = Visibility.Visible;
+
+                TB_Updater_NewVersion.Visibility = Visibility.Collapsed;
+                G_Settings_Updater_Update.Visibility = Visibility.Collapsed;
+                IMG_Updater_Available.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        #endregion
+
+        
+
+        
     }
 }

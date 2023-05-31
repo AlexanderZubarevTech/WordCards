@@ -308,7 +308,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Row="0" Grid.Column="0" Height="60" Margin="0 0 5 0" Style="{StaticResource BaseBackground}">
-                    <TextBox x:Name="TBx_Library_Search" Style="{StaticResource TextBoxValueStyle}" Text="{Binding Name}"></TextBox>
+                    <TextBox x:Name="TBx_Library_Search" Style="{StaticResource TextBoxValueStyle}"></TextBox>
                 </Grid>
 
                 <Grid x:Name="G_Library_Search" Grid.Row="0" Grid.Column="1" Cursor="Hand" Width="100" 
@@ -430,7 +430,7 @@
         </Grid>
 
         <Grid x:Name="G_Settings" Grid.Row="1" Grid.Column="1" Visibility="Visible" Margin="10 0" Focusable="True" MouseDown="G_Settings_MouseDown">
-            <TabControl Background="#F5F5F5">
+            <TabControl x:Name="TC_Settings" Background="#F5F5F5">
                 <TabItem Width="200" Name="TI_Settings_Genaral" >
                     <TabItem.Header>
                         <TextBlock Style="{StaticResource DefaultTextLight}">Общие</TextBlock>
@@ -531,6 +531,26 @@
                                                      Text="{Binding WordCardTimerDurationInSeconds}" 
                                                      PreviewTextInput="TBx_Settings_WordCard_Timer_Duration_PreviewTextInput"
                                                      PreviewKeyDown="TBx_Settings_WordCard_Timer_Duration_PreviewKeyDown"></TextBox>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid x:Name="G_Settings_Auto_Check_App_Updates" Tag="FieldPropertyName=AutoCheckAppUpdates" Margin="0 0 0 10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <TextBlock Style="{StaticResource DefaultFieldTitle}">Автоматическая проверка обновлений:</TextBlock>
+                                            <TextBlock Tag="FieldName" Visibility="Collapsed">Автоматическая проверка обновлений</TextBlock>
+
+                                            <Grid Style="{StaticResource DefaultFieldTitleBacground}">
+                                                <Rectangle Style="{StaticResource DefaultBackground}" Tag="FieldBackground" />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid  Grid.Column="1" Style="{StaticResource BaseBackground}">
+                                            <CheckBox x:Name="ChBx_Auto_Check_App_Updates" Tag="FieldValue" 
+                                                      IsChecked="{Binding AutoCheckAppUpdates}" 
+                                                      Style="{StaticResource CheckBoxValueStyle}">
+                                            </CheckBox>
                                         </Grid>
                                     </Grid>
                                 </StackPanel>
@@ -670,8 +690,87 @@
                         </Grid>
                     </TabItem.Content>
                 </TabItem>
+                <TabItem Width="200" Name="TI_Settings_Updater">
+                    <TabItem.Header>
+                        <TextBlock Style="{StaticResource DefaultText}">Обновление</TextBlock>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"></RowDefinition>
+                                <RowDefinition Height="60"></RowDefinition>                                
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Button x:Name="Btn_Settings_Updater_Check"
+                                    Grid.Row="0" Grid.Column="2" 
+                                    Style="{StaticResource MainAction}"
+                                    Click="Btn_Settings_Updater_Check_Click" Margin="10 0 0 0"
+                                    >Проверить наличие обновлений</Button>
+
+                            <Image x:Name="IMG_Updater_Process" Grid.Column="1" Grid.Row="0" 
+                                   Source="/Source/Images/update.png" 
+                                   Width="50" Height="50" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                                   RenderOptions.BitmapScalingMode="HighQuality">
+                                <Image.RenderTransform>
+                                    <RotateTransform Angle="0" CenterX="25" CenterY="25"></RotateTransform>
+                                </Image.RenderTransform>
+                            </Image>
+
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource DefaultText}" HorizontalAlignment="Left">
+                                <TextBlock>Текущая версия:</TextBlock>
+                                <TextBlock x:Name="TB_Updater_CurrentVersion" Text="1.0.0"></TextBlock>
+                            </TextBlock>
+
+                            <TextBlock x:Name="TB_Updater_NewVersion" Grid.Row="1" Grid.Column="0" 
+                                       Style="{StaticResource DefaultText}" HorizontalAlignment="Left" Visibility="Collapsed">
+                                <TextBlock>Новая версия:</TextBlock>
+                                <TextBlock x:Name="TB_Updater_NewVersion_Value" Text="1.0.1"></TextBlock>
+                            </TextBlock>
+
+                            <TextBlock x:Name="TB_Updater_LastVersion" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Visibility="Collapsed"
+                                       Style="{StaticResource DefaultTextBold}" FontSize="20" HorizontalAlignment="Left"
+                                       Foreground="{StaticResource ActiveBrush}">Установлена последняя версия программы</TextBlock>
+
+                            <TextBlock x:Name="TB_Updater_ErrorMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+                                       Visibility="Collapsed"
+                                       Style="{StaticResource DefaultTextBold}" FontSize="20" HorizontalAlignment="Left"
+                                       Foreground="{StaticResource ValidationErrorTextBrush}" Text="Ошибка подключения к интернету"></TextBlock>
+
+                            <Grid x:Name="G_Settings_Updater_Update" 
+                                  VerticalAlignment="Top" 
+                                  HorizontalAlignment="Left"
+                                  Margin="0 10 0 0"
+                                  Grid.Row="2" Grid.Column="0" Cursor="Hand" 
+                                  MouseEnter="G_Button_MouseEnter" 
+                                  MouseLeave="G_Button_MouseLeave" 
+                                  Visibility="Visible">
+                                <TextBlock Style="{StaticResource DefaultWhiteTextLight}" Panel.ZIndex="1" Text="Обновить"></TextBlock>
+                                <Grid Height="60" Width="250" Style="{StaticResource BaseBackground}">
+                                    <Rectangle Fill="{StaticResource ActiveBrush}" 
+                                               Tag="BackgroundColor.ActionType=Active" RadiusX="10" RadiusY="10" />
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+                    </TabItem.Content>
+                </TabItem>
             </TabControl>
         </Grid>
 
+        <Image x:Name="IMG_Updater_Available" Grid.Column="0" Grid.Row="2" Source="/Source/Images/update.png" 
+               Width="50" Height="50" 
+               VerticalAlignment="Bottom" HorizontalAlignment="Left"
+               Margin="10" ToolTip="Доступно обновление!"
+               MouseLeftButtonDown="IMG_Updater_Available_MouseLeftButtonDown" 
+               RenderOptions.BitmapScalingMode="HighQuality"></Image>
+        
     </Grid>
 </Window>

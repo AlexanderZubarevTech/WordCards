@@ -13,6 +13,7 @@ namespace WordCards.Configurations
             TranslationLanguage = languages[configuration.CurrentTranslationLanguage];
             WordCardHasTimer = configuration.WordCardHasTimer;
             WordCardTimerDurationInSeconds = configuration.WordCardTimerDurationInSeconds;
+            AutoCheckAppUpdates = configuration.AutoCheckAppUpdates;
             Languages = languages.Values.ToList();
         }
 
@@ -24,6 +25,8 @@ namespace WordCards.Configurations
         
         public int WordCardTimerDurationInSeconds { get; set; }
 
-        public List<Language> Languages { get; set; }
+        public bool AutoCheckAppUpdates { get; set; }
+
+        public List<Language> Languages { get; set; }        
     }
 }
