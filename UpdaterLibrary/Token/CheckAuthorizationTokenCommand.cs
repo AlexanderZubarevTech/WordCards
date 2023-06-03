@@ -1,7 +1,5 @@
-﻿using System.Configuration;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using UpdaterLibrary.Commands;
 
@@ -11,11 +9,9 @@ namespace UpdaterLibrary.Token
     {
         private HttpClient _httpClient;
 
-        public bool? Execute(HttpClient httpClient, string encryptedToken)
+        public bool? Execute(HttpClient httpClient, string token)
         {
-            _httpClient = httpClient;            
-
-            var token = Security.Decrypt(encryptedToken, ConfigurationManager.AppSettings.Get(SettingsKeys.TokenKey));
+            _httpClient = httpClient;           
 
             var result = IsValidToken(token);
 
@@ -52,7 +48,7 @@ namespace UpdaterLibrary.Token
 
             using (HttpRequestMessage checkRequest = new HttpRequestMessage(HttpMethod.Get, ApiHelper.TagsUrl))
             {
-                AddHeaders(checkRequest.Headers, token);
+                ApiHelper.AddHeaders(checkRequest.Headers, token);
 
                 using (var checkResponse = await _httpClient.SendAsync(checkRequest))
                 {
@@ -63,14 +59,6 @@ namespace UpdaterLibrary.Token
             return result;
         }        
 
-        private static void AddHeaders(HttpRequestHeaders requestHeaders, string token)
-        {
-            requestHeaders.Add(HttpHeaders.UserAgent, ConfigurationManager.AppSettings.Get(SettingsKeys.Owner));
-            requestHeaders.Add(HttpHeaders.Accept, ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersAccept));
-
-            var headerValueToken = string.Format(ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersAuthorization), token);
-
-            requestHeaders.Add(HttpHeaders.Authorization, headerValueToken);
-        }
+        
     }
 }

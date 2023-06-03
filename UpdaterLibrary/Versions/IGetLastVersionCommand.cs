@@ -6,6 +6,6 @@ namespace UpdaterLibrary.Versions
 {
     internal interface IGetLastVersionCommand : IEntityCommand
     {
-        Version Execute(HttpClient httpClient);
+        Version Execute(HttpClient httpClient, string token);
     }
 }

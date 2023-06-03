@@ -110,7 +110,7 @@ namespace WordCards.Updater
 
         private static Version? GetNewVersion(Version currentVersion)
         {
-            var lastVersion = UpdaterProvider.GetLastVersion();
+            var lastVersion = UpdaterProvider.GetLastVersion(AppConfiguration.Instance.GitHubApiToken);
 
             if(lastVersion != null && lastVersion > currentVersion)
             {

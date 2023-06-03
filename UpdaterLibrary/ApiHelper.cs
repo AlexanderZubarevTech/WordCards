@@ -1,4 +1,6 @@
 ﻿using System.Configuration;
+using System.Net.Http.Headers;
+using UpdaterLibrary.Token;
 
 namespace UpdaterLibrary
 {
@@ -24,6 +26,16 @@ namespace UpdaterLibrary
             var tags = ConfigurationManager.AppSettings.Get(SettingsKeys.TagsURL);
 
             return ApiUrl + tags;
+        }
+
+        public static void AddHeaders(HttpRequestHeaders requestHeaders, string encryptedToken)
+        {
+            var token = Security.Decrypt(encryptedToken, ConfigurationManager.AppSettings.Get(SettingsKeys.TokenKey));
+            var headerValueToken = string.Format(ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersAuthorization), token);
+
+            requestHeaders.Add(HttpHeaders.UserAgent, ConfigurationManager.AppSettings.Get(SettingsKeys.Owner));
+            requestHeaders.Add(HttpHeaders.Accept, ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersAccept));
+            requestHeaders.Add(HttpHeaders.Authorization, headerValueToken);
         }
     }
 }

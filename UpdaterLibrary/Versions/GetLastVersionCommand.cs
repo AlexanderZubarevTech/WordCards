@@ -9,17 +9,19 @@ namespace UpdaterLibrary.Versions
 {
     internal sealed class GetLastVersionCommand : EntityCommand, IGetLastVersionCommand
     {
-        public Version Execute(HttpClient httpClient)
+        public Version Execute(HttpClient httpClient, string token)
         {
-            return Task.Run(() => GetVersionAsync(httpClient)).GetAwaiter().GetResult();
-        }
+            return Task.Run(() => GetVersionAsync(httpClient, token)).GetAwaiter().GetResult();
+        }        
 
-        private async Task<Version> GetVersionAsync(HttpClient httpClient)
+        private async Task<Version> GetVersionAsync(HttpClient httpClient, string token)
         {
             Version result = null;
 
             using (var request = new HttpRequestMessage(HttpMethod.Get, ApiHelper.TagsUrl))
             {
+                ApiHelper.AddHeaders(request.Headers, token);
+
                 using (var response = await httpClient.SendAsync(request))
                 {
                     var content = await response.Content.ReadAsStringAsync();

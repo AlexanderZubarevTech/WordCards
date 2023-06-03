@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using UpdaterLibrary.Commands;
 using UpdaterLibrary.Connection;
 using UpdaterLibrary.Token;
@@ -33,9 +34,9 @@ namespace UpdaterLibrary
             return CommandHelper.GetCommand<ICheckConnectionCommand>().Execute(hostName);
         }
 
-        public static Version GetLastVersion()
+        public static Version GetLastVersion(string token)
         {
-            return CommandHelper.GetCommand<IGetLastVersionCommand>().Execute(httpClientFactory.CreateClient());
+            return CommandHelper.GetCommand<IGetLastVersionCommand>().Execute(httpClientFactory.CreateClient(), token);
         }
 
         /// <summary>

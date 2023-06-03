@@ -5,6 +5,6 @@ namespace UpdaterLibrary.Token
 {
     internal interface ICheckAuthorizationTokenCommand : IEntityCommand
     {
-        bool? Execute(HttpClient httpClient, string encryptedToken);
+        bool? Execute(HttpClient httpClient, string token);
     }
 }
