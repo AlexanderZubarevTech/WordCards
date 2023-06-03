@@ -11,7 +11,11 @@ namespace UpdaterLibrary.Versions
     {
         public Version Execute(HttpClient httpClient, string token)
         {
-            return Task.Run(() => GetVersionAsync(httpClient, token)).GetAwaiter().GetResult();
+            var result = Task.Run(() => GetVersionAsync(httpClient, token)).GetAwaiter().GetResult();
+
+            httpClient.Dispose();
+
+            return result;
         }        
 
         private async Task<Version> GetVersionAsync(HttpClient httpClient, string token)

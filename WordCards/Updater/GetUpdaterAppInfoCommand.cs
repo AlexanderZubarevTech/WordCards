@@ -96,7 +96,7 @@ namespace WordCards.Updater
             {
                 var id = AppConfiguration.GetConfigurationId(x => x.GitHubApiToken);
 
-                var entity = db.Configurations.First(x => x.Id == id);
+                var entity = db.Configurations.ToList().First(x => x.Id == id);
 
                 entity.Value = token;
 

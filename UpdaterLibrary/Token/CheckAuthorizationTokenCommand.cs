@@ -54,11 +54,9 @@ namespace UpdaterLibrary.Token
                 {
                     result = checkResponse.StatusCode;
                 }
-            }        
+            }
 
             return result;
-        }        
-
-        
+        }
     }
 }

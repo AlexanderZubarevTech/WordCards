@@ -45,7 +45,18 @@ namespace UpdaterLibrary.Token
         {
             var keyBytes = Encoding.ASCII.GetBytes(key);
 
-            return Decrypt(text, keyBytes);
+            string result;
+
+            try
+            {
+                result = Decrypt(text, keyBytes);
+            }
+            catch (Exception)
+            {
+                result = string.Empty;
+            }
+
+            return result;
         }
 
         private static string Decrypt(string base64, byte[] key)
