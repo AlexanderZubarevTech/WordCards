@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using WordCards.Updater;
 using System.Windows.Media.Animation;
 using System.Diagnostics;
+using UpdaterLibrary;
 
 namespace WordCards
 {

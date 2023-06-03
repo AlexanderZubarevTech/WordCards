@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace WordCards.Core.Connection
+namespace UpdaterLibrary.Connection
 {
-    public sealed class MultiplePingReply
+    internal sealed class MultiplePingReply
     {
         int _countSuccess, _countFailure;
         public MultiplePingReply(int success, int failure)

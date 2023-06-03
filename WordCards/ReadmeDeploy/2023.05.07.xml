@@ -15,7 +15,7 @@
 		('current_language', 2),
 		('word_card_has_timer', 'True'),
 		('word_card_timer_duration_in_seconds', '5'),
-		('github_api_token', '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'),
+		('github_api_token', '0Nl316M9BxY2K8UJ+9zRs2XrMK2HaOjeVC1RdbD6FguvZxBZgXpPrT6DxiZ4pvMkEgPt9MGYPIvk6v6PcuHvJfgnSiOj/8/YdZgV7b/0FVEXhTpOpJQLtpRa+lJjNRZBEYoA6dUm6rgXS2srVdycDA=='),
 		('auto_check_app_updates', 'True')
 	</sql>	
 </main> 

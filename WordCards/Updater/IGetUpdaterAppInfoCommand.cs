@@ -5,6 +5,6 @@ namespace WordCards.Updater
 {
     public interface IGetUpdaterAppInfoCommand : IEntityCommand
     {
-        public Task<UpdaterAppInfo> Execute();
+        public UpdaterAppInfo Execute();
     }
 }

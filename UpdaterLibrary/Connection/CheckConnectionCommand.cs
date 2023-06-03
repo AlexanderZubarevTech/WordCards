@@ -1,15 +1,20 @@
 ﻿using System.Linq;
 using System;
-using WordCards.Core.Commands;
 using System.Net.NetworkInformation;
+using UpdaterLibrary.Commands;
 
-namespace WordCards.Core.Connection
+namespace UpdaterLibrary.Connection
 {
-    public sealed class CheckConnectionCommand : EntityCommand, ICheckConnectionCommand
+    internal sealed class CheckConnectionCommand : EntityCommand, ICheckConnectionCommand
     {
-        public bool Execute()
+        public bool Execute(params string[] hostNames)
         {
-            return AreAllAvailable("google.com", "microsoft.com");
+            if (hostNames == null || hostNames.Length == 0)
+            { 
+                return AreAllAvailable("google.com", "microsoft.com"); 
+            }
+
+            return AreAllAvailable(hostNames);
         }
 
         private static bool AreAllAvailable(params string[] hostNameOrAddresses)

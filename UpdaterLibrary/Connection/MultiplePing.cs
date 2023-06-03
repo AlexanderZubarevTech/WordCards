@@ -4,9 +4,9 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WordCards.Core.Connection
+namespace UpdaterLibrary.Connection
 {
-    public sealed class MultiplePing
+    internal sealed class MultiplePing
     {
         readonly int _repeat;
         static byte[] defaultPingData;
