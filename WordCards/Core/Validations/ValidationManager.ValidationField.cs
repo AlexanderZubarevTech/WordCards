@@ -1,7 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows;
 
 namespace WordCards.Core.Validations
 {
@@ -13,7 +13,7 @@ namespace WordCards.Core.Validations
             {
                 FieldPropertyName = fieldPropertyName;
                 FieldName = fieldName;
-                FieldValueElement = fieldValueElement;                
+                FieldValueElement = fieldValueElement;
             }
 
             public ValidationField(string fieldPropertyName, string fieldName, FrameworkElement fieldValueElement, FrameworkElement? backgroundElement, Color? errorBackgroundColor)

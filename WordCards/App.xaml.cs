@@ -1,6 +1,6 @@
-﻿using WordCards.Core.Helpers;
+﻿using System.Windows;
+using WordCards.Core.Helpers;
 using WordCards.Core.ReadmeDeploy;
-using System.Windows;
 
 namespace WordCards
 {

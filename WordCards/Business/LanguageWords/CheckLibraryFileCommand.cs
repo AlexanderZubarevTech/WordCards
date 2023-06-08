@@ -1,7 +1,4 @@
-﻿using WordCards.Configurations;
-using WordCards.Core.Commands;
-using WordCards.Extensions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Xml;
+using WordCards.Configurations;
+using WordCards.Core.Commands;
+using WordCards.Extensions;
 using ValidationResult = WordCards.Core.Validations.ValidationResult;
 
 namespace WordCards.Business.LanguageWords
@@ -16,7 +16,7 @@ namespace WordCards.Business.LanguageWords
     public sealed class CheckLibraryFileCommand : EntityCommand, ICheckLibraryFileCommand
     {
         private const string tableNodeName = "table";
-        private const string rowNodeName = "row";        
+        private const string rowNodeName = "row";
 
         private ProgressBar progress;
         private Dispatcher mainDispatcher;
@@ -43,7 +43,7 @@ namespace WordCards.Business.LanguageWords
 
             var tableNode = GetTableNodeRecursive(doc);
 
-            if(tableNode == null)
+            if (tableNode == null)
             {
                 ValidationResult.ThrowError($"Таблица не найдена. Тег {tableNode} не найден.");
             }
@@ -62,21 +62,21 @@ namespace WordCards.Business.LanguageWords
 
         private XmlNode? GetTableNodeRecursive(XmlNode node)
         {
-            if(node == null)
+            if (node == null)
             {
                 return null;
             }
 
-            if(IsNode(node, tableNodeName))
+            if (IsNode(node, tableNodeName))
             {
                 return node;
             }
 
-            foreach(XmlNode childNode in node.ChildNodes)
+            foreach (XmlNode childNode in node.ChildNodes)
             {
                 var result = GetTableNodeRecursive(childNode);
 
-                if(result != null)
+                if (result != null)
                 {
                     return result;
                 }
@@ -94,18 +94,18 @@ namespace WordCards.Business.LanguageWords
         {
             var count = 0;
 
-            foreach(XmlNode childNode in tableNode.ChildNodes)
+            foreach (XmlNode childNode in tableNode.ChildNodes)
             {
-                if(!IsNode(childNode, rowNodeName) 
-                    || childNode.FirstChild == null 
+                if (!IsNode(childNode, rowNodeName)
+                    || childNode.FirstChild == null
                     || childNode.FirstChild.FirstChild == null
                     || childNode.FirstChild.FirstChild.FirstChild == null
                     || childNode.FirstChild.FirstChild.FirstChild.Value.IsNullOrEmptyOrWhiteSpace())
                 {
                     continue;
                 }
-                
-                count++;                
+
+                count++;
             }
 
             return count;
@@ -124,25 +124,25 @@ namespace WordCards.Business.LanguageWords
 
                 var words = new HashSet<string>(info.WordsCount);
 
-                foreach(XmlNode rowNode in tableNode.ChildNodes)
+                foreach (XmlNode rowNode in tableNode.ChildNodes)
                 {
-                    if(wordList.Count == 200)
+                    if (wordList.Count == 200)
                     {
                         info.NewWordsCount += GetNewWordCountByList(db.LanguageWords, wordList);
 
-                        wordList.Clear();                              
+                        wordList.Clear();
                     }
 
-                    if(!IsNode(rowNode, rowNodeName))
+                    if (!IsNode(rowNode, rowNodeName))
                     {
                         continue;
                     }
 
                     var wordNode = rowNode.ChildNodes[0];
 
-                    if (wordNode == null 
+                    if (wordNode == null
                         || wordNode.FirstChild == null
-                        || wordNode.FirstChild.FirstChild == null 
+                        || wordNode.FirstChild.FirstChild == null
                         || wordNode.FirstChild.FirstChild.Value.IsNullOrEmptyOrWhiteSpace())
                     {
                         continue;
@@ -175,14 +175,14 @@ namespace WordCards.Business.LanguageWords
                         continue;
                     }
 
-                    wordList.Add(wordName);                    
+                    wordList.Add(wordName);
                 }
 
-                if(wordList.Count > 0)
+                if (wordList.Count > 0)
                 {
                     info.NewWordsCount += GetNewWordCountByList(db.LanguageWords, wordList);
                 }
-            }            
+            }
         }
 
         private static int GetNewWordCountByList(DbSet<LanguageWord> languageWords, List<string> list)

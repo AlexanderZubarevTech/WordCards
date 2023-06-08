@@ -1,11 +1,4 @@
-﻿using WordCards.Business.Languages;
-using WordCards.Business.LanguageWords;
-using WordCards.Configurations;
-using WordCards.Core.Helpers;
-using WordCards.Core.Validations;
-using WordCards.Views.Cards;
-using WordCards.Views.Main;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,11 +7,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using WordCards.Updater;
 using System.Windows.Media.Animation;
-using System.Diagnostics;
-using UpdaterLibrary;
+using System.Windows.Shapes;
+using WordCards.Business.Languages;
+using WordCards.Business.LanguageWords;
+using WordCards.Configurations;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
+using WordCards.Updater;
+using WordCards.Views.Cards;
+using WordCards.Views.Main;
 
 namespace WordCards
 {
@@ -53,7 +51,7 @@ namespace WordCards
             };
 
             SetActiveMenu(G_Menu_Main);
-            
+
             G_Start.Visibility = Visibility.Visible;
             G_Start_Count.Visibility = Visibility.Collapsed;
             TB_Updater_NewVersion.Visibility = Visibility.Collapsed;
@@ -75,7 +73,7 @@ namespace WordCards
 
             validationManager = new ValidationManager(SP_Settings_FieldsAndValidation, errorStyle, errorColor);
 
-            if(AppConfiguration.Instance.AutoCheckAppUpdates)
+            if (AppConfiguration.Instance.AutoCheckAppUpdates)
             {
                 CheckUpdates();
             }
@@ -109,7 +107,7 @@ namespace WordCards
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.IsRepeat)
+            if (e.IsRepeat)
             {
                 return;
             }
@@ -291,7 +289,7 @@ namespace WordCards
             if (isValid)
             {
                 ShowSuccessSave(G_Settings_Save_Message);
-            }            
+            }
         }
 
         private void TBx_Settings_WordCard_Timer_Duration_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -346,7 +344,7 @@ namespace WordCards
 
             SetEnabledWindow(false);
 
-            if (editWindow.ShowDialog() == true) 
+            if (editWindow.ShowDialog() == true)
             {
                 ReloadSettings();
 
@@ -653,7 +651,7 @@ namespace WordCards
         {
             TB_Updater_CurrentVersion.Text = info.CurrentVersion.ToString();
 
-            if(info.HasError)
+            if (info.HasError)
             {
                 TB_Updater_ErrorMessage.Text = info.ErrorMessage;
                 TB_Updater_ErrorMessage.Visibility = Visibility.Visible;
@@ -685,8 +683,8 @@ namespace WordCards
 
         #endregion
 
-        
 
-        
+
+
     }
 }

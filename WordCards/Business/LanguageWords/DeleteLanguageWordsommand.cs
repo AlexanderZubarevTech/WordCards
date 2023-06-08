@@ -1,6 +1,6 @@
-﻿using WordCards.Core.Commands;
-using System.Linq;
+﻿using System.Linq;
 using WordCards.Business.WordAction;
+using WordCards.Core.Commands;
 
 namespace WordCards.Business.LanguageWords
 {

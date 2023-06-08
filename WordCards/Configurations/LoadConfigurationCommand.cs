@@ -1,6 +1,6 @@
-﻿using WordCards.Core.Commands;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using WordCards.Core.Commands;
 
 namespace WordCards.Configurations
 {
@@ -8,9 +8,9 @@ namespace WordCards.Configurations
     {
         public IReadOnlyDictionary<string, Configuration> Execute()
         {
-            Dictionary<string, Configuration> result;            
+            Dictionary<string, Configuration> result;
 
-            using(var db = new ConfigurationContext())
+            using (var db = new ConfigurationContext())
             {
                 result = db.Configurations.ToDictionary(x => x.Id, x => x);
             }

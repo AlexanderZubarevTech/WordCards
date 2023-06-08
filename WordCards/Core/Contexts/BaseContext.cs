@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WordCards.Core.Entities;
 using System.Configuration;
+using WordCards.Core.Entities;
 
 namespace WordCards.Core.Contexts
 {

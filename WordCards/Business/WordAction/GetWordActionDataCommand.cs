@@ -1,12 +1,12 @@
-﻿using WordCards.Business.LanguageWords;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using WordCards.Business.LanguageWords;
 using WordCards.Configurations;
 using WordCards.Core.Commands;
 using WordCards.Core.Helpers;
 using WordCards.Extensions;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace WordCards.Business.WordAction
 {
@@ -32,16 +32,16 @@ namespace WordCards.Business.WordAction
             public static bool operator !=(LanguagePair left, LanguagePair right)
             {
                 return !(left == right);
-            }            
+            }
 
             public override bool Equals(object? obj)
             {
-                if(obj == null || obj is not LanguagePair)
+                if (obj == null || obj is not LanguagePair)
                 {
                     return false;
                 }
 
-                var pair = (LanguagePair) obj;
+                var pair = (LanguagePair)obj;
 
                 return this == pair;
             }
@@ -53,9 +53,9 @@ namespace WordCards.Business.WordAction
         }
 
         private static readonly Dictionary<LanguagePair, string> getCountNewWordsSqlDictionary = new Dictionary<LanguagePair, string>();
-        private static readonly Dictionary<LanguagePair, string> getCountKnownWordsSqlDictionary = new Dictionary<LanguagePair, string>();        
+        private static readonly Dictionary<LanguagePair, string> getCountKnownWordsSqlDictionary = new Dictionary<LanguagePair, string>();
 
-        private Random random;        
+        private Random random;
         private LanguagePair currentLanguage;
 
         public WordActionData[] Execute(int count)
@@ -97,14 +97,14 @@ namespace WordCards.Business.WordAction
         {
             var decades = Math.Round(count / 10d, 0, MidpointRounding.ToPositiveInfinity);
 
-            var newWordsCountOnDecade = (int) Math.Round(newWords.Count / decades, 0, MidpointRounding.ToPositiveInfinity);
+            var newWordsCountOnDecade = (int)Math.Round(newWords.Count / decades, 0, MidpointRounding.ToPositiveInfinity);
 
             var addedNewWordIds = new List<int>();
             var addedKnownWordIds = new List<int>();
 
             for (int i = 0; i < decades; i++)
-            {                
-                var addNewWordsCount = GetCountNewWordsToAdd(newWords.Count, addedNewWordIds.Count, newWordsCountOnDecade);                
+            {
+                var addNewWordsCount = GetCountNewWordsToAdd(newWords.Count, addedNewWordIds.Count, newWordsCountOnDecade);
                 var addKnownWordsCount = GetCountKnownWordsToAdd(knownWords.Length, addedKnownWordIds.Count, addNewWordsCount);
 
                 var addNewWords = newWords.Where(x => !addedNewWordIds.Contains(x.Id)).Take(addNewWordsCount).ToList();
@@ -142,7 +142,7 @@ namespace WordCards.Business.WordAction
 
             for (int i = 0; i < knownWords.Length; i++)
             {
-                if(addedCount == needCount)
+                if (addedCount == needCount)
                 {
                     break;
                 }
@@ -177,7 +177,7 @@ namespace WordCards.Business.WordAction
 
         private string GetSqlCountNewWords()
         {
-            if(getCountNewWordsSqlDictionary.ContainsKey(currentLanguage))
+            if (getCountNewWordsSqlDictionary.ContainsKey(currentLanguage))
             {
                 return getCountNewWordsSqlDictionary[currentLanguage];
             }
@@ -232,58 +232,58 @@ namespace WordCards.Business.WordAction
 
         private int CalculateNewWordsCount(int count, int allNewWords, int allKnownWords)
         {
-            if(allNewWords == 0)
+            if (allNewWords == 0)
             {
                 return 0;
             }
 
-            if(allKnownWords == 0)
+            if (allKnownWords == 0)
             {
                 return allNewWords < count ? allNewWords : count;
             }
 
-            if(allNewWords + allKnownWords < count) 
+            if (allNewWords + allKnownWords < count)
             {
                 return allNewWords;
             }
 
-            if(allKnownWords < count)
+            if (allKnownWords < count)
             {
                 return count - allKnownWords;
             }
 
-            if(allNewWords < count)
+            if (allNewWords < count)
             {
-                if(allNewWords < count * 0.1)
+                if (allNewWords < count * 0.1)
                 {
                     return allNewWords;
                 }
             }
 
             // 60% вероятность отклонения запроса новых слов
-            if(GetRandom(0, 10) < 7)
+            if (GetRandom(0, 10) < 7)
             {
                 return 0;
             }
 
-            if(count < 21)
+            if (count < 21)
             {
                 var result = (int)Math.Round(count * 0.25);
 
                 return result <= allNewWords ? result : allNewWords;
             }
 
-            if(count > 99)
+            if (count > 99)
             {
                 return 10;
             }
-            
+
             return (int)Math.Round(count * 0.1);
         }
 
         private static int CalculateKnownWordsCount(int count, int allKnownWords, int newWordsCount)
         {
-            if(newWordsCount == 0 || allKnownWords < count || newWordsCount + allKnownWords < count)
+            if (newWordsCount == 0 || allKnownWords < count || newWordsCount + allKnownWords < count)
             {
                 return allKnownWords;
             }
@@ -340,7 +340,7 @@ namespace WordCards.Business.WordAction
 
         private int[] LoadNewWordIds(WordActionContext db, int count, int allNewWords)
         {
-            if(count == 0)
+            if (count == 0)
             {
                 return Array.Empty<int>();
             }
@@ -367,7 +367,7 @@ namespace WordCards.Business.WordAction
         {
             var result = new List<int>();
 
-            if(ids.Length == 0)
+            if (ids.Length == 0)
             {
                 return result;
             }
@@ -385,7 +385,7 @@ namespace WordCards.Business.WordAction
 
                 result.Add(value);
 
-                if(result.Count == count)
+                if (result.Count == count)
                 {
                     break;
                 }

@@ -16,7 +16,7 @@ namespace UpdaterLibrary.Versions
             httpClient.Dispose();
 
             return result;
-        }        
+        }
 
         private async Task<Version> GetVersionAsync(HttpClient httpClient, string token)
         {

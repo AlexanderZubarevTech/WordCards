@@ -1,7 +1,7 @@
-﻿using WordCards.Extensions;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WordCards.Extensions;
 
 namespace WordCards.Views.Common
 {
@@ -16,7 +16,7 @@ namespace WordCards.Views.Common
 
             var style = Resources["DefaultWhiteText"] as Style;
 
-            if(messages != null)
+            if (messages != null)
             {
                 for (int i = 0; i < messages.Length; i++)
                 {
@@ -27,7 +27,7 @@ namespace WordCards.Views.Common
 
         private void AddMessage(string message, Style style)
         {
-            if(message.IsNullOrEmptyOrWhiteSpace())
+            if (message.IsNullOrEmptyOrWhiteSpace())
             {
                 return;
             }

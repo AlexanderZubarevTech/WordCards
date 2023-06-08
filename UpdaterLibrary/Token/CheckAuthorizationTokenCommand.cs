@@ -11,14 +11,14 @@ namespace UpdaterLibrary.Token
 
         public bool? Execute(HttpClient httpClient, string token)
         {
-            _httpClient = httpClient;           
+            _httpClient = httpClient;
 
             var result = IsValidToken(token);
 
             _httpClient.Dispose();
 
             return result;
-        }      
+        }
 
         private bool? IsValidToken(string token)
         {

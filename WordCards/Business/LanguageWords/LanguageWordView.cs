@@ -4,8 +4,8 @@ namespace WordCards.Business.LanguageWords
 {
     public sealed class LanguageWordView : Entity
     {
-        public LanguageWordView() 
-        {            
+        public LanguageWordView()
+        {
         }
 
         public string LanguageWordName { get; set; }

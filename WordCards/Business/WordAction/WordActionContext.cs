@@ -1,19 +1,19 @@
-﻿using WordCards.Business.LanguageWords;
+﻿using Microsoft.EntityFrameworkCore;
+using WordCards.Business.LanguageWords;
 using WordCards.Business.WordActivities;
 using WordCards.Core.Contexts;
-using Microsoft.EntityFrameworkCore;
 
 namespace WordCards.Business.WordAction
 {
     public sealed class WordActionContext : EntityContext
     {
-        public WordActionContext() : base() 
-        {            
+        public WordActionContext() : base()
+        {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            EntityConfiguration<LanguageWord>(modelBuilder);            
+            EntityConfiguration<LanguageWord>(modelBuilder);
             EntityConfiguration<WordActivity>(modelBuilder);
             EntityConfiguration<ErrorWordActivity>(modelBuilder);
             EntityConfiguration<WordActionInfo>(modelBuilder);

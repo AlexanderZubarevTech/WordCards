@@ -1,7 +1,7 @@
-﻿using WordCards.Core.Helpers;
-using WordCards.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using WordCards.Core.Helpers;
+using WordCards.Extensions;
 
 namespace WordCards.Core.Tags
 {
@@ -12,14 +12,14 @@ namespace WordCards.Core.Tags
 
         public static Dictionary<string, ElementTag> ParseTag(object? tag)
         {
-            if(tag == null)
+            if (tag == null)
             {
                 return DictionaryHelper.Empty<string, ElementTag>();
             }
 
             var tagAsString = tag.ToString();
 
-            if(tagAsString.IsNullOrEmptyOrWhiteSpace())
+            if (tagAsString.IsNullOrEmptyOrWhiteSpace())
             {
                 return DictionaryHelper.Empty<string, ElementTag>();
             }
@@ -32,12 +32,12 @@ namespace WordCards.Core.Tags
             {
                 var item = tags[i];
 
-                if(item.IsNullOrEmptyOrWhiteSpace())
+                if (item.IsNullOrEmptyOrWhiteSpace())
                 {
                     continue;
                 }
 
-                if(!item.Contains(separatorValue))
+                if (!item.Contains(separatorValue))
                 {
                     new ElementTag(item).AddTo(result);
 
@@ -52,9 +52,9 @@ namespace WordCards.Core.Tags
             return result.ToDictionary(x => x.Name);
         }
 
-        private ElementTag(string name) 
+        private ElementTag(string name)
             : this(name, string.Empty)
-        {            
+        {
         }
 
         private ElementTag(string name, string value)

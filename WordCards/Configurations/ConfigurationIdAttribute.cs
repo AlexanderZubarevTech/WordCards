@@ -7,8 +7,8 @@ namespace WordCards.Configurations
     {
         public ConfigurationIdAttribute() { }
 
-        public ConfigurationIdAttribute(string id) 
-        { 
+        public ConfigurationIdAttribute(string id)
+        {
             Id = id;
         }
 

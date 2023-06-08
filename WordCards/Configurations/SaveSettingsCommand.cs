@@ -1,10 +1,10 @@
-﻿using WordCards.Core.Commands;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Collections.Generic;
-using WordCards.Core.Validations;
 using WordCards.Business.Languages;
+using WordCards.Core.Commands;
+using WordCards.Core.Validations;
 
 namespace WordCards.Configurations
 {
@@ -59,26 +59,26 @@ namespace WordCards.Configurations
                 return;
             }
 
-            if(settings.CurrentLanguage.Id == settings.TranslationLanguage.Id)
+            if (settings.CurrentLanguage.Id == settings.TranslationLanguage.Id)
             {
                 validationResult.Add("Язык изучения и язык перевода не могут быть одинаковыми");
             }
 
-            if(settings.WordCardHasTimer && settings.WordCardTimerDurationInSeconds <= 0)
+            if (settings.WordCardHasTimer && settings.WordCardTimerDurationInSeconds <= 0)
             {
-                validationResult.AddGreaterThan<Settings, int>(x => x.WordCardTimerDurationInSeconds, 0);                
-            }            
+                validationResult.AddGreaterThan<Settings, int>(x => x.WordCardTimerDurationInSeconds, 0);
+            }
         }
 
         private static void PrepareToSave(Settings settings)
         {
-            if(!settings.WordCardHasTimer)
+            if (!settings.WordCardHasTimer)
             {
                 settings.WordCardTimerDurationInSeconds = 0;
             }
         }
 
-        private static void UpdateProperty<TProperty>(ConfigurationContext db, Dictionary<string, Configuration> configurations, 
+        private static void UpdateProperty<TProperty>(ConfigurationContext db, Dictionary<string, Configuration> configurations,
             Expression<Func<AppConfiguration, TProperty>> expr, object newValue)
         {
             var configId = AppConfiguration.GetConfigurationId(expr);
@@ -87,7 +87,7 @@ namespace WordCards.Configurations
 
             var valueAsString = newValue.ToString();
 
-            if(configuration.Value != valueAsString)
+            if (configuration.Value != valueAsString)
             {
                 configuration.Value = valueAsString;
 

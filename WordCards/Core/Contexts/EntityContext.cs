@@ -6,6 +6,6 @@ namespace WordCards.Core.Contexts
         public EntityContext() : base()
         {
             Database.CanConnect();
-        }        
+        }
     }
 }

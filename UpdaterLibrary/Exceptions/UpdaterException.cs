@@ -7,7 +7,7 @@ namespace UpdaterLibrary.Exceptions
     {
         public UpdaterException() { }
 
-        public UpdaterException(string message) : base(message) { }        
+        public UpdaterException(string message) : base(message) { }
 
         public UpdaterException(string message, Exception inner) : base(message, inner) { }
 

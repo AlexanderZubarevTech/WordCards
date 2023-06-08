@@ -1,9 +1,9 @@
-﻿using WordCards.Business.Languages;
-using WordCards.Core.Helpers;
-using WordCards.Core.Validations;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using WordCards.Business.Languages;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
 
 namespace WordCards.Views.Main
 {

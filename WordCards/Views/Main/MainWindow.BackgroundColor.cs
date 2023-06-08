@@ -1,12 +1,12 @@
-﻿using WordCards.Core.Tags;
-using WordCards.Views.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using WordCards.Core.Tags;
+using WordCards.Views.Common;
 
 namespace WordCards
 {
@@ -46,7 +46,7 @@ namespace WordCards
             {
                 ReplaceBrush(item);
 
-                BeginAnimation(item, resources, isHover, actionType, item.Foreground.BeginAnimation);                
+                BeginAnimation(item, resources, isHover, actionType, item.Foreground.BeginAnimation);
             }
 
             public static void BeginAnimation(FrameworkElement item, ResourceDictionary resources, bool isHover,
@@ -69,7 +69,7 @@ namespace WordCards
 
             private static ThemeColor.ElementType GetElementType(UIElement item)
             {
-                if(item is Rectangle)
+                if (item is Rectangle)
                 {
                     return ThemeColor.ElementType.Default;
                 }
@@ -85,11 +85,11 @@ namespace WordCards
                 }
 
                 return ThemeColor.ElementType.Default;
-            }            
+            }
 
             private static ColorAnimation GetColorAnimation(FrameworkElement item, ResourceDictionary resources, bool isHover, ActionType actionType)
             {
-                if(item.Tag != null)
+                if (item.Tag != null)
                 {
                     var tags = ElementTag.ParseTag(item.Tag);
 
@@ -123,7 +123,7 @@ namespace WordCards
             public static void SetMenuColor(Grid grid, ResourceDictionary resources, ActionType actionType)
             {
                 var isHover = actionType == ActionType.Active;
-                
+
                 var hoverType = isHover ? ThemeColor.HoverType.Hover : ThemeColor.HoverType.None;
 
                 for (int i = 0; i < grid.Children.Count; i++)

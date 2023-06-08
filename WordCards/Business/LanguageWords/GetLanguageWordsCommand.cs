@@ -1,9 +1,9 @@
-﻿using WordCards.Configurations;
-using WordCards.Core.Commands;
-using WordCards.Extensions;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using WordCards.Configurations;
+using WordCards.Core.Commands;
+using WordCards.Extensions;
 
 namespace WordCards.Business.LanguageWords
 {
@@ -22,8 +22,8 @@ namespace WordCards.Business.LanguageWords
                                group wa by wa.LanguageWordId into g
                                select new
                                {
-                                    LanguageWordId = g.Key,
-                                    Count = g.Count()
+                                   LanguageWordId = g.Key,
+                                   Count = g.Count()
                                };
 
                 var query = from lw in db.LanguageWords
@@ -53,11 +53,11 @@ namespace WordCards.Business.LanguageWords
                     query = query.Where(x => x.Transcription == string.Empty);
                 }
 
-                if(status == WordStatus.NewWord)
+                if (status == WordStatus.NewWord)
                 {
                     query = query.Where(x => x.IsNewWord);
                 }
-                else if(status == WordStatus.LearnedWord)
+                else if (status == WordStatus.LearnedWord)
                 {
                     query = query.Where(x => !x.IsNewWord);
                 }

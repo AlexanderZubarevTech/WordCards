@@ -1,13 +1,13 @@
-﻿using WordCards.Core.Tags;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Controls;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using WordCards.Core.Exceptions;
 using WordCards.Core.Helpers;
-using System.Threading.Tasks;
+using WordCards.Core.Tags;
 
 namespace WordCards.Core.Validations
 {
@@ -22,7 +22,7 @@ namespace WordCards.Core.Validations
 
         public ValidationManager(FrameworkElement mainElement, Style errorStyle, Color errorBacgroundColor)
         {
-            this.errorStyle = errorStyle;            
+            this.errorStyle = errorStyle;
 
             Initialize(mainElement, errorBacgroundColor);
         }
@@ -31,7 +31,7 @@ namespace WordCards.Core.Validations
 
         private StackPanel errorMessagePanel;
 
-        private IReadOnlyDictionary<string, ValidationField> fields;        
+        private IReadOnlyDictionary<string, ValidationField> fields;
 
         #region Initialize
 
@@ -70,8 +70,8 @@ namespace WordCards.Core.Validations
                 errorMessagePanel = errorPanel;
             }
 
-            fields = fieldsElement != null 
-                ? GetFields(fieldsElement, errorBacgroundColor) 
+            fields = fieldsElement != null
+                ? GetFields(fieldsElement, errorBacgroundColor)
                 : DictionaryHelper.Empty<string, ValidationField>();
         }
 
@@ -83,11 +83,11 @@ namespace WordCards.Core.Validations
 
             foreach (var item in elements)
             {
-                if(item is FrameworkElement element)
+                if (item is FrameworkElement element)
                 {
                     var field = GetField(element, errorBacgroundColor);
 
-                    if(field != null)
+                    if (field != null)
                     {
                         result.Add(field);
                     }
@@ -101,7 +101,7 @@ namespace WordCards.Core.Validations
         {
             var fieldElement = GetElement(element, fieldPropertyNameTag);
 
-            if(fieldElement == null)
+            if (fieldElement == null)
             {
                 return null;
             }
@@ -110,7 +110,7 @@ namespace WordCards.Core.Validations
 
             var fieldNameElement = GetElement(fieldElement, fieldNameTag);
 
-            if(fieldNameElement == null)
+            if (fieldNameElement == null)
             {
                 throw new Exception($"Тег {fieldNameTag} у свойства {propName} не найден");
             }
@@ -126,7 +126,7 @@ namespace WordCards.Core.Validations
 
             var fieldBackgroundElement = GetElement(fieldElement, fieldBackgroundTag);
 
-            if(fieldBackgroundElement == null)
+            if (fieldBackgroundElement == null)
             {
                 return new ValidationField(propName, fieldName, fieldValueElement);
             }
@@ -157,11 +157,11 @@ namespace WordCards.Core.Validations
             foreach (var item in elements)
             {
                 if (item is FrameworkElement element)
-                {                    
-                    if(isFound)
+                {
+                    if (isFound)
                     {
                         return null;
-                    } 
+                    }
                     else
                     {
                         var result = GetElementRecursive(element, tag, ref isFound);
@@ -240,7 +240,7 @@ namespace WordCards.Core.Validations
 
             foreach (ErrorMessage error in ex.ValidationResult)
             {
-                if(error.HasField)
+                if (error.HasField)
                 {
                     var field = fields[error.PropertyName];
 

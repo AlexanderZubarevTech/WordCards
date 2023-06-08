@@ -1,11 +1,11 @@
-﻿using System.Reflection;
-using System;
-using WordCards.Core.Commands;
-using WordCards.Configurations;
+﻿using System;
 using System.Linq;
-using WordCards.Core.Validations;
-using WordCards.Core.Exceptions;
+using System.Reflection;
 using UpdaterLibrary;
+using WordCards.Configurations;
+using WordCards.Core.Commands;
+using WordCards.Core.Exceptions;
+using WordCards.Core.Validations;
 
 namespace WordCards.Updater
 {
@@ -44,8 +44,8 @@ namespace WordCards.Updater
 
             if (!isValid)
             {
-                ValidationResult.ThrowError("Invalid token. Server need update token.");                
-            }            
+                ValidationResult.ThrowError("Invalid token. Server need update token.");
+            }
 
             info.NewVersion = GetNewVersion(info.CurrentVersion);
         }
@@ -54,7 +54,7 @@ namespace WordCards.Updater
         {
             var success = UpdaterProvider.CheckNetworkConnection();
 
-            if(!success)
+            if (!success)
             {
                 ValidationResult.ThrowError("Проверьте подключение к интернету.");
             }
@@ -71,7 +71,7 @@ namespace WordCards.Updater
         {
             var defaultTokenValid = UpdaterProvider.CheckToken(AppConfiguration.Instance.GitHubApiToken);
 
-            if(defaultTokenValid != null)
+            if (defaultTokenValid != null)
             {
                 return defaultTokenValid.Value;
             }
@@ -112,12 +112,12 @@ namespace WordCards.Updater
         {
             var lastVersion = UpdaterProvider.GetLastVersion(AppConfiguration.Instance.GitHubApiToken);
 
-            if(lastVersion != null && lastVersion > currentVersion)
+            if (lastVersion != null && lastVersion > currentVersion)
             {
                 return lastVersion;
             }
 
             return null;
-        }        
+        }
     }
 }

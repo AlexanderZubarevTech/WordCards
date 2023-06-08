@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 using Updater.Core.Commands;
 
@@ -53,7 +51,7 @@ namespace Updater.Business
 
             var isValid = await CkeckOrUpdateAuthorizationToken();
 
-            if(!isValid)
+            if (!isValid)
             {
                 return "Invalid token. Server need update token.";
             }
@@ -62,11 +60,11 @@ namespace Updater.Business
 
             // определяем данные запроса
             using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, GetTagsUrl());
-            
+
             // выполняем запрос
             using var response = await httpClient.SendAsync(request);
 
-            if(response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
                 using var newRequest = new HttpRequestMessage(HttpMethod.Get, ConfigurationManager.AppSettings.Get(SettingsKeys.RawConfigUrl));
 
@@ -81,7 +79,7 @@ namespace Updater.Business
 
             var version = assembly.GetName().Version;
 
-            
+
 
             return res;
         }
@@ -103,14 +101,14 @@ namespace Updater.Business
         {
             var defaultToken = ConfigurationManager.AppSettings.Get(SettingsKeys.Token) ?? string.Empty;
 
-            if(await IsValidToken(defaultToken))
+            if (await IsValidToken(defaultToken))
             {
                 return true;
             }
 
             var token = await GetRemoteToken();
 
-            if(await IsValidToken(token))
+            if (await IsValidToken(token))
             {
                 ConfigurationManager.AppSettings.Set(SettingsKeys.Token, token);
 
@@ -118,7 +116,7 @@ namespace Updater.Business
             }
 
             return false;
-        }        
+        }
 
         private async Task<bool> IsValidToken(string token)
         {
@@ -166,7 +164,7 @@ namespace Updater.Business
                 : ConfigurationManager.AppSettings.Get(SettingsKeys.Token) ?? string.Empty;
 
             return $"token {token}";
-        }        
+        }
 
         private async Task<string> GetRemoteToken()
         {

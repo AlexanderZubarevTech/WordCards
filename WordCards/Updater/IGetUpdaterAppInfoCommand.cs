@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using WordCards.Core.Commands;
+﻿using WordCards.Core.Commands;
 
 namespace WordCards.Updater
 {

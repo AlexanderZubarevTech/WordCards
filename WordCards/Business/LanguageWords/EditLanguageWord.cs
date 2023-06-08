@@ -5,7 +5,7 @@ namespace WordCards.Business.LanguageWords
 {
     public sealed class EditLanguageWord : Entity
     {
-        public EditLanguageWord(Language language, Language translationLanguage) 
+        public EditLanguageWord(Language language, Language translationLanguage)
         {
             LanguageId = language.Id;
             LanguageName = language.Name;
@@ -17,7 +17,7 @@ namespace WordCards.Business.LanguageWords
             Translation = string.Empty;
         }
 
-        public EditLanguageWord(LanguageWord word, Language language, Language translationLanguage) 
+        public EditLanguageWord(LanguageWord word, Language language, Language translationLanguage)
             : this(language, translationLanguage)
         {
             Id = word.Id;
@@ -26,7 +26,7 @@ namespace WordCards.Business.LanguageWords
             Transcription = word.Transcription;
             Translation = word.Translation;
         }
-        
+
 
         public int LanguageId { get; set; }
 

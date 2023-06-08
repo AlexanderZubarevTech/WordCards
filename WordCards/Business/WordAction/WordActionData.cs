@@ -1,8 +1,8 @@
-﻿using WordCards.Business.LanguageWords;
+﻿using System;
+using WordCards.Business.LanguageWords;
 using WordCards.Business.WordActivities;
 using WordCards.Core.Entities;
 using WordCards.Core.Helpers;
-using System;
 
 namespace WordCards.Business.WordAction
 {
@@ -22,11 +22,11 @@ namespace WordCards.Business.WordAction
 
         public static WordActionData Create(LanguageWord knownWord, LanguageWord wrongWord, Side correctSide)
         {
-            return new WordActionData(knownWord.Id, knownWord.LanguageWordName, knownWord.Transcription, knownWord.Translation, 
+            return new WordActionData(knownWord.Id, knownWord.LanguageWordName, knownWord.Transcription, knownWord.Translation,
                 wrongWord.LanguageWordName, wrongWord.Translation, correctSide);
         }
 
-        private WordActionData(int id, string wordName, string transcription, string correctTranslation) 
+        private WordActionData(int id, string wordName, string transcription, string correctTranslation)
             : this(id, wordName, transcription, correctTranslation, string.Empty, string.Empty, true, Side.None)
         {
         }
@@ -40,7 +40,7 @@ namespace WordCards.Business.WordAction
         private WordActionData(int id, string wordName, string transcription, string correctTranslation,
             string wrongWordName, string wrongTranslation, bool isNewWord, Side correctSide)
             : base(id)
-        {            
+        {
             WordName = wordName;
             Transcription = transcription;
             CorrectTranslation = correctTranslation;
@@ -72,14 +72,14 @@ namespace WordCards.Business.WordAction
         {
             Date = TimeHelper.GetCurrentDate();
 
-            if(IsNewWord)
+            if (IsNewWord)
             {
                 Result = WordActivityType.NewWord;
 
                 return WordActivityType.NewWord;
             }
 
-            if(side == CorrectSide)
+            if (side == CorrectSide)
             {
                 Result = WordActivityType.CorrectAnswer;
 
@@ -88,7 +88,7 @@ namespace WordCards.Business.WordAction
 
             Result = WordActivityType.WrongAnswer;
 
-            return WordActivityType.WrongAnswer;            
+            return WordActivityType.WrongAnswer;
         }
 
         public string GetTranslationBySide(Side side)

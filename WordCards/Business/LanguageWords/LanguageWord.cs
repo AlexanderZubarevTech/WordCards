@@ -1,8 +1,8 @@
-﻿using WordCards.Business.WordActivities;
-using WordCards.Core.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using WordCards.Business.WordActivities;
+using WordCards.Core.Entities;
 
 namespace WordCards.Business.LanguageWords
 {
@@ -53,7 +53,7 @@ namespace WordCards.Business.LanguageWords
         public string Translation { get; set; }
 
         public List<WordActivity> Activities { get; set; }
-        
+
         public List<ErrorWordActivity> ErrorActivities { get; set; }
     }
 }

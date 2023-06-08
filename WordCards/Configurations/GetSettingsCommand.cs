@@ -1,10 +1,10 @@
-﻿using WordCards.Core.Commands;
-using System.Linq;
+﻿using System.Linq;
+using WordCards.Core.Commands;
 
 namespace WordCards.Configurations
 {
     public sealed class GetSettingsCommand : EntityCommand, IGetSettingsCommand
-    {        
+    {
         public Settings Execute()
         {
             Settings result;
@@ -19,6 +19,6 @@ namespace WordCards.Configurations
             return result;
         }
 
-        
+
     }
 }

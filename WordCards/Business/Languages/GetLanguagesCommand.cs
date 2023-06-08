@@ -1,6 +1,6 @@
-﻿using WordCards.Core.Commands;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
+using WordCards.Core.Commands;
 
 namespace WordCards.Business.Languages
 {

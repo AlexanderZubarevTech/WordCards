@@ -1,5 +1,5 @@
-﻿using WordCards.Core.Commands;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using WordCards.Core.Commands;
 
 namespace WordCards.Configurations
 {

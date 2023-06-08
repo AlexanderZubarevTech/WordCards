@@ -1,10 +1,10 @@
-﻿using WordCards.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Linq;
+using WordCards.Configurations;
 using WordCards.Core.Commands;
 using WordCards.Core.Helpers;
 using WordCards.Core.Validations;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Linq;
 
 namespace WordCards.Business.Languages
 {
@@ -16,7 +16,7 @@ namespace WordCards.Business.Languages
             {
                 var count = db.Languages.Count();
 
-                if(count <= 2)
+                if (count <= 2)
                 {
                     ValidationResult.ThrowError("Не получилось удалить. Должно сущетвовать минимум 2 языка.");
                 }

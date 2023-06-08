@@ -1,14 +1,14 @@
-﻿using WordCards.Configurations;
-using WordCards.Core.Commands;
-using WordCards.Core.Helpers;
-using WordCards.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Xml;
+using WordCards.Configurations;
+using WordCards.Core.Commands;
+using WordCards.Core.Helpers;
+using WordCards.Extensions;
 using ValidationResult = WordCards.Core.Validations.ValidationResult;
 
 namespace WordCards.Business.LanguageWords
@@ -34,9 +34,9 @@ namespace WordCards.Business.LanguageWords
 
             var tableNode = FindNode(doc, tableNodeName);
 
-            if(tableNode == null)
+            if (tableNode == null)
             {
-                ValidationResult.ThrowError($"Таблица не найдена. Тег {tableNode} не найден.");                
+                ValidationResult.ThrowError($"Таблица не найдена. Тег {tableNode} не найден.");
             }
 
             var info = new LibraryFileInfo();
@@ -53,21 +53,21 @@ namespace WordCards.Business.LanguageWords
 
         private XmlNode? FindNode(XmlNode? node, string nodeName)
         {
-            if(node == null)
+            if (node == null)
             {
                 return null;
             }
 
-            if(IsNode(node, nodeName))
+            if (IsNode(node, nodeName))
             {
                 return node;
             }
 
-            foreach(XmlNode childNode in node.ChildNodes)
+            foreach (XmlNode childNode in node.ChildNodes)
             {
                 var result = FindNode(childNode, nodeName);
 
-                if(result != null)
+                if (result != null)
                 {
                     return result;
                 }
@@ -119,14 +119,14 @@ namespace WordCards.Business.LanguageWords
 
                 foreach (XmlNode rowNode in tableNode.ChildNodes)
                 {
-                    if(wordList.Count == 200)
+                    if (wordList.Count == 200)
                     {
                         info.NewWordsCount += SaveNewWordCountByList(db, wordList);
 
                         wordList.Clear();
                     }
 
-                    if(!IsNode(rowNode, rowNodeName))
+                    if (!IsNode(rowNode, rowNodeName))
                     {
                         continue;
                     }
@@ -137,8 +137,8 @@ namespace WordCards.Business.LanguageWords
 
                     var dataWordNode = FindNode(wordNode, dataNodeName);
 
-                    if(dataWordNode == null 
-                        || dataWordNode.FirstChild == null 
+                    if (dataWordNode == null
+                        || dataWordNode.FirstChild == null
                         || dataWordNode.FirstChild.Value.IsNullOrEmptyOrWhiteSpace())
                     {
                         continue;
@@ -148,12 +148,12 @@ namespace WordCards.Business.LanguageWords
 
                     var wordName = dataWordNode.FirstChild.Value.Trim().ToLower();
 
-                    if(words.Contains(wordName))
+                    if (words.Contains(wordName))
                     {
                         info.DuplicateWordCount++;
 
                         continue;
-                    } 
+                    }
                     else
                     {
                         words.Add(wordName);
@@ -161,20 +161,20 @@ namespace WordCards.Business.LanguageWords
 
                     var dataTranslationNode = FindNode(translationNode, dataNodeName);
 
-                    if (dataTranslationNode == null 
-                        || dataTranslationNode.FirstChild == null 
+                    if (dataTranslationNode == null
+                        || dataTranslationNode.FirstChild == null
                         || dataTranslationNode.FirstChild.Value.IsNullOrEmptyOrWhiteSpace())
                     {
                         info.WordsWithoutTranslation++;
 
                         continue;
                     }
-                    
+
                     var translationName = dataTranslationNode.FirstChild.Value.Trim().ToLower();
 
                     var transcriptionDataNode = FindNode(transcriptionNode, dataNodeName);
 
-                    var transcription = transcriptionDataNode != null && transcriptionDataNode.FirstChild != null 
+                    var transcription = transcriptionDataNode != null && transcriptionDataNode.FirstChild != null
                         ? transcriptionDataNode.FirstChild.Value.Trim()
                         : string.Empty;
 
@@ -188,15 +188,15 @@ namespace WordCards.Business.LanguageWords
                         Translation = translationName
                     };
 
-                    wordList.Add(word);                    
+                    wordList.Add(word);
                 }
 
-                if(wordList.Count > 0)
+                if (wordList.Count > 0)
                 {
                     info.NewWordsCount += SaveNewWordCountByList(db, wordList);
-                }                
-            }            
-        }        
+                }
+            }
+        }
 
         private static int SaveNewWordCountByList(LanguageWordContext db, List<LanguageWord> list)
         {
@@ -211,7 +211,7 @@ namespace WordCards.Business.LanguageWords
 
             var newCount = list.Count - exists.Count;
 
-            if(newCount > 0)
+            if (newCount > 0)
             {
                 var saveList = list.Where(x => !exists.Contains(x.LanguageWordName));
 

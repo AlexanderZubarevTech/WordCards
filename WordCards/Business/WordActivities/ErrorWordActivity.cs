@@ -1,7 +1,7 @@
-﻿using WordCards.Business.LanguageWords;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WordCards.Business.LanguageWords;
 using WordCards.Business.WordAction;
 using WordCards.Core.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace WordCards.Business.WordActivities
 {

@@ -1,6 +1,6 @@
-﻿using WordCards.Business.Languages;
+﻿using Microsoft.EntityFrameworkCore;
+using WordCards.Business.Languages;
 using WordCards.Core.Contexts;
-using Microsoft.EntityFrameworkCore;
 
 namespace WordCards.Configurations
 {

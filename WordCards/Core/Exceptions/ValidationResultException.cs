@@ -1,5 +1,5 @@
-﻿using WordCards.Core.Validations;
-using System;
+﻿using System;
+using WordCards.Core.Validations;
 
 namespace WordCards.Core.Exceptions
 {
@@ -10,7 +10,7 @@ namespace WordCards.Core.Exceptions
 
         public ValidationResultException(string message) : base(message) { }
 
-        public ValidationResultException(ValidationResult validationResult) : this(validationResult.ToString()) 
+        public ValidationResultException(ValidationResult validationResult) : this(validationResult.ToString())
         {
             ValidationResult = validationResult;
         }

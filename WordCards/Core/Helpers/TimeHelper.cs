@@ -51,7 +51,7 @@ namespace WordCards.Core.Helpers
 
         private static string GetHours(TimeSpan timeLeft)
         {
-            if(timeLeft.Minutes == 0)
+            if (timeLeft.Minutes == 0)
             {
                 return $"{timeLeft.Hours} {hour}";
             }
@@ -71,7 +71,7 @@ namespace WordCards.Core.Helpers
 
         public static bool IsTimeStringChanged(TimeSpan timeLeft, TimeSpan newTime)
         {
-            if(timeLeft == newTime)
+            if (timeLeft == newTime)
             {
                 return false;
             }
@@ -79,12 +79,12 @@ namespace WordCards.Core.Helpers
             var absTime = GetAbsTime(timeLeft);
             var newAbsTime = GetAbsTime(newTime);
 
-            if(newAbsTime.TotalSeconds < 60)
+            if (newAbsTime.TotalSeconds < 60)
             {
                 return true;
             }
 
-            if(absTime.Hours == newAbsTime.Hours && absTime.Minutes == newAbsTime.Minutes)
+            if (absTime.Hours == newAbsTime.Hours && absTime.Minutes == newAbsTime.Minutes)
             {
                 return false;
             }

@@ -25,8 +25,8 @@ namespace UpdaterLibrary.Connection
 
         public MultiplePing(int repeat = 4)
         {
-            if (repeat < 1) 
-            { 
+            if (repeat < 1)
+            {
                 throw new ArgumentOutOfRangeException("repeat", "repeat must be greater than zero");
             }
 

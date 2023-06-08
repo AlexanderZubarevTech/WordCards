@@ -1,10 +1,10 @@
-﻿using WordCards.Business.Languages;
+﻿using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using WordCards.Business.Languages;
 using WordCards.Core.Helpers;
 using WordCards.Core.Validations;
 using WordCards.Extensions;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace WordCards.Views.Main
 {
@@ -51,7 +51,7 @@ namespace WordCards.Views.Main
 
             var isValid = validationManager.Execute(Save);
 
-            if(!isValid)
+            if (!isValid)
             {
                 SetEnabledWindow(true);
             }
@@ -70,7 +70,7 @@ namespace WordCards.Views.Main
 
         private void PrepareToSave()
         {
-            if(!language.Name.IsNullOrEmpty())
+            if (!language.Name.IsNullOrEmpty())
             {
                 language.Name = language.Name.Trim();
             }

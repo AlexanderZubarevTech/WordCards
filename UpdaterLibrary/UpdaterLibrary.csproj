@@ -107,6 +107,7 @@
     <Compile Include="HttpHeaders.cs" />
     <Compile Include="Json\IJsonEntity.cs" />
     <Compile Include="Json\JsonParsing.cs" />
+    <Compile Include="Json\Release.cs" />
     <Compile Include="Json\Tag.cs" />
     <Compile Include="SettingsKeys.cs" />
     <Compile Include="Token\CheckAuthorizationTokenCommand.cs" />

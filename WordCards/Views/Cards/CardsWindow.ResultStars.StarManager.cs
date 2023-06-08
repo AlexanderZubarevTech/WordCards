@@ -209,7 +209,7 @@ namespace WordCards.Views.Cards
 
                     polygon.Points.Clear();
 
-                    var scale = random.Next(20, 100) / 100d;                    
+                    var scale = random.Next(20, 100) / 100d;
 
                     DrawByCenter(polygon, centerPoint, scale);
 

@@ -16,18 +16,18 @@ namespace WordCards.Core.Entities
         private PropertyMappingBuilder(EntityMappingBuilder<TEntity> mappingBuilder, PropertyBuilder<TProperty> propertyBuilder)
         {
             parent = mappingBuilder;
-            this.propertyBuilder = propertyBuilder;            
+            this.propertyBuilder = propertyBuilder;
         }
 
         private EntityMappingBuilder<TEntity> parent;
-        private PropertyBuilder<TProperty> propertyBuilder;        
+        private PropertyBuilder<TProperty> propertyBuilder;
 
         public PropertyMappingBuilder<TEntity, TProperty> IsRequired()
         {
             propertyBuilder.IsRequired();
 
             return this;
-        }        
+        }
 
         public PropertyMappingBuilder<TEntity, TProperty> ValueGeneratedOnAdd()
         {

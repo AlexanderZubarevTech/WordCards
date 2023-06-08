@@ -1,7 +1,7 @@
-﻿using WordCards.Core.Commands;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using WordCards.Core.Commands;
 
 namespace WordCards.Business.LanguageWords
 {

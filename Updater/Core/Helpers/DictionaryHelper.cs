@@ -8,6 +8,6 @@ namespace Updater.Core.Helpers
             where TKey : notnull
         {
             return new Dictionary<TKey, TValue>(0);
-        }        
+        }
     }
 }

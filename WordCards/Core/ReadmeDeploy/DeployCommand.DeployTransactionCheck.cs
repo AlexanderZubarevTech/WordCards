@@ -10,7 +10,7 @@
                 IsChecked = false;
             }
 
-            public string Sql { get; }           
+            public string Sql { get; }
 
             public bool IsChecked { get; set; }
         }

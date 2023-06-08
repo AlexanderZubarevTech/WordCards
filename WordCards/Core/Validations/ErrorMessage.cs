@@ -1,6 +1,6 @@
-﻿using WordCards.Core.Entities;
+﻿using System;
 using System.Linq.Expressions;
-using System;
+using WordCards.Core.Entities;
 
 namespace WordCards.Core.Validations
 {
@@ -38,7 +38,7 @@ namespace WordCards.Core.Validations
 
         public string GetMessage(string? fieldViewName)
         {
-            if(HasField)
+            if (HasField)
             {
                 return string.Format(Message, fieldViewName);
             }

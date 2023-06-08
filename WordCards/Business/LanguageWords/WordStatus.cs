@@ -22,8 +22,8 @@ namespace WordCards.Business.LanguageWords
             {StatusEnum.LearnedWord, LearnedWord},
         };
 
-        private WordStatus(StatusEnum status, string name) 
-        {            
+        private WordStatus(StatusEnum status, string name)
+        {
             Status = status;
             Name = name;
         }

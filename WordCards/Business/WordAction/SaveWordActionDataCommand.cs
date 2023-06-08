@@ -1,8 +1,8 @@
-﻿using WordCards.Business.WordActivities;
-using WordCards.Core.Commands;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using WordCards.Business.WordActivities;
+using WordCards.Core.Commands;
 
 namespace WordCards.Business.WordAction
 {
@@ -24,8 +24,8 @@ namespace WordCards.Business.WordAction
 
                     db.WordActivities.Add(activity);
 
-                    UpdateErrorActivity(db.ErrorWordActivities, errorActivities, item, info.Id);                    
-                }                
+                    UpdateErrorActivity(db.ErrorWordActivities, errorActivities, item, info.Id);
+                }
 
                 db.SaveChanges();
             }

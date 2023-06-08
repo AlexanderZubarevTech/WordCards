@@ -8,6 +8,7 @@ namespace UpdaterLibrary
     {
         public static readonly string ApiUrl = GetApiUrl();
         public static readonly string TagsUrl = GetTagsUrl();
+        public static readonly string ReleasesUrl = GetReleasesUrl();
 
         private static string GetApiUrl()
         {
@@ -28,6 +29,13 @@ namespace UpdaterLibrary
             return ApiUrl + tags;
         }
 
+        private static string GetReleasesUrl()
+        {
+            var releases = ConfigurationManager.AppSettings.Get(SettingsKeys.ReleaseURL);
+
+            return ApiUrl + releases;
+        }
+
         public static void AddHeaders(HttpRequestHeaders requestHeaders, string encryptedToken)
         {
             var token = Security.Decrypt(encryptedToken, ConfigurationManager.AppSettings.Get(SettingsKeys.TokenKey));
@@ -36,6 +44,7 @@ namespace UpdaterLibrary
             requestHeaders.Add(HttpHeaders.UserAgent, ConfigurationManager.AppSettings.Get(SettingsKeys.Owner));
             requestHeaders.Add(HttpHeaders.Accept, ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersAccept));
             requestHeaders.Add(HttpHeaders.Authorization, headerValueToken);
+            requestHeaders.Add(HttpHeaders.ApiVersion, ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersVersion));
         }
     }
 }

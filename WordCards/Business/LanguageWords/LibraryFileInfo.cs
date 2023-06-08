@@ -3,7 +3,7 @@
     public sealed class LibraryFileInfo
     {
         public LibraryFileInfo()
-        {            
+        {
         }
 
         public int WordsCount { get; set; }

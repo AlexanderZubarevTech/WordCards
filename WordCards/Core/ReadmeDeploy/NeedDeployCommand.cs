@@ -7,9 +7,9 @@ namespace WordCards.Core.ReadmeDeploy
     {
         public bool Execute()
         {
-            var result = false;            
+            var result = false;
 
-            using(var db = new StartContext())
+            using (var db = new StartContext())
             {
                 var newFiles = DeployFilesHelper.GetNewFiles(db.Deploys);
 

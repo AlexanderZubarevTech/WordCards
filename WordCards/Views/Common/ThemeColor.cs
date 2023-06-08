@@ -1,6 +1,4 @@
-﻿using WordCards.Extensions;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -12,8 +10,8 @@ namespace WordCards.Views.Common
         {
             Default = 1,
             NotEnabledButton,
-            CancelButton,            
-            Active,            
+            CancelButton,
+            Active,
             Correct,
             Wrong,
             NewWord,
@@ -68,9 +66,9 @@ namespace WordCards.Views.Common
 
             public static bool operator ==(ColorTypeInfo left, ColorTypeInfo right)
             {
-                return left.ColorType == right.ColorType 
-                    && left.ElementType == right.ElementType 
-                    && left.ResourceType == right.ResourceType 
+                return left.ColorType == right.ColorType
+                    && left.ElementType == right.ElementType
+                    && left.ResourceType == right.ResourceType
                     && left.HoverType == right.HoverType;
             }
 
@@ -133,7 +131,7 @@ namespace WordCards.Views.Common
             Add(dictionary, ColorType.Active, ElementType.Text);
 
             Add(dictionary, ColorType.Active, ElementType.Default, HoverType.Hover);
-            Add(dictionary, ColorType.Active, ElementType.Text, HoverType.Hover);            
+            Add(dictionary, ColorType.Active, ElementType.Text, HoverType.Hover);
 
             Add(dictionary, ColorType.Correct, ElementType.Default);
             Add(dictionary, ColorType.Correct, ElementType.Line);
@@ -166,22 +164,22 @@ namespace WordCards.Views.Common
 
             dictionary.Add(colorKey, colorKey.ToString());
             dictionary.Add(brushKey, brushKey.ToString());
-        }        
+        }
 
-        public static Color GetColor(ResourceDictionary resources, ColorType colorType, ElementType elementType, 
+        public static Color GetColor(ResourceDictionary resources, ColorType colorType, ElementType elementType,
             HoverType hoverType = HoverType.None)
         {
             var pair = ColorTypeInfo.Create(colorType, elementType, ResourceType.Color, hoverType);
 
-            return (Color) resources[colors[pair]];
+            return (Color)resources[colors[pair]];
         }
 
-        public static SolidColorBrush GetBrush(ResourceDictionary resources, ColorType colorType, ElementType elementType, 
+        public static SolidColorBrush GetBrush(ResourceDictionary resources, ColorType colorType, ElementType elementType,
             HoverType hoverType = HoverType.None)
         {
             var pair = ColorTypeInfo.Create(colorType, elementType, ResourceType.Brush, hoverType);
 
             return resources[colors[pair]] as SolidColorBrush;
-        }        
+        }
     }
 }

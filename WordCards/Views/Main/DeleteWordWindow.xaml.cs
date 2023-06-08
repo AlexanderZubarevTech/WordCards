@@ -1,6 +1,6 @@
-﻿using WordCards.Business.LanguageWords;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using WordCards.Business.LanguageWords;
 
 namespace WordCards.Views.Main
 {
@@ -24,7 +24,7 @@ namespace WordCards.Views.Main
         private void Delete(object sender, MouseButtonEventArgs e)
         {
             Delete();
-        }        
+        }
 
         private void Delete()
         {
@@ -45,12 +45,12 @@ namespace WordCards.Views.Main
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 Delete();
             }
 
-            if(e.Key == Key.Escape)
+            if (e.Key == Key.Escape)
             {
                 Cancel();
             }

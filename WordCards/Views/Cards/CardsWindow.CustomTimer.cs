@@ -1,8 +1,8 @@
-﻿using WordCards.Business.WordAction;
-using WordCards.Configurations;
-using System.Timers;
+﻿using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using WordCards.Business.WordAction;
+using WordCards.Configurations;
 
 namespace WordCards.Views.Cards
 {
@@ -21,7 +21,7 @@ namespace WordCards.Views.Cards
             {
                 this.progressBar = progressBar;
 
-                if(AppConfiguration.Instance.WordCardHasTimer)
+                if (AppConfiguration.Instance.WordCardHasTimer)
                 {
                     timer = CreateTimer(elapsed);
                     progressMaximumValue = 1000 / interval * AppConfiguration.Instance.WordCardTimerDurationInSeconds;
@@ -55,7 +55,7 @@ namespace WordCards.Views.Cards
 
             public void Start()
             {
-                if(timer != null)
+                if (timer != null)
                 {
                     timer.Start();
                 }
@@ -79,7 +79,7 @@ namespace WordCards.Views.Cards
 
             public void Restart(WordActionData nextWord)
             {
-                if(timer == null)
+                if (timer == null)
                 {
                     return;
                 }
@@ -101,6 +101,6 @@ namespace WordCards.Views.Cards
                 progressBar.Value++;
             }
 
-        }           
+        }
     }
 }

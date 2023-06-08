@@ -1,18 +1,18 @@
-﻿using WordCards.Core.Entities;
-using WordCards.Core.Exceptions;
-using WordCards.Extensions;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using WordCards.Core.Entities;
+using WordCards.Core.Exceptions;
+using WordCards.Extensions;
 
 namespace WordCards.Core.Validations
 {
 
     public sealed class ValidationResult : IEnumerable
     {
-        public ValidationResult() 
+        public ValidationResult()
         {
             errors = new List<ErrorMessage>();
         }
@@ -29,7 +29,7 @@ namespace WordCards.Core.Validations
 
         public void Add(string message)
         {
-            if(!message.IsNullOrEmpty())
+            if (!message.IsNullOrEmpty())
             {
                 errors.Add(ErrorMessage.Create(message));
             }
@@ -61,7 +61,7 @@ namespace WordCards.Core.Validations
 
         public void ThrowIfHasError()
         {
-            if(HasError)
+            if (HasError)
             {
                 throw new ValidationResultException(this);
             }
@@ -95,6 +95,6 @@ namespace WordCards.Core.Validations
             return str.ToString();
         }
 
-        
+
     }
 }

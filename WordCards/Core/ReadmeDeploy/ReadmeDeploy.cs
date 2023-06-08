@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WordCards.Core.Entities;
 using System;
+using WordCards.Core.Entities;
 
 namespace WordCards.Core.ReadmeDeploy
 {
@@ -9,27 +9,27 @@ namespace WordCards.Core.ReadmeDeploy
         public static void Configure(EntityTypeBuilder<ReadmeDeploy> builder)
         {
             EntityMappingBuilder<ReadmeDeploy>.Create(builder)
-                .Table("readme_deploys", true, true, false, true)                    
+                .Table("readme_deploys", true, true, false, true)
                 .End();
         }
 
         public ReadmeDeploy()
-        {            
+        {
         }
 
-        public ReadmeDeploy(string id, DateTime timestamp)            
+        public ReadmeDeploy(string id, DateTime timestamp)
         {
             Id = id;
             Timestamp = timestamp;
         }
 
-        public new string Id 
+        public new string Id
         {
-            get 
+            get
             {
                 return IdAsString;
             }
-            set 
+            set
             {
                 IdAsString = value;
             }

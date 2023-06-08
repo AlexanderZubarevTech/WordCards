@@ -1,8 +1,8 @@
-﻿using WordCards.Business.LanguageWords;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using WordCards.Business.LanguageWords;
 using WordCards.Business.WordAction;
 using WordCards.Core.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace WordCards.Business.WordActivities
 {
@@ -15,7 +15,7 @@ namespace WordCards.Business.WordActivities
                     .Column(x => x.Date)
                     .End()
                     .Column(x => x.LanguageWordId)
-                    .End()                    
+                    .End()
                     .Column(x => x.ActivityType)
                     .End()
                     .Column(x => x.InfoId)

@@ -1,9 +1,9 @@
-﻿using WordCards.Business.LanguageWords;
-using WordCards.Core.Helpers;
-using WordCards.Core.Validations;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using WordCards.Business.LanguageWords;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
 
 namespace WordCards.Views.Main
 {
@@ -12,7 +12,7 @@ namespace WordCards.Views.Main
     /// </summary>
     public partial class AddOrUpdateWordWindow : Window
     {
-        private readonly ValidationManager validationManager;        
+        private readonly ValidationManager validationManager;
         private EditLanguageWord word;
 
         public AddOrUpdateWordWindow(EditLanguageWord editWord)
@@ -28,7 +28,7 @@ namespace WordCards.Views.Main
             DataContext = editWord;
 
             var errorStyle = Resources["ErrorMessage"] as Style;
-            var errorColor = (Color) Resources["ValidationErrorFieldColor"];
+            var errorColor = (Color)Resources["ValidationErrorFieldColor"];
 
             validationManager = new ValidationManager(SP_FieldsWithValidation, errorStyle, errorColor);
         }
@@ -67,7 +67,7 @@ namespace WordCards.Views.Main
                 DialogResult = true;
                 Close();
             }
-        }        
+        }
 
         private void PrepareToSave()
         {
@@ -92,12 +92,12 @@ namespace WordCards.Views.Main
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            var window = new LoadLibraryWindow();            
+            var window = new LoadLibraryWindow();
 
             Hide();
 
-            if(window.ShowDialog() == true)
-            {                
+            if (window.ShowDialog() == true)
+            {
                 Close();
 
                 return;

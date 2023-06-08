@@ -14,7 +14,7 @@ namespace WordCards.Views.Cards
             private const int defaultDurationInMillisecons = 2000;
             private const int defaultDelayInMillisecons = 2000;
 
-            private static readonly double halfDefaultSize = defaultSize / 2;            
+            private static readonly double halfDefaultSize = defaultSize / 2;
 
             private readonly AreaManager areaManager;
             private readonly StarManager starManager;

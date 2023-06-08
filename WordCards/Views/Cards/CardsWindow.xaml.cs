@@ -1,14 +1,14 @@
-﻿using WordCards.Business.WordAction;
-using WordCards.Business.WordActivities;
-using WordCards.Configurations;
-using WordCards.Core.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using WordCards.Business.WordAction;
+using WordCards.Business.WordActivities;
+using WordCards.Configurations;
+using WordCards.Core.Helpers;
 
 namespace WordCards.Views.Cards
 {
@@ -40,13 +40,13 @@ namespace WordCards.Views.Cards
             wordIsShowed = true;
             maxCorrectAnswerSequence = 0;
             CorrectAnswerSequence = 0;
-            isResult = false;            
+            isResult = false;
 
             mainDispatcher = Dispatcher.CurrentDispatcher;
 
             info = new WordActionInfo
             {
-                StartDate = TimeHelper.GetCurrentDate(),                
+                StartDate = TimeHelper.GetCurrentDate(),
                 SelectedCardWordsCount = wordCount,
                 LanguageId = AppConfiguration.Instance.CurrentLanguage,
                 TranslationLanguageId = AppConfiguration.Instance.CurrentTranslationLanguage,
@@ -54,7 +54,7 @@ namespace WordCards.Views.Cards
 
             data = CommandHelper.GetCommand<IGetWordActionDataCommand>().Execute(wordCount);
 
-            if(data.Length == 0)
+            if (data.Length == 0)
             {
                 timer = new CustomTimer(PB_timer);
 
@@ -75,21 +75,21 @@ namespace WordCards.Views.Cards
 
         private int _correctAnswerSequence;
         private int CorrectAnswerSequence
-        { 
+        {
             get
             {
                 return _correctAnswerSequence;
             }
-            set 
+            set
             {
                 _correctAnswerSequence = value;
 
-                if(value > maxCorrectAnswerSequence)
+                if (value > maxCorrectAnswerSequence)
                 {
                     maxCorrectAnswerSequence = value;
                 }
-            } 
-        }        
+            }
+        }
 
         private void Initialize(WordActionData word)
         {
@@ -116,7 +116,7 @@ namespace WordCards.Views.Cards
 
             for (int i = 0; i < data.Length; i++)
             {
-                if(item.Id == data[i].Id) 
+                if (item.Id == data[i].Id)
                 {
                     index = i;
 
@@ -128,12 +128,12 @@ namespace WordCards.Views.Cards
             TB_WordName.Text = item.WordName;
             TB_Transcription.Text = item.Transcription;
 
-            TB_TranslationNewWord.Text = item.IsNewWord 
-                ? item.CorrectTranslation 
+            TB_TranslationNewWord.Text = item.IsNewWord
+                ? item.CorrectTranslation
                 : string.Empty;
 
             TB_LeftTranslation.Text = item.GetTranslationBySide(WordActionData.Side.Left);
-            TB_RightTranslation.Text = item.GetTranslationBySide(WordActionData.Side.Right);                     
+            TB_RightTranslation.Text = item.GetTranslationBySide(WordActionData.Side.Right);
         }
 
         private void SetProgress(int count)
@@ -168,11 +168,11 @@ namespace WordCards.Views.Cards
             G_Understood.Visibility = Visibility.Collapsed;
 
             SetDelaultColor();
-        }        
+        }
 
         private void SetCorrectAnswerSequence(WordActivityType type)
         {
-            if(type == WordActivityType.CorrectAnswer)
+            if (type == WordActivityType.CorrectAnswer)
             {
                 CorrectAnswerSequence++;
             }
@@ -184,12 +184,12 @@ namespace WordCards.Views.Cards
 
         private void LeftTime(object? sender, ElapsedEventArgs e)
         {
-            mainDispatcher.BeginInvoke(() => 
+            mainDispatcher.BeginInvoke(() =>
             {
                 if (timer.IsTimeLeft)
                 {
                     TimeLeft();
-                } 
+                }
                 else
                 {
                     timer.Progress();
@@ -216,11 +216,11 @@ namespace WordCards.Views.Cards
         {
             SetWordBackgroundColor(BackgroundColor.ColorType.Wrong);
 
-            if(side != null)
+            if (side != null)
             {
                 SetTranslationBackgroundColor(BackgroundColor.ColorType.Wrong, side.Value);
             }
-            
+
             SetTranslationBackgroundColor(BackgroundColor.ColorType.Correct, correctSide);
         }
 
@@ -233,12 +233,12 @@ namespace WordCards.Views.Cards
 
         private void SetTranslationBackgroundColor(BackgroundColor.ColorType type, WordActionData.Side side)
         {
-            if(side == WordActionData.Side.Left)
+            if (side == WordActionData.Side.Left)
             {
                 SetLeftTranslationBackgroundColor(type);
             }
 
-            if(side == WordActionData.Side.Right)
+            if (side == WordActionData.Side.Right)
             {
                 SetRightTranslationBackgroundColor(type);
             }
@@ -267,12 +267,12 @@ namespace WordCards.Views.Cards
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.IsRepeat)
+            if (e.IsRepeat)
             {
                 return;
             }
 
-            if(isResult)
+            if (isResult)
             {
                 ResultFromKeyDown(e.Key);
             }
@@ -280,7 +280,7 @@ namespace WordCards.Views.Cards
             {
                 ActionFromKeyDown(e.Key);
             }
-        }        
+        }
 
         private void Grid_LeftTranslation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -300,7 +300,7 @@ namespace WordCards.Views.Cards
         private void GridResultClose_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ResultFromKeyDown(Key.Enter);
-        }        
+        }
 
         private void Btn_Close_Click(object sender, RoutedEventArgs e)
         {
@@ -317,7 +317,7 @@ namespace WordCards.Views.Cards
 
         private void ResultFromKeyDown(Key key)
         {
-            if(key != Key.Escape && key != Key.Enter && key != Key.Space)
+            if (key != Key.Escape && key != Key.Enter && key != Key.Space)
             {
                 return;
             }
@@ -338,7 +338,7 @@ namespace WordCards.Views.Cards
                 && key != Key.Left)
             {
                 return;
-            }            
+            }
 
             var currentWord = GetCurrentWord();
 
@@ -396,11 +396,11 @@ namespace WordCards.Views.Cards
 
             wordIsShowed = false;
 
-            PB_progress.Value++;            
+            PB_progress.Value++;
 
             var nextWord = GetNextWord();
 
-            if(nextWord == null)
+            if (nextWord == null)
             {
                 info.EndDate = TimeHelper.GetCurrentDate();
             }
@@ -408,7 +408,7 @@ namespace WordCards.Views.Cards
             if (wait)
             {
                 await AsyncNext();
-            } 
+            }
             else
             {
                 NextInternal();
@@ -420,7 +420,7 @@ namespace WordCards.Views.Cards
             await Task.Delay(1000);
 
             NextInternal();
-        }        
+        }
 
         private WordActionData GetCurrentWord()
         {
@@ -431,7 +431,7 @@ namespace WordCards.Views.Cards
         {
             var index = Convert.ToInt32(WordIndex.Text);
 
-            if(index == data.Length - 1)
+            if (index == data.Length - 1)
             {
                 return null;
             }
@@ -443,7 +443,7 @@ namespace WordCards.Views.Cards
         {
             var nextWord = GetNextWord();
 
-            if(nextWord == null)
+            if (nextWord == null)
             {
                 SaveResult();
 
@@ -459,7 +459,7 @@ namespace WordCards.Views.Cards
             wordIsShowed = true;
 
             timer.Restart(nextWord);
-        }        
+        }
 
         private void ShowResult()
         {
@@ -548,7 +548,7 @@ namespace WordCards.Views.Cards
 
         private void SaveResult()
         {
-            info.MaxSequence = maxCorrectAnswerSequence;            
+            info.MaxSequence = maxCorrectAnswerSequence;
 
             foreach (var item in data)
             {

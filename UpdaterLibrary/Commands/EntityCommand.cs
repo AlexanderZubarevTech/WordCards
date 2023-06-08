@@ -12,12 +12,12 @@ namespace UpdaterLibrary.Commands
 
         public bool CanExecute(object parameter)
         {
-            return true;            
+            return true;
         }
 
         public void Execute(object parameter)
         {
             return;
-        }       
+        }
     }
 }

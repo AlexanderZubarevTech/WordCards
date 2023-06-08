@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WordCards.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using WordCards.Extensions;
 
 namespace WordCards.Core.Entities
 {
@@ -35,10 +35,10 @@ namespace WordCards.Core.Entities
             if (timestamp)
             {
                 Column(x => x.Timestamp).End();
-            }           
+            }
 
             return this;
-        }        
+        }
 
         private void AddIdColumn(bool hasId, bool isGeneratedId, bool idIsString)
         {
@@ -86,15 +86,15 @@ namespace WordCards.Core.Entities
             {
                 propBuilder.HasColumnName(columnName);
             }
-            
+
             return PropertyMappingBuilder<TEntity, TProperty>.Create(this, propBuilder);
         }
 
-        public EntityMappingBuilder<TEntity> ReferenceList<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpr)            
+        public EntityMappingBuilder<TEntity> ReferenceList<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpr)
         {
             var member = propertyExpr.Body as MemberExpression;
 
-            if(member == null)
+            if (member == null)
             {
                 return this;
             }
@@ -141,9 +141,9 @@ namespace WordCards.Core.Entities
                 .Except(properties)
                 .ToList();
 
-            if(ignoreProperties.Count > 0)
+            if (ignoreProperties.Count > 0)
             {
-                foreach( var property in ignoreProperties)
+                foreach (var property in ignoreProperties)
                 {
                     entityBuilder.Ignore(property);
                 }

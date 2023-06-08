@@ -1,8 +1,8 @@
-﻿using WordCards.Core.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using WordCards.Core.Helpers;
 
 namespace WordCards.Configurations
 {
@@ -10,9 +10,9 @@ namespace WordCards.Configurations
     {
         private static AppConfiguration? instance;
 
-        public static AppConfiguration Instance 
-        { 
-            get 
+        public static AppConfiguration Instance
+        {
+            get
             {
                 if (instance == null)
                 {
@@ -20,7 +20,7 @@ namespace WordCards.Configurations
                 }
 
                 return instance;
-            } 
+            }
         }
 
         public static string GetConfigurationId<TProperty>(Expression<Func<AppConfiguration, TProperty>> expr)
@@ -43,7 +43,7 @@ namespace WordCards.Configurations
             return string.Empty;
         }
 
-        private AppConfiguration(IReadOnlyDictionary<string, Configuration> data) 
+        private AppConfiguration(IReadOnlyDictionary<string, Configuration> data)
         {
             SetProperties(data);
         }
@@ -103,28 +103,28 @@ namespace WordCards.Configurations
 
             var properties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
 
-            foreach ( var property in properties)
+            foreach (var property in properties)
             {
                 var attributes = property.GetCustomAttributes(false);
 
                 foreach (var attr in attributes)
                 {
-                    if(attr is ConfigurationIdAttribute idAttr)
+                    if (attr is ConfigurationIdAttribute idAttr)
                     {
                         var configuration = data[idAttr.Id];
 
-                        if(configuration == null)
+                        if (configuration == null)
                         {
                             throw new Exception("Not found configuration");
                         }
 
                         var value = TypeDescriptor.GetConverter(property.PropertyType)
-                            .ConvertFrom(configuration.Value);                        
+                            .ConvertFrom(configuration.Value);
 
                         property.SetValue(this, value);
                     }
                 }
             }
-        }        
+        }
     }
 }

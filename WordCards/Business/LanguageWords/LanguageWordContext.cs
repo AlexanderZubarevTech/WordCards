@@ -1,14 +1,14 @@
-﻿using WordCards.Business.Languages;
+﻿using Microsoft.EntityFrameworkCore;
+using WordCards.Business.Languages;
 using WordCards.Business.WordActivities;
 using WordCards.Core.Contexts;
-using Microsoft.EntityFrameworkCore;
 
 namespace WordCards.Business.LanguageWords
 {
     public sealed class LanguageWordContext : EntityContext
     {
-        public LanguageWordContext() : base() 
-        {            
+        public LanguageWordContext() : base()
+        {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -18,8 +18,8 @@ namespace WordCards.Business.LanguageWords
             EntityConfiguration<WordActivity>(modelBuilder);
         }
 
-        public DbSet<LanguageWord> LanguageWords { get; set; } = null!;     
-        
+        public DbSet<LanguageWord> LanguageWords { get; set; } = null!;
+
         public DbSet<Language> Languages { get; set; } = null!;
 
         public DbSet<WordActivity> WordActivities { get; set; } = null!;

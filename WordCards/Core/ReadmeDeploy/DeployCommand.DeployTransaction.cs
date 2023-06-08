@@ -23,7 +23,7 @@ namespace WordCards.Core.ReadmeDeploy
 
             public bool Check()
             {
-                if(Checks.Count == 0) 
+                if (Checks.Count == 0)
                 {
                     return true;
                 }

@@ -1,14 +1,14 @@
-﻿using WordCards.Business.Languages;
-using WordCards.Configurations;
-using WordCards.Core.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WordCards.Business.Languages;
+using WordCards.Configurations;
+using WordCards.Core.Commands;
 
 namespace WordCards.Business.LanguageWords
 {
     public sealed class GetEditLanguageWordsCommand : EntityCommand, IGetEditLanguageWordCommand
-    {        
+    {
         public EditLanguageWord Execute(int? id)
         {
             EditLanguageWord result;

@@ -1,7 +1,7 @@
-﻿using WordCards.Core.Commands;
+﻿using System.Linq;
+using WordCards.Core.Commands;
 using WordCards.Core.Validations;
 using WordCards.Extensions;
-using System.Linq;
 
 namespace WordCards.Business.Languages
 {
@@ -24,7 +24,7 @@ namespace WordCards.Business.Languages
                     ValidationResult.ThrowError<Language, string>("Данное название языка уже существует", x => x.Name);
                 }
 
-                if(entity.Id == default)
+                if (entity.Id == default)
                 {
                     db.Languages.Add(entity);
                 }
@@ -48,7 +48,7 @@ namespace WordCards.Business.Languages
         {
             var validationResult = new ValidationResult();
 
-            if(entity.Name.IsNullOrEmptyOrWhiteSpace())
+            if (entity.Name.IsNullOrEmptyOrWhiteSpace())
             {
                 validationResult.AddRequired<Language, string>(x => x.Name);
             }

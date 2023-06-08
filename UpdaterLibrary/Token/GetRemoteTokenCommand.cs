@@ -11,7 +11,7 @@ namespace UpdaterLibrary.Token
     {
         private HttpClient _httpClient;
 
-        public string Execute(HttpClient httpClient) 
+        public string Execute(HttpClient httpClient)
         {
             _httpClient = httpClient;
 

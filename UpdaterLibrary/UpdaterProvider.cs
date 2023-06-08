@@ -2,7 +2,6 @@
 using System;
 using System.Configuration;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using UpdaterLibrary.Commands;
 using UpdaterLibrary.Connection;
 using UpdaterLibrary.Token;
@@ -15,10 +14,10 @@ namespace UpdaterLibrary
         private static IHttpClientFactory httpClientFactory;
 
         static UpdaterProvider()
-        {            
-            var services = new ServiceCollection();            
-            services.AddHttpClient();            
-            var serviceProvider = services.BuildServiceProvider();            
+        {
+            var services = new ServiceCollection();
+            services.AddHttpClient();
+            var serviceProvider = services.BuildServiceProvider();
             httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
         }
 
@@ -27,7 +26,7 @@ namespace UpdaterLibrary
             return CommandHelper.GetCommand<ICheckConnectionCommand>().Execute();
         }
 
-        public static bool CheckServiceConnection() 
+        public static bool CheckServiceConnection()
         {
             var hostName = ConfigurationManager.AppSettings.Get(SettingsKeys.ServiceAddress);
 

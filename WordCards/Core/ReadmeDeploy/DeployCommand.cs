@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WordCards.Core.Commands;
-using WordCards.Core.Contexts;
-using WordCards.Core.Helpers;
-using WordCards.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using WordCards.Core.Commands;
+using WordCards.Core.Contexts;
+using WordCards.Core.Helpers;
+using WordCards.Extensions;
 
 namespace WordCards.Core.ReadmeDeploy
 {
@@ -16,17 +16,17 @@ namespace WordCards.Core.ReadmeDeploy
     {
         public void Execute()
         {
-            using(var db = new StartContext())
+            using (var db = new StartContext())
             {
                 var fileTransactions = GetFileTransactions(db.Deploys);
 
-                if(fileTransactions.Count  > 0 )
+                if (fileTransactions.Count > 0)
                 {
-                    foreach(var transaction in fileTransactions)
+                    foreach (var transaction in fileTransactions)
                     {
                         ExecuteDeployFile(db, transaction.Key, transaction.Value);
                     }
-                }                
+                }
             }
         }
 
@@ -34,7 +34,7 @@ namespace WordCards.Core.ReadmeDeploy
         {
             var newFiles = DeployFilesHelper.GetNewFiles(deploys);
 
-            if(newFiles.Count == 0)
+            if (newFiles.Count == 0)
             {
                 return DictionaryHelper.Empty<string, List<DeployTransaction>>();
             }
@@ -47,12 +47,12 @@ namespace WordCards.Core.ReadmeDeploy
         private static Dictionary<string, FileInfo> GetXmlFiles(IReadOnlyDictionary<string, string> newFiles)
         {
             return newFiles.Select(x => new
-                {
-                    x.Key,
-                    File = new FileInfo(x.Value)
-                })
+            {
+                x.Key,
+                File = new FileInfo(x.Value)
+            })
                 .ToDictionary(x => x.Key, x => x.File);
-        }        
+        }
 
         private static List<DeployTransaction> GetSql(string fileId, FileInfo file)
         {
@@ -80,8 +80,8 @@ namespace WordCards.Core.ReadmeDeploy
                 if (NotEmptyNode(node, "sql"))
                 {
                     var transaction = GetDeployTransactionFromNode(node);
-                    
-                    if(transaction != null)
+
+                    if (transaction != null)
                     {
                         result.Add(transaction);
                     }
@@ -98,7 +98,7 @@ namespace WordCards.Core.ReadmeDeploy
 
         private static DeployTransaction? GetDeployTransactionFromNode(XmlNode node)
         {
-            if(node.ChildNodes.Count == 0 || node.FirstChild.NodeType == XmlNodeType.Text)
+            if (node.ChildNodes.Count == 0 || node.FirstChild.NodeType == XmlNodeType.Text)
             {
                 return new DeployTransaction(node.InnerText);
             }
@@ -108,33 +108,33 @@ namespace WordCards.Core.ReadmeDeploy
 
             foreach (XmlNode innerNode in node.ChildNodes)
             {
-                if(NotEmptyNode(innerNode, "text"))
+                if (NotEmptyNode(innerNode, "text"))
                 {
                     textNode = innerNode;
 
                     continue;
                 }
 
-                if(NotEmptyNode(innerNode, "check"))
+                if (NotEmptyNode(innerNode, "check"))
                 {
                     new DeployTransactionCheck(innerNode.InnerText)
                         .AddTo(checkList);
                 }
             }
 
-            if(textNode == null)
+            if (textNode == null)
             {
                 return null;
             }
 
             return new DeployTransaction(textNode.InnerText, checkList);
         }
-                
+
         private static void ExecuteDeployFile(StartContext db, string id, List<DeployTransaction> transactions)
         {
             var deploy = new ReadmeDeploy(id, TimeHelper.GetCurrentDate());
 
-            if(transactions.Count == 0)
+            if (transactions.Count == 0)
             {
                 db.Add(deploy);
                 db.SaveChanges();
@@ -148,17 +148,17 @@ namespace WordCards.Core.ReadmeDeploy
                 {
                     foreach (var transaction in transactions)
                     {
-                        foreach(var check in transaction.Checks)
+                        foreach (var check in transaction.Checks)
                         {
                             var resultCheck = db.Database.SqlQueryRaw<bool>(check.Sql).ToList();
                             check.IsChecked = resultCheck.FirstOrDefault();
                         }
 
-                        if(transaction.Check())
+                        if (transaction.Check())
                         {
                             db.Database.ExecuteSqlRaw(transaction.Sql);
                         }
-                    }                    
+                    }
 
                     deploy.Timestamp = TimeHelper.GetCurrentDate();
 
@@ -169,11 +169,11 @@ namespace WordCards.Core.ReadmeDeploy
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.ToString());                    
+                    Debug.WriteLine(ex.ToString());
 
                     dbTransaction.Rollback();
                 }
-            }           
+            }
         }
     }
 }

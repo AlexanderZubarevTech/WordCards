@@ -1,16 +1,16 @@
-﻿using WordCards.Business.LanguageWords;
-using WordCards.Configurations;
-using WordCards.Core.Helpers;
-using WordCards.Core.Validations;
-using WordCards.Extensions;
-using WordCards.Views.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using WordCards.Business.LanguageWords;
+using WordCards.Configurations;
+using WordCards.Core.Helpers;
+using WordCards.Core.Validations;
+using WordCards.Extensions;
+using WordCards.Views.Common;
 
 namespace WordCards.Views.Main
 {
@@ -71,7 +71,7 @@ namespace WordCards.Views.Main
         {
             var isValid = await validationManager.ExecuteAsync(Load);
 
-            if(!isValid)
+            if (!isValid)
             {
                 WP_Progress_Percent.Visibility = Visibility.Collapsed;
                 Btn_Save.IsEnabled = false;
@@ -90,7 +90,7 @@ namespace WordCards.Views.Main
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
 
-            dialog.DefaultExt = ".xml"; 
+            dialog.DefaultExt = ".xml";
             dialog.Filter = "XML Documents (.xml)|*.xml";
 
             if (dialog.ShowDialog() == true)
@@ -115,13 +115,13 @@ namespace WordCards.Views.Main
                 WP_FoundWords.Visibility = Visibility.Visible;
                 WP_NewWords.Visibility = Visibility.Visible;
 
-                if(info.WordsWithoutTranslation > 0)
+                if (info.WordsWithoutTranslation > 0)
                 {
                     TB_WordsWithoutTranslation.Text = info.WordsWithoutTranslation.ToString();
                     WP_WordsWithoutTranslation.Visibility = Visibility.Visible;
                 }
 
-                if(info.DuplicateWordCount > 0)
+                if (info.DuplicateWordCount > 0)
                 {
                     TB_DuplicateWords.Text = info.DuplicateWordCount.ToString();
                     WP_DuplicateWords.Visibility = Visibility.Visible;
@@ -130,8 +130,8 @@ namespace WordCards.Views.Main
                 WP_Progress_Percent.Visibility = Visibility.Collapsed;
 
                 Btn_Save.IsEnabled = true;
-            } 
-            else if(fullFileName.IsNullOrEmpty())
+            }
+            else if (fullFileName.IsNullOrEmpty())
             {
                 Btn_Save.IsEnabled = false;
             }
@@ -152,14 +152,14 @@ namespace WordCards.Views.Main
             var info = await CommandHelper.GetCommand<ILoadFileToLibraryCommand>().Execute(fullFileName, mainDispatcher, PB_Progress);
 
             var messages = new List<string>
-            {                
+            {
                 $"В библиотеку ",
                 $"{settings.CurrentLanguage.Name} - {settings.TranslationLanguage.Name}",
                 $"Из {info.WordsCount} обнаруженных слов:",
-                
+
             };
 
-            if(info.WordsWithoutTranslation > 0)
+            if (info.WordsWithoutTranslation > 0)
             {
                 messages.Add($"Без перевода: {info.WordsWithoutTranslation}");
             }
@@ -179,7 +179,7 @@ namespace WordCards.Views.Main
 
             DialogResult = true;
 
-            Close();            
+            Close();
         }
 
         private void SetEnabledWindow(bool isEnabled)

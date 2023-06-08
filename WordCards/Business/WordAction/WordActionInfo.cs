@@ -1,8 +1,8 @@
-﻿using WordCards.Business.WordActivities;
-using WordCards.Core.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using WordCards.Business.WordActivities;
+using WordCards.Core.Entities;
 
 namespace WordCards.Business.WordAction
 {
@@ -37,7 +37,7 @@ namespace WordCards.Business.WordAction
                 .End();
         }
 
-        public WordActionInfo() 
+        public WordActionInfo()
         {
         }
 

@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System;
+﻿using System;
+using System.Linq;
 using System.Net.NetworkInformation;
 using UpdaterLibrary.Commands;
 
@@ -10,8 +10,8 @@ namespace UpdaterLibrary.Connection
         public bool Execute(params string[] hostNames)
         {
             if (hostNames == null || hostNames.Length == 0)
-            { 
-                return AreAllAvailable("google.com", "microsoft.com"); 
+            {
+                return AreAllAvailable("google.com", "microsoft.com");
             }
 
             return AreAllAvailable(hostNames);
@@ -19,12 +19,12 @@ namespace UpdaterLibrary.Connection
 
         private static bool AreAllAvailable(params string[] hostNameOrAddresses)
         {
-            if (hostNameOrAddresses == null) 
-            { 
+            if (hostNameOrAddresses == null)
+            {
                 throw new ArgumentNullException("hostNameOrAddresses");
             }
 
-            if (hostNameOrAddresses.Length == 0) 
+            if (hostNameOrAddresses.Length == 0)
             {
                 throw new ArgumentException("hostNameOrAddresses must have at least one element", "hostNameOrAddresses");
             }
