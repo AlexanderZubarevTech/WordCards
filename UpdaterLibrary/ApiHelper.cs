@@ -1,5 +1,6 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
 using System.Net.Http.Headers;
+using System.Security;
 using UpdaterLibrary.Token;
 
 namespace UpdaterLibrary
@@ -12,9 +13,9 @@ namespace UpdaterLibrary
 
         private static string GetApiUrl()
         {
-            var url = ConfigurationManager.AppSettings.Get(SettingsKeys.ApiUrl);
-            var owner = ConfigurationManager.AppSettings.Get(SettingsKeys.Owner);
-            var repo = ConfigurationManager.AppSettings.Get(SettingsKeys.Repository);
+            var url = UpdaterConfiguration.Get(SettingsKeys.ApiUrl);
+            var owner = UpdaterConfiguration.Get(SettingsKeys.Owner);
+            var repo = UpdaterConfiguration.Get(SettingsKeys.Repository);
 
             url = url.Replace("{" + SettingsKeys.Owner + "}", owner);
             url = url.Replace("{" + SettingsKeys.Repository + "}", repo);
@@ -24,27 +25,33 @@ namespace UpdaterLibrary
 
         private static string GetTagsUrl()
         {
-            var tags = ConfigurationManager.AppSettings.Get(SettingsKeys.TagsURL);
+            var tags = UpdaterConfiguration.Get(SettingsKeys.TagsURL);
 
             return ApiUrl + tags;
         }
 
         private static string GetReleasesUrl()
         {
-            var releases = ConfigurationManager.AppSettings.Get(SettingsKeys.ReleaseURL);
+            var releases = UpdaterConfiguration.Get(SettingsKeys.ReleaseURL);
 
             return ApiUrl + releases;
         }
 
         public static void AddHeaders(HttpRequestHeaders requestHeaders, string encryptedToken)
         {
-            var token = Security.Decrypt(encryptedToken, ConfigurationManager.AppSettings.Get(SettingsKeys.TokenKey));
-            var headerValueToken = string.Format(ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersAuthorization), token);
+            var token = Security.Decrypt(encryptedToken, UpdaterConfiguration.Get(SettingsKeys.TokenKey));
+            var headerValueToken = string.Format(UpdaterConfiguration.Get(SettingsKeys.HeadersAuthorization), token);
 
-            requestHeaders.Add(HttpHeaders.UserAgent, ConfigurationManager.AppSettings.Get(SettingsKeys.Owner));
-            requestHeaders.Add(HttpHeaders.Accept, ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersAccept));
+            requestHeaders.Add(HttpHeaders.UserAgent, UpdaterConfiguration.Get(SettingsKeys.Owner));
+            requestHeaders.Add(HttpHeaders.Accept, UpdaterConfiguration.Get(SettingsKeys.HeadersAccept));
             requestHeaders.Add(HttpHeaders.Authorization, headerValueToken);
-            requestHeaders.Add(HttpHeaders.ApiVersion, ConfigurationManager.AppSettings.Get(SettingsKeys.HeadersVersion));
+            requestHeaders.Add(HttpHeaders.ApiVersion, UpdaterConfiguration.Get(SettingsKeys.HeadersVersion));
+        }
+
+        public static void AddReleaseListProperties(IDictionary<string, object> properties, int page, int pageSize = 50)
+        {
+            properties.Add(HttpProperties.Release.PageSize, pageSize);
+            properties.Add(HttpProperties.Release.Page, page);
         }
     }
 }

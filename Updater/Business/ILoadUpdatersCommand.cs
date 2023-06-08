@@ -5,6 +5,6 @@ namespace Updater.Business
 {
     public interface ILoadUpdatersCommand : IEntityCommand
     {
-        Task<string> Execute();
+        void Execute();
     }
 }

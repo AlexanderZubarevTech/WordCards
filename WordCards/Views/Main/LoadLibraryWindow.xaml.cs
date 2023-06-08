@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -23,6 +24,7 @@ namespace WordCards.Views.Main
         private Dispatcher mainDispatcher;
         private string fullFileName;
         private Settings settings;
+        private readonly string initialLoadDirectory;
 
         public LoadLibraryWindow()
         {
@@ -49,6 +51,8 @@ namespace WordCards.Views.Main
             var errorColor = (Color)Resources["ValidationErrorFieldColor"];
 
             validationManager = new ValidationManager(SP_MessageWithValidation, errorStyle, errorColor);
+
+            initialLoadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Source", "Words");
         }
 
         private void Heap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -92,6 +96,7 @@ namespace WordCards.Views.Main
 
             dialog.DefaultExt = ".xml";
             dialog.Filter = "XML Documents (.xml)|*.xml";
+            dialog.InitialDirectory = initialLoadDirectory;
 
             if (dialog.ShowDialog() == true)
             {

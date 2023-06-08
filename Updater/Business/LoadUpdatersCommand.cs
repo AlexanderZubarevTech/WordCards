@@ -1,192 +1,79 @@
 ﻿using System;
-using System.Configuration;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Updater.Core.Commands;
+using UpdaterLibrary;
+using UpdaterLibrary.Json;
 
 namespace Updater.Business
 {
     public class LoadUpdatersCommand : EntityCommand, ILoadUpdatersCommand
     {
-        private static class SettingsKeys
+        private const string packageFileName = "Package.zip";
+
+        public void Execute()
         {
-            public const string ApiUrl = "apiURL";
-            public const string Owner = "owner";
-            public const string Repo = "repo";
-            public const string TagsURL = "tagsURL";
-            public const string Token = "WC_TOKEN";
-            public const string RawConfigUrl = "Raw_Config_URL";
-        }
+            var releases = Task.Run(() => { return UpdaterProvider.GetNewReleases(Settings.Token, Settings.CurrentVersion); }).GetAwaiter().GetResult();
 
-        private static class Headers
-        {
-            public const string UserAgent = "User-Agent";
-            public const string Accept = "Accept";
-            public const string Authorization = "Authorization";
-        }
-
-        private static readonly string apiUrl = GetApiUrl();
-
-        private HttpClient httpClient;
-
-        private static string GetApiUrl()
-        {
-            var url = ConfigurationManager.AppSettings.Get(SettingsKeys.ApiUrl);
-            var owner = ConfigurationManager.AppSettings.Get(SettingsKeys.Owner);
-            var repo = ConfigurationManager.AppSettings.Get(SettingsKeys.Repo);
-
-            url = url.Replace("{" + SettingsKeys.Owner + "}", owner);
-            url = url.Replace("{" + SettingsKeys.Repo + "}", repo);
-
-            return url;
-        }
-
-        public async Task<string> Execute()
-        {
-            Initialize();
-
-            var isValid = await CkeckOrUpdateAuthorizationToken();
-
-            if (!isValid)
+            if(releases == null || releases.Count == 0) 
             {
-                return "Invalid token. Server need update token.";
+                return;
             }
 
-            AddHeaders(httpClient.DefaultRequestHeaders);
+            var directory = LoadPackages(releases);
+        }
 
-            // определяем данные запроса
-            using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, GetTagsUrl());
+        private static string LoadPackages(List<Release> releases)
+        {
+            var path = CreateTempDirectory();
 
-            // выполняем запрос
-            using var response = await httpClient.SendAsync(request);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            foreach (var release in releases)
             {
-                using var newRequest = new HttpRequestMessage(HttpMethod.Get, ConfigurationManager.AppSettings.Get(SettingsKeys.RawConfigUrl));
-
-                var resp = await httpClient.SendAsync(newRequest);
+                LoadPackageByRelease(release, path);
             }
 
-            var res = await response.Content.ReadAsStringAsync();
-
-            httpClient.Dispose();
-
-            Assembly assembly = Assembly.GetExecutingAssembly();
-
-            var version = assembly.GetName().Version;
-
-
-
-            return res;
+            return path;
         }
 
-        private void Initialize()
+        private static string CreateTempDirectory()
         {
-            if (httpClient == null)
+            var path = Path.Combine(Directory.GetCurrentDirectory(), Settings.TempDirectory);
+
+            if(Directory.Exists(path))
             {
-                var socketsHandler = new SocketsHttpHandler
-                {
-                    PooledConnectionLifetime = TimeSpan.FromMinutes(2)
-                };
-
-                httpClient = new HttpClient(socketsHandler);
-            }
-        }
-
-        private async Task<bool> CkeckOrUpdateAuthorizationToken()
-        {
-            var defaultToken = ConfigurationManager.AppSettings.Get(SettingsKeys.Token) ?? string.Empty;
-
-            if (await IsValidToken(defaultToken))
-            {
-                return true;
+                Directory.Delete(path, true);
             }
 
-            var token = await GetRemoteToken();
+            Directory.CreateDirectory(path);
 
-            if (await IsValidToken(token))
+            return path;
+        }
+
+        private static void LoadPackageByRelease(Release release, string tempPath)
+        {
+            var directoryPath = Path.Combine(tempPath, release.TagName);
+
+            Directory.CreateDirectory(directoryPath);
+
+            var asset = release.Assets.FirstOrDefault(x => x.Name == packageFileName);
+
+            if(asset == null)
             {
-                ConfigurationManager.AppSettings.Set(SettingsKeys.Token, token);
-
-                return true;
+                return;
             }
 
-            return false;
+            var filePath = Path.Combine(directoryPath, asset.Name);
+
+            if(File.Exists(filePath))
+            {
+                throw new Exception($"Exists file {packageFileName} in {directoryPath}");
+            }
+
+            UpdaterProvider.LoadFile(asset.BrowserDownloadUrl, filePath);            
         }
 
-        private async Task<bool> IsValidToken(string token)
-        {
-            var checkStatus = await CheckAvailable(token);
 
-            return IsValidStatus(checkStatus);
-        }
-
-        private static bool IsValidStatus(System.Net.HttpStatusCode status)
-        {
-            return status != System.Net.HttpStatusCode.Forbidden
-                && status != System.Net.HttpStatusCode.NotFound
-                && status != System.Net.HttpStatusCode.Unauthorized;
-        }
-
-        private async Task<System.Net.HttpStatusCode> CheckAvailable(string token)
-        {
-            using HttpRequestMessage checkRequest = new HttpRequestMessage(HttpMethod.Get, GetTagsUrl());
-
-            AddHeaders(checkRequest.Headers, token);
-
-            using var checkResponse = await httpClient.SendAsync(checkRequest);
-
-            return checkResponse.StatusCode;
-        }
-
-        private static string GetTagsUrl()
-        {
-            var tags = ConfigurationManager.AppSettings.Get(SettingsKeys.TagsURL);
-
-            return apiUrl + tags;
-        }
-
-        private static void AddHeaders(HttpRequestHeaders requestHeaders, string? token = null)
-        {
-            requestHeaders.Add(Headers.UserAgent, ConfigurationManager.AppSettings.Get(SettingsKeys.Owner));
-            requestHeaders.Add(Headers.Accept, "application/vnd.github+json");
-            requestHeaders.Add(Headers.Authorization, GetAuthoruzation(token));
-        }
-
-        private static string GetAuthoruzation(string? otherToken)
-        {
-            var token = otherToken != null
-                ? otherToken
-                : ConfigurationManager.AppSettings.Get(SettingsKeys.Token) ?? string.Empty;
-
-            return $"token {token}";
-        }
-
-        private async Task<string> GetRemoteToken()
-        {
-            using var configRequest = new HttpRequestMessage(HttpMethod.Get, ConfigurationManager.AppSettings.Get(SettingsKeys.RawConfigUrl));
-
-            using var configResponse = await httpClient.SendAsync(configRequest);
-
-            var content = await configResponse.Content.ReadAsStringAsync();
-
-            return GetTokenFromXml(content);
-        }
-
-        private static string GetTokenFromXml(string xmlString)
-        {
-            var doc = XDocument.Parse(xmlString);
-
-            var tokenNode = doc.Element("configuration")?
-                .Element("appSettings")?
-                .Elements("add")
-                .FirstOrDefault(x => x.Attribute("key")?.Value == SettingsKeys.Token);
-
-            return tokenNode?.Attribute("value")?.Value ?? string.Empty;
-        }
     }
 }

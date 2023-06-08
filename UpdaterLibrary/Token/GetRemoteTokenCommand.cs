@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -31,7 +30,7 @@ namespace UpdaterLibrary.Token
         {
             var result = string.Empty;
 
-            var rawUrl = ConfigurationManager.AppSettings.Get(SettingsKeys.RawConfigUrl);
+            var rawUrl = UpdaterConfiguration.Get(SettingsKeys.RawConfigUrl);
 
             using (var configRequest = new HttpRequestMessage(HttpMethod.Get, rawUrl))
             {
@@ -50,7 +49,7 @@ namespace UpdaterLibrary.Token
         {
             var doc = XDocument.Parse(xmlString);
 
-            var tokenName = ConfigurationManager.AppSettings.Get(SettingsKeys.TokenName);
+            var tokenName = UpdaterConfiguration.Get(SettingsKeys.TokenName);
 
             var tokenNode = doc.Element("configuration")?
                 .Element("appSettings")?

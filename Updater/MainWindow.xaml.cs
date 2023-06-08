@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows;
 using Updater.Business;
 using Updater.Core.Helpers;
+using UpdaterLibrary;
 
 namespace Updater
 {
@@ -12,9 +14,9 @@ namespace Updater
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
 
-            //Owner.Closed += Start;
+            //Owner.Closed += Start;            
         }
 
         private void CloseOwner()
@@ -32,13 +34,11 @@ namespace Updater
             GetData();
         }
 
-        private async void GetData()
+        private void GetData()
         {
             TB_Result.Text = string.Empty;
 
-            var res = await CommandHelper.GetCommand<ILoadUpdatersCommand>().Execute();
-
-            TB_Result.Text = res;
+            CommandHelper.GetCommand<ILoadUpdatersCommand>().Execute();            
         }
     }
 }

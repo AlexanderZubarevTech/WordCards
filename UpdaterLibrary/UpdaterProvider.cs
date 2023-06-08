@@ -1,9 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.Net.Http;
 using UpdaterLibrary.Commands;
 using UpdaterLibrary.Connection;
+using UpdaterLibrary.Json;
+using UpdaterLibrary.Load;
+using UpdaterLibrary.Releases;
 using UpdaterLibrary.Token;
 using UpdaterLibrary.Versions;
 
@@ -28,7 +31,7 @@ namespace UpdaterLibrary
 
         public static bool CheckServiceConnection()
         {
-            var hostName = ConfigurationManager.AppSettings.Get(SettingsKeys.ServiceAddress);
+            var hostName = UpdaterConfiguration.Get(SettingsKeys.ServiceAddress);
 
             return CommandHelper.GetCommand<ICheckConnectionCommand>().Execute(hostName);
         }
@@ -58,7 +61,17 @@ namespace UpdaterLibrary
 
         public static string Encrypt(string text)
         {
-            return Security.Encrypt(text, ConfigurationManager.AppSettings.Get(SettingsKeys.TokenKey));
+            return Security.Encrypt(text, UpdaterConfiguration.Get(SettingsKeys.TokenKey));
+        }
+
+        public static List<Release> GetNewReleases(string token, Version currentVersion)
+        {
+            return CommandHelper.GetCommand<IGetNewReleasesCommand>().Execute(httpClientFactory.CreateClient(), token, currentVersion);
+        }
+
+        public static void LoadFile(string url, string path)
+        {
+            CommandHelper.GetCommand<ILoadFileCommand>().Execute(httpClientFactory.CreateClient(), url, path);
         }
     }
 }
