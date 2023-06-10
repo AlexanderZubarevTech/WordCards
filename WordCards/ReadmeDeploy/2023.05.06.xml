@@ -66,5 +66,25 @@
 		</text>
 	</sql>
 	
-	<!--SELECT instr(sql, '"Notification"') FROM sqlite_master WHERE name='notification_types' and type='table' проверка наличия столбца в таблице-->
+	<!--
+	///////////////////////////////////////////////
+	Проверка наличия столбца в таблице
+	SELECT instr(sql, '"Notification"') FROM sqlite_master WHERE name='notification_types' and type='table'
+	///////////////////////////////////////////////
+	Для выполнения sql используется шаблон
+	<sql>
+		SQL запрос
+	</sql>
+	или
+	<sql>
+		<check>SQL проверка</check>
+		<text>SQL запрос</text>		
+	</sql>
+	///////////////////////////////////////////////
+	Для выполнения кода
+	<action>
+		название invoker-a
+	</action>
+	///////////////////////////////////////////////
+	-->
 </main> 

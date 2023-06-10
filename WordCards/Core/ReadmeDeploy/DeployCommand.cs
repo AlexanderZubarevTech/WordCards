@@ -18,30 +18,30 @@ namespace WordCards.Core.ReadmeDeploy
         {
             using (var db = new StartContext())
             {
-                var fileTransactions = GetFileTransactions(db.Deploys);
+                var infos = GetDeployFileInfos(db.Deploys);
 
-                if (fileTransactions.Count > 0)
+                if (infos.Count > 0)
                 {
-                    foreach (var transaction in fileTransactions)
+                    foreach (var info in infos)
                     {
-                        ExecuteDeployFile(db, transaction.Key, transaction.Value);
+                        ExecuteDeployFile(db, info);
                     }
                 }
             }
         }
 
-        private static IReadOnlyDictionary<string, List<DeployTransaction>> GetFileTransactions(DbSet<ReadmeDeploy> deploys)
+        private static IReadOnlyList<DeployFileInfo> GetDeployFileInfos(DbSet<ReadmeDeploy> deploys)
         {
             var newFiles = DeployFilesHelper.GetNewFiles(deploys);
 
             if (newFiles.Count == 0)
             {
-                return DictionaryHelper.Empty<string, List<DeployTransaction>>();
+                return new List<DeployFileInfo>(0);
             }
 
             var xmlFiles = GetXmlFiles(newFiles);
 
-            return xmlFiles.ToDictionary(x => x.Key, x => GetSql(x.Key, x.Value));
+            return xmlFiles.Select(x => GetDeployFileInfo(x.Key, x.Value)).ToList();
         }
 
         private static Dictionary<string, FileInfo> GetXmlFiles(IReadOnlyDictionary<string, string> newFiles)
@@ -54,7 +54,7 @@ namespace WordCards.Core.ReadmeDeploy
                 .ToDictionary(x => x.Key, x => x.File);
         }
 
-        private static List<DeployTransaction> GetSql(string fileId, FileInfo file)
+        private static DeployFileInfo GetDeployFileInfo(string fileId, FileInfo file)
         {
             var doc = new XmlDocument();
             doc.Load(file.OpenText());
@@ -63,7 +63,7 @@ namespace WordCards.Core.ReadmeDeploy
 
             if (root == null)
             {
-                return new List<DeployTransaction>();
+                return new DeployFileInfo(fileId);
             }
 
             var id = root.Attributes.GetNamedItem("id")?.Value;
@@ -73,7 +73,8 @@ namespace WordCards.Core.ReadmeDeploy
                 throw new Exception($"Wrong File. File Id = {fileId} / Current Id = {id}");
             }
 
-            var result = new List<DeployTransaction>(root.ChildNodes.Count);
+            var transactions = new List<DeployTransaction>();
+            var actions = new List<string>();
 
             foreach (XmlNode node in root.ChildNodes)
             {
@@ -83,12 +84,19 @@ namespace WordCards.Core.ReadmeDeploy
 
                     if (transaction != null)
                     {
-                        result.Add(transaction);
+                        transactions.Add(transaction);
                     }
+                }
+
+                if (NotEmptyNode(node, "action"))
+                {
+                    var action = node.InnerText.Trim();
+
+                    actions.Add(action);
                 }
             }
 
-            return result;
+            return new DeployFileInfo(id, transactions, actions);
         }
 
         private static bool NotEmptyNode(XmlNode node, string name)
@@ -130,17 +138,55 @@ namespace WordCards.Core.ReadmeDeploy
             return new DeployTransaction(textNode.InnerText, checkList);
         }
 
-        private static void ExecuteDeployFile(StartContext db, string id, List<DeployTransaction> transactions)
+        private static void ExecuteDeployFile(StartContext db, DeployFileInfo info)
         {
-            var deploy = new ReadmeDeploy(id, TimeHelper.GetCurrentDate());
+            var deploy = new ReadmeDeploy(info.Id, TimeHelper.GetCurrentDate());
 
-            if (transactions.Count == 0)
+            if (info.IsEmpty)
             {
-                db.Add(deploy);
-                db.SaveChanges();
+                SaveDeploy(db, deploy);
 
                 return;
             }
+
+            var transactionsResult = true;
+
+            if(info.Transactions.Count > 0)
+            {
+                transactionsResult = ExecuteTransactions(db, info.Transactions);
+            }
+
+            if(transactionsResult == false)
+            {
+                return;
+            }
+
+            var actionsResult = true;
+
+            if (info.Actions.Count > 0)
+            {
+                actionsResult = ExecuteActions(info.Actions);
+            }
+
+            if(actionsResult == false)
+            {
+                return;
+            }
+
+            deploy.Timestamp = TimeHelper.GetCurrentDate();
+
+            SaveDeploy(db, deploy);
+        }
+
+        private static void SaveDeploy(StartContext db, ReadmeDeploy deploy)
+        {
+            db.Add(deploy);
+            db.SaveChanges();
+        }
+
+        private static bool ExecuteTransactions(StartContext db, IReadOnlyList<DeployTransaction> transactions)
+        {
+            var result = true;
 
             using (var dbTransaction = db.Database.BeginTransaction())
             {
@@ -160,11 +206,7 @@ namespace WordCards.Core.ReadmeDeploy
                         }
                     }
 
-                    deploy.Timestamp = TimeHelper.GetCurrentDate();
-
-                    db.Add(deploy);
                     db.SaveChanges();
-
                     dbTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -172,8 +214,27 @@ namespace WordCards.Core.ReadmeDeploy
                     Debug.WriteLine(ex.ToString());
 
                     dbTransaction.Rollback();
+
+                    result = false;
                 }
             }
+
+            return result;
+        }
+
+        private static bool ExecuteActions(IReadOnlyList<string> actions)
+        {
+            foreach (var action in actions)
+            {
+                var success = Invoker.InvokeAction(action);
+
+                if(success == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
