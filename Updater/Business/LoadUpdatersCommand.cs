@@ -73,7 +73,5 @@ namespace Updater.Business
 
             UpdaterProvider.LoadFile(asset.BrowserDownloadUrl, filePath);            
         }
-
-
     }
 }
